@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/password_reset_page.dart';
 import 'package:vidyamani/screens/signupscreen.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart' show User;
@@ -37,6 +38,28 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(labelText: 'Password'),
             ),
             SizedBox(height: 16.0),
+            Container(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ResetPasswordPage(),
+                                  ),
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.black87,
+                              ),
+                              child: const Text('Forgot password'),
+                            ),
+                          ],
+                        ),
+                      ),
             ElevatedButton(
               onPressed: () async {
                 String email = emailController.text.trim();

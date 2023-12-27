@@ -7,7 +7,7 @@ class signup_service {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  Future<void> registerUser({
+  Future<User?> registerUser({
     required String name,
     required String email,
     required String password,
@@ -33,11 +33,10 @@ class signup_service {
           'deviceToken': deviceToken
         }, SetOptions(merge: true));
 
-        // User registration successful, you can navigate to a new page or perform other actions.
+        return userCredential.user;
       }
     } catch (e) {
-      // Handle errors, e.g., show a snackbar to the user.
-      print(e.toString());
+ return null;
     }
   }
 }

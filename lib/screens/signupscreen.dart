@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/auth/signupservices.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -15,16 +17,23 @@ class _SignUpPageState extends State<SignUpPage> {
       TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   Future<void> _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      await signup_service().registerUser(
+      User? user = await signup_service().registerUser(
         name: fullNameController.text,
         email: emailController.text,
         password: passwordController.text,
         location: locationController.text,
       );
 
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {}
+
+      // Clear form fields
       fullNameController.clear();
       locationController.clear();
       emailController.clear();
@@ -59,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-             const  SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: locationController,
                 decoration: const InputDecoration(
@@ -73,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-            const  SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -91,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-             const SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
@@ -108,11 +117,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-             const SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: retypePasswordController,
                 obscureText: true,
-                decoration:const InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Retype Password',
                   hintText: 'Retype your password',
                 ),
@@ -125,10 +134,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-           const   SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child:const Text('Sign Up'),
+                child: const Text('Sign Up'),
               ),
             ],
           ),
