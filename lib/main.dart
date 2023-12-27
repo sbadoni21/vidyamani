@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vidyamani/screens/splashscreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,14 +10,14 @@ Future<void> main() async {
   );
   try {
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyAA6conKiTEoYcpXEu5Q2Zh5QwZSxkPtWc",
-          authDomain: "notifymeapp-e884b.firebaseapp.com",
-          projectId: "notifymeapp-e884b",
-          storageBucket: "notifymeapp-e884b.appspot.com",
-          messagingSenderId: "681497384601",
-          appId: "1:681497384601:web:2270449befedf5f9abca08"),
-    );
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyBEiWRAVIwyxYZ6cgqoVizmLOMLCAopUh8",
+            authDomain: "vidyamani-94f4a.firebaseapp.com",
+            projectId: "vidyamani-94f4a",
+            storageBucket: "vidyamani-94f4a.appspot.com",
+            messagingSenderId: "862420344316",
+            appId: "1:862420344316:web:3086d929b0f710d2bbe679",
+            measurementId: "G-ZC1VKV8DHC"));
     logger.i("Firebase initialized successfully");
     runApp(MyApp());
   } catch (e) {
@@ -29,12 +30,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return const MaterialApp(home: SplashScreen());
   }
 }

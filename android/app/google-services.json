@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "189841091343",
-    "project_id": "vidyamani-1859a",
-    "storage_bucket": "vidyamani-1859a.appspot.com"
+    "project_number": "862420344316",
+    "project_id": "vidyamani-94f4a",
+    "storage_bucket": "vidyamani-94f4a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:189841091343:android:309d9a1b94da2f2035ac7a",
+        "mobilesdk_app_id": "1:862420344316:android:bb39230b9ce5d405bbe679",
         "android_client_info": {
           "package_name": "com.example.vidyamani"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBKN6Qw5yhzAvb4KDnMseOHD0kHm0NppAE"
+          "current_key": "AIzaSyA-RU1Ma-YiHxlg_HJwja8mwCcM7CgdcJI"
         }
       ],
       "services": {
