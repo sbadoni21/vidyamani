@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/signupscreen.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart' show User;
 
@@ -79,6 +80,18 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text('Login with Google'),
             ),
+          ElevatedButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignUpPage(),
+      ),
+    );
+  },
+  child: Text('Sign Up'),
+),
+
           ],
         ),
       ),

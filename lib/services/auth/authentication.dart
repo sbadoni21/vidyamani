@@ -9,6 +9,7 @@ class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
+
   Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential =
@@ -22,6 +23,9 @@ class AuthenticationServices {
       return null;
     }
   }
+
+
+
 
   Future<bool> sendOTP(String email) async {
     if (EmailValidator.validate(email)) {
@@ -39,6 +43,10 @@ class AuthenticationServices {
     }
   }
 
+
+
+
+
   Future<bool> validateOTP(String otpEntered, String otpSent) async {
     return otpEntered == otpSent;
   }
@@ -52,6 +60,10 @@ class AuthenticationServices {
       return false;
     }
   }
+
+
+
+
 
   Future<User?> signInWithGoogle() async {
     try {
@@ -93,8 +105,14 @@ class AuthenticationServices {
     return null;
   }
 
+
+
+
+
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await firebaseAuth.signOut();
   }
+
+  
 }
