@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:vidyamani/components/catergories_component.dart';
+import 'package:vidyamani/components/categories_component.dart';
+import 'package:vidyamani/components/circular_tiles_component.dart';
+import 'package:vidyamani/components/featured_courses_component.dart';
+import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
@@ -111,7 +114,8 @@ class _MainScreenState extends State<MainScreen> {
           CarouselSlider(
             options: CarouselOptions(
               scrollPhysics: BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.normal),
+                decelerationRate: ScrollDecelerationRate.normal,
+              ),
               height: 229.0,
               viewportFraction: 1,
               aspectRatio: 16 / 9,
@@ -129,7 +133,7 @@ class _MainScreenState extends State<MainScreen> {
                 builder: (BuildContext context) {
                   return Image.network(
                     url,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   );
                 },
               );
@@ -138,28 +142,70 @@ class _MainScreenState extends State<MainScreen> {
           SizedBox(height: 26),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ListView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Categories',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: bgColor),
+                HeadingTitle(title: "Categories"),
+                SizedBox(
+                  height: 16,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      CategoryItem(
-                        icon: Icons.category,
-                        text: "Categories",
-                        pageRoute:
-                            MaterialPageRoute(builder: (context) => Courses()),
-                      )
-                    ],
+                Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        CategoryItem(
+                          imgUrl: "lib/assets/images/skillbasedcourses.png",
+                          text: "Categories",
+                          pageRoute: MaterialPageRoute(
+                            builder: (context) => Courses(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                HeadingTitle(title: "Featured Courses"),
+                SizedBox(
+                  height: 16,
+                ),
+                Tiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => Courses())),
+                SizedBox(
+                  height: 16,
+                ),
+                HeadingTitle(title: "Upcoming lectures"),
+                SizedBox(
+                  height: 16,
+                ),
+                Tiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => Courses())),
+                SizedBox(
+                  height: 16,
+                ),
+                HeadingTitle(title: "Live Lectures"),
+                SizedBox(
+                  height: 16,
+                ),
+                
+                CiruclarTiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => Courses())),
               ],
             ),
           ),

@@ -22,7 +22,6 @@ class signup_service {
       );
 
       if (userCredential.user != null) {
-        // Save additional user data to Firestore
         final deviceToken = await NotificationService().getDeviceToken();
         await _fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
