@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vidyamani/components/catergories_component.dart';
+import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/utils/static.dart';
 
 class HomePage extends StatelessWidget {
   final ZoomDrawerController zoomDrawerController = ZoomDrawerController();
   @override
   Widget build(BuildContext context) {
     return ZoomDrawer(
+      mainScreenTapClose: true,
       controller: zoomDrawerController,
       menuScreen: MenuScreen(
         zoomDrawerController: zoomDrawerController,
@@ -62,10 +66,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
+          IconButton(
             onPressed: () {
               if (widget.zoomDrawerController != null) {
                 widget.zoomDrawerController!.toggle!();
@@ -73,48 +78,92 @@ class _MainScreenState extends State<MainScreen> {
             },
             icon: Icon(Icons.menu),
           ),
-          centerTitle: true,
-          title: Image.asset(
-            "lib/assets/images/logo.jpg",
-            height: 50,
-            width: 50,
-          ),
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-        ),
-        body: ListView(
+        ],
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 300.0,
-                viewportFraction: 1,
-                enableInfiniteScroll: true,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: true,
-                enlargeFactor: 0.3,
-                scrollDirection: Axis.horizontal,
+            Container(
+              height: 30,
+              width: 34,
+              child: Image.asset(
+                "lib/assets/images/logowhite.png",
               ),
-              items: imageUrls.map((url) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Image.network(
-                      url,
-                      fit: BoxFit.cover,
-                    );
-                  },
-                );
-              }).toList(),
             ),
-            SizedBox(height: 20),
+            SizedBox(
+              width: 8,
+            ),
             Text(
-              'Main Content',
-              style: TextStyle(fontSize: 20),
-            ),
+              "Vidhyamani",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            )
           ],
         ),
+        backgroundColor: bgColor,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView(
+        children: [
+          CarouselSlider(
+            options: CarouselOptions(
+              scrollPhysics: BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.normal),
+              height: 229.0,
+              viewportFraction: 1,
+              aspectRatio: 16 / 9,
+              enableInfiniteScroll: true,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 3),
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              enlargeFactor: 0.3,
+              scrollDirection: Axis.horizontal,
+            ),
+            items: imageUrls.map((url) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                  );
+                },
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 26),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                const Text(
+                  'Categories',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: bgColor),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      CategoryItem(
+                        icon: Icons.category,
+                        text: "Categories",
+                        pageRoute:
+                            MaterialPageRoute(builder: (context) => Courses()),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
