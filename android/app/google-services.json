@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "862420344316",
+    "firebase_url": "https://vidyamani-94f4a-default-rtdb.firebaseio.com",
     "project_id": "vidyamani-94f4a",
     "storage_bucket": "vidyamani-94f4a.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.vidyamani"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "862420344316-oafedvj6i71j077oj1j8h6gle8p5t6l7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vidyamani",
+            "certificate_hash": "bbd76b433431e2e67d31826077d3dd2dda803db7"
+          }
+        },
+        {
+          "client_id": "862420344316-ivr18h430g1fu7cltik4knakf0fhjdsm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA-RU1Ma-YiHxlg_HJwja8mwCcM7CgdcJI"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862420344316-ivr18h430g1fu7cltik4knakf0fhjdsm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

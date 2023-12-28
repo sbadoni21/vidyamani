@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:vidyamani/screens/home_page.dart';
+import 'package:vidyamani/screens/live_stream.dart';
+import 'package:vidyamani/screens/loginscreen.dart';
+import 'package:vidyamani/screens/profile_page.dart';
+import 'package:vidyamani/services/auth/authentication.dart';
 
 class MenuScreen extends StatefulWidget {
   final ZoomDrawerController zoomDrawerController;
@@ -32,7 +36,7 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
           ),
           ListTile(
-            title: Text('Item 1'),
+            title: Text('Dashboard'),
             onTap: () {
               final navigator = Navigator.of(context);
               widget.zoomDrawerController
@@ -45,19 +49,39 @@ class _MenuScreenState extends State<MenuScreen> {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Text('My Profile'),
             onTap: () {
               final navigator = Navigator.of(context);
               widget.zoomDrawerController
                   .close!(); // Close the drawer using widget.zoomDrawerController
               navigator.push(
                 MaterialPageRoute(
-                  builder: (_) => HomePage(),
+                  builder: (_) => ProfilePage(),
                 ),
               );
             },
           ),
-          // Add more list items as needed
+          ListTile(
+            title: Text('Log Out'),
+            onTap: () async {
+              await AuthenticationServices().signOut();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => LoginPage())));
+            },
+          ),
+           ListTile(
+            title: Text('Live Stream'),
+            onTap: () {
+              final navigator = Navigator.of(context);
+              widget.zoomDrawerController
+                  .close!(); // Close the drawer using widget.zoomDrawerController
+              navigator.push(
+                MaterialPageRoute(
+                  builder: (_) => LiveStreams(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

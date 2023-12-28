@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/password_reset_page.dart';
 import 'package:vidyamani/screens/signupscreen.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
@@ -39,27 +40,27 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 16.0),
             Container(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ResetPasswordPage(),
-                                  ),
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.black87,
-                              ),
-                              child: const Text('Forgot password'),
-                            ),
-                          ],
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResetPasswordPage(),
                         ),
-                      ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black87,
+                    ),
+                    child: const Text('Forgot password'),
+                  ),
+                ],
+              ),
+            ),
             ElevatedButton(
               onPressed: () async {
                 String email = emailController.text.trim();
@@ -70,6 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                       await authenticationService.signIn(email, password);
 
                   if (user != null) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
                     print('Login successful');
                   } else {
                     print('Login failed');
@@ -94,7 +97,8 @@ class _LoginPageState extends State<LoginPage> {
                 User? user = await authenticationService.signInWithGoogle();
 
                 if (user != null) {
-                  // Navigate to the next screen or perform any action on successful login
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomePage()));
                   print('Login with Google successful');
                 } else {
                   // Handle login failure
@@ -103,18 +107,17 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text('Login with Google'),
             ),
-          ElevatedButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SignUpPage(),
-      ),
-    );
-  },
-  child: Text('Sign Up'),
-),
-
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignUpPage(),
+                  ),
+                );
+              },
+              child: Text('Sign Up'),
+            ),
           ],
         ),
       ),
