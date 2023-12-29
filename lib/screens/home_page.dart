@@ -1,47 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
 import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
+import 'package:vidyamani/components/testimonals_component.dart';
+import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class HomePage extends StatelessWidget {
-  final ZoomDrawerController zoomDrawerController = ZoomDrawerController();
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return ZoomDrawer(
-      mainScreenTapClose: true,
-      controller: zoomDrawerController,
-      menuScreen: MenuScreen(
-        zoomDrawerController: zoomDrawerController,
-      ),
-      mainScreen: MainScreen(zoomDrawerController: zoomDrawerController),
-      borderRadius: 24.0,
-      menuBackgroundColor: Colors.blue,
-      showShadow: true,
-      angle: 0,
-      drawerShadowsBackgroundColor: Colors.blue,
-      slideWidth: MediaQuery.of(context).size.width * 0.55,
-      openCurve: Curves.fastOutSlowIn,
-      closeCurve: Curves.bounceIn,
-    );
-  }
+  _HomePageState createState() => _HomePageState();
 }
 
-class MainScreen extends StatefulWidget {
-  final ZoomDrawerController? zoomDrawerController;
-  const MainScreen({Key? key, this.zoomDrawerController}) : super(key: key);
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
+class _HomePageState extends State<HomePage> {
+  int currentIndex = 0;
   late List<String> imageUrls = [];
   final logger = Logger(
     printer: PrettyPrinter(),
@@ -70,45 +51,25 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
-          IconButton(
-            onPressed: () {
-              if (widget.zoomDrawerController != null) {
-                widget.zoomDrawerController!.toggle!();
-              }
-            },
-            icon: Icon(Icons.menu),
-          ),
-        ],
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: 30,
-              width: 34,
-              child: Image.asset(
-                "lib/assets/images/logowhite.png",
-              ),
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              "Vidhyamani",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            )
-          ],
-        ),
-        backgroundColor: bgColor,
-        foregroundColor: Colors.white,
-      ),
+        appBar: CustomAppBar(),
+        body: IndexedStack(index: currentIndex, children: [
+          _buildHomePage(context),
+          const ProfilePage(),
+          const ProfilePage(),
+          const ProfilePage(),
+        ]),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+        ));
+  }
+
+  Widget _buildHomePage(BuildContext context) {
+    return Scaffold(
       body: ListView(
         children: [
           CarouselSlider(
@@ -199,13 +160,25 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   height: 16,
                 ),
-                
                 CiruclarTiles(
                     imagePath: "lib/assets/images/featuredcourses.png",
                     text1: "Basic Courses",
                     text2: "basic course",
                     pageRoute:
                         MaterialPageRoute(builder: (context) => Courses())),
+                SizedBox(
+                  height: 16,
+                ),
+                HeadingTitle(title: "Testimonials"),
+                SizedBox(
+                  height: 16,
+                ),
+                Testimonials(
+                  imagePath: 'lib/assets/images/featuredcourses.png',
+                  name: 'John Doe',
+                  testimonial:
+                      'This is an amazing testimonial. I highly recommend!',
+                )
               ],
             ),
           ),

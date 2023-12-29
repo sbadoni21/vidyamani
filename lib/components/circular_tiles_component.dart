@@ -5,14 +5,14 @@ class CiruclarTiles extends StatelessWidget {
   final String imagePath;
   final String text1;
   final String text2;
-  final MaterialPageRoute pageRoute; // Added MaterialPageRoute input
+  final MaterialPageRoute pageRoute; 
 
   const CiruclarTiles({
     Key? key,
     required this.imagePath,
     required this.text1,
     required this.text2,
-    required this.pageRoute, // Added this line
+    required this.pageRoute, 
   }) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class CiruclarTiles extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, pageRoute); // Use the provided MaterialPageRoute
+            context, pageRoute);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
