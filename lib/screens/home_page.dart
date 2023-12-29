@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                           imgUrl: "lib/assets/images/skillbasedcourses.png",
                           text: "Categories",
                           pageRoute: MaterialPageRoute(
-                            builder: (context) => Courses(),
+                            builder: (context) => CoursesPage(),
                           ),
                         ),
                       ],
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                     text1: "Basic Courses",
                     text2: "basic course",
                     pageRoute:
-                        MaterialPageRoute(builder: (context) => Courses())),
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
                 SizedBox(
                   height: 16,
                 ),
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                     text1: "Basic Courses",
                     text2: "basic course",
                     pageRoute:
-                        MaterialPageRoute(builder: (context) => Courses())),
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
                 SizedBox(
                   height: 16,
                 ),
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     text1: "Basic Courses",
                     text2: "basic course",
                     pageRoute:
-                        MaterialPageRoute(builder: (context) => Courses())),
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
                 SizedBox(
                   height: 16,
                 ),

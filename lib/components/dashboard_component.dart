@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/courses_page.dart';
+import 'package:vidyamani/screens/history_page.dart';
+import 'package:vidyamani/screens/saved_courses.dart';
+import 'package:vidyamani/screens/upcoming_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class Dashboard extends StatefulWidget {
@@ -33,106 +37,22 @@ class _DashboardState extends State<Dashboard> {
 
   Widget buildCoursesPage() {
     // Implement your Courses page UI here
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white70,
-          foregroundColor: Colors.blue,
-        ),
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Courses Page',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return CoursesPage();
   }
 
   Widget buildSavedPage() {
     // Implement your Saved page UI here
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white70,
-          foregroundColor: Colors.blue,
-        ),
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Saved Page',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return SavedPage();
   }
 
   Widget buildUpcomingPage() {
     // Implement your Upcoming page UI here
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white70,
-          foregroundColor: Colors.blue,
-        ),
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Upcoming Page',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return UpcomingPage();
   }
 
   Widget buildHistoryPage() {
     // Implement your History page UI here
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white70,
-          foregroundColor: Colors.blue,
-        ),
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'History Page',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return HistoryPage();
   }
 
   Widget buildQueryPage(int index) {
@@ -209,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
           SizedBox(
-            height: 300,
+            height: 800,
             child: PageView.builder(
               itemCount: queries.length,
               controller: _pageController,

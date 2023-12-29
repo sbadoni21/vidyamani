@@ -23,87 +23,101 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(children: [
-      Container(
-        padding: EdgeInsets.only(top: 30, left: 16, right: 16),
-        alignment: Alignment.bottomCenter,
-        height: 180,
-        color: bgColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 30, left: 16, right: 16),
+            alignment: Alignment.bottomCenter,
+            height: 180,
+            color: bgColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 4,
-                    ),
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      "lib/assets/images/featuredcourses.png",
-                      width: 120, // Adjust the width as needed
-                      height: 120, // Adjust the height as needed
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 25,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "Name",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 4,
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          "lib/assets/images/featuredcourses.png",
+                          width: 120, // Adjust the width as needed
+                          height: 120, // Adjust the height as needed
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    Row(children: [
-                      Icon(Icons.location_pin, size: 16, color: Colors.white),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "location",
-                        style: TextStyle(fontSize: 10, color: Colors.white),
-                      )
-                    ]),
+                    const SizedBox(
+                      width: 25,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.location_pin,
+                                size: 16, color: Colors.white),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "location",
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 100,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.published_with_changes,
+                            color: Colors.white),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Change",
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                        ),
+                        Text(
+                          "Password",
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                        )
+                      ],
+                    ),
                   ],
-                ),
-                SizedBox(
-                  width: 100,
-                ),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.published_with_changes, color: Colors.white),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "Change",
-                        style: TextStyle(fontSize: 10, color: Colors.white),
-                      ),
-                      Text(
-                        "Password",
-                        style: TextStyle(fontSize: 10, color: Colors.white),
-                      )
-                    ]),
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          Expanded(
+            child: ListView(children: [
+              Dashboard(),
+            ]),
+          ),
+        ],
       ),
-      Dashboard(),
-    ]));
+    );
   }
 }
+
 
 // CircleAvatar(
 //             radius: 50,
