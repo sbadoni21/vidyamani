@@ -13,6 +13,7 @@ import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/profile_page.dart';
+import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class HomePage extends StatefulWidget {
@@ -116,12 +117,37 @@ class _HomePageState extends State<HomePage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        CategoryItem(
-                          imgUrl: "lib/assets/images/skillbasedcourses.png",
-                          text: "Categories",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CategoryItem(
+                              imgUrl: "lib/assets/images/skillbasedcourses.png",
+                              text: "Categories",
+                              pageRoute: MaterialPageRoute(
+                                builder: (context) => CoursesPage(),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            CategoryItem(
+                              imgUrl: "lib/assets/images/skillbasedcourses.png",
+                              text: "Categories",
+                              pageRoute: MaterialPageRoute(
+                                builder: (context) => CoursesPage(),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            CategoryItem(
+                              imgUrl: "lib/assets/images/skillbasedcourses.png",
+                              text: "Categories",
+                              pageRoute: MaterialPageRoute(
+                                builder: (context) => CoursesPage(),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -134,12 +160,34 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 16,
                 ),
-                Tiles(
-                    imagePath: "lib/assets/images/featuredcourses.png",
-                    text1: "Basic Courses",
-                    text2: "basic course",
-                    pageRoute:
-                        MaterialPageRoute(builder: (context) => CoursesPage())),
+                Row(
+                  children: [
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                  ],
+                ),
                 SizedBox(
                   height: 16,
                 ),
@@ -147,25 +195,72 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 16,
                 ),
-                Tiles(
-                    imagePath: "lib/assets/images/featuredcourses.png",
-                    text1: "Basic Courses",
-                    text2: "basic course",
-                    pageRoute:
-                        MaterialPageRoute(builder: (context) => CoursesPage())),
+                Row(
+                  children: [
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                  ],
+                ),
                 SizedBox(
-                  height: 16,
+                  height: 10,
                 ),
                 HeadingTitle(title: "Live Lectures"),
                 SizedBox(
                   height: 16,
                 ),
-                CiruclarTiles(
-                    imagePath: "lib/assets/images/featuredcourses.png",
-                    text1: "Basic Courses",
-                    text2: "basic course",
-                    pageRoute:
-                        MaterialPageRoute(builder: (context) => CoursesPage())),
+                Row(
+                  children: [
+                    CiruclarTiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    CiruclarTiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    CiruclarTiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                  ],
+                ),
                 SizedBox(
                   height: 16,
                 ),

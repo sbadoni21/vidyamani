@@ -28,12 +28,34 @@ class _CoursesPageState extends State<CoursesPage> {
             SizedBox(
               height: 16,
             ),
-            Tiles(
-                imagePath: "lib/assets/images/featuredcourses.png",
-                text1: "Basic Courses",
-                text2: "basic course",
-                pageRoute:
-                    MaterialPageRoute(builder: (context) => CoursesPage())),
+            Row(
+              children: [
+                Tiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
+                SizedBox(
+                  width: 3,
+                ),
+                Tiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
+                SizedBox(
+                  width: 3,
+                ),
+                Tiles(
+                    imagePath: "lib/assets/images/featuredcourses.png",
+                    text1: "Basic Courses",
+                    text2: "basic course",
+                    pageRoute:
+                        MaterialPageRoute(builder: (context) => CoursesPage())),
+              ],
+            ),
             SizedBox(
               height: 16,
             ),
@@ -41,12 +63,34 @@ class _CoursesPageState extends State<CoursesPage> {
             SizedBox(
               height: 16,
             ),
-            Tiles(
-                imagePath: "lib/assets/images/featuredcourses.png",
-                text1: "Basic Courses",
-                text2: "basic course",
-                pageRoute:
-                    MaterialPageRoute(builder: (context) => CoursesPage())),
+             Row(
+                  children: [
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Tiles(
+                        imagePath: "lib/assets/images/featuredcourses.png",
+                        text1: "Basic Courses",
+                        text2: "basic course",
+                        pageRoute: MaterialPageRoute(
+                            builder: (context) => CoursesPage())),
+                  ],
+                ),
             SizedBox(
               height: 16,
             ),
