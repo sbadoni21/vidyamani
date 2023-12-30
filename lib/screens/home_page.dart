@@ -9,6 +9,7 @@ import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
+import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
@@ -71,6 +72,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHomePage(BuildContext context) {
     return Scaffold(
+    
       body: ListView(
         children: [
           CarouselSlider(
@@ -124,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                               imgUrl: "lib/assets/images/skillbasedcourses.png",
                               text: "Categories",
                               pageRoute: MaterialPageRoute(
-                                builder: (context) => CoursesPage(),
+                                builder: (context) => CourseDetailPage(),
                               ),
                             ),
                             SizedBox(
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                               imgUrl: "lib/assets/images/skillbasedcourses.png",
                               text: "Categories",
                               pageRoute: MaterialPageRoute(
-                                builder: (context) => CoursesPage(),
+                                builder: (context) => CourseDetailPage(),
                               ),
                             ),
                             SizedBox(

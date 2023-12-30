@@ -6,3 +6,18 @@ const token =
 
 const bgColor = Color.fromRGBO(21, 59, 121, 1);
 
+//text styles
+TextStyle myTextStylefontsize10 = TextStyle(
+  fontFamily: 'Urbanist',
+  fontSize: 10.0,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+);
+TextStyle myTextStylefontsize16 = TextStyle(
+  fontFamily: 'Urbanist',
+  fontSize: 16.0,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w600,
+  color: bgColor,
+);

@@ -21,7 +21,7 @@ class CustomListTile extends StatelessWidget {
       leading: Container(
           child: Image.asset(
         imgUrl,
-        width: 40,
+        width: 60,
         height: 60,
       )),
       title: Column(
