@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:vidyamani/utils/static.dart';
 
@@ -16,7 +17,6 @@ class CustomAppBarBckBtn extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: true,
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
         IconButton(
@@ -31,6 +31,15 @@ class CustomAppBarBckBtn extends StatelessWidget
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              size: 18,
+            ),
+          ),
           Container(
             height: 30,
             width: 34,

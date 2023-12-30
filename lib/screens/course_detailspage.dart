@@ -26,7 +26,7 @@ class CourseDetailPage extends StatelessWidget {
           "Buy Now",
         ),
       ),
-      appBar: CustomAppBarBckBtn(),
+      appBar: const CustomAppBarBckBtn(),
       body: ListView(
         children: [
           Container(
