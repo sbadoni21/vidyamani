@@ -1,56 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/utils/static.dart';
 
-class SearchBarWithButton extends StatefulWidget
-    implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(75.00);
-  final String hintText;
-
-  const SearchBarWithButton({super.key, required this.hintText});
-
-  @override
-  State<SearchBarWithButton> createState() => _SearchBarWithButtonState();
-}
-
-class _SearchBarWithButtonState extends State<SearchBarWithButton> {
+class SearchBarsection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: SearchBar(
-        trailing: [
-          const Icon(
-            Icons.search,
-            color: Colors.blueAccent,
+    double screenWidth = MediaQuery.of(context).size.width;
+    double barWidth = (290); // Divide by the number of bars
+
+    return Row(
+      children: [
+        SearchBar(barWidth: barWidth),
+        SizedBox(
+          width: 25,
+        ),
+        Container(
+          width: 44,
+          height: 44,
+          color: Color.fromRGBO(240, 243, 248, 1),
+          child: Icon(
+            Icons.filter_alt_outlined,
+            size: 32,
+            color: bgColor,
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.keyboard_voice,
-              color: Colors.blueAccent,
+        )
+      ],
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final double barWidth;
+
+  const SearchBar({required this.barWidth});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: barWidth,
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(240, 243, 248, 1),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              enableSuggestions: true,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(10),
+                  hintText: 'Search',
+                  hintStyle: TextStyle(
+                    color: bgColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  )),
             ),
-            onPressed: () {
-              print('Use voice command');
-            },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.camera_alt,
-              color: Colors.blueAccent,
+          Container(
+            padding: EdgeInsets.all(8),
+            color: Colors.grey[200],
+            child: Icon(
+              Icons.search,
+              color: bgColor,
+              size: 32,
             ),
-            onPressed: () {
-              print('Use image search');
-            },
           ),
         ],
-        hintText: widget.hintText,
-        hintStyle: MaterialStateProperty.resolveWith(
-          (states) => TextStyle(
-            color: states.contains(MaterialState.disabled)
-                ? Colors.indigo.shade700.withOpacity(
-                    0.5) // Adjust the disabled hint color if needed
-                : Colors.indigo.shade700, // Set the hint text color to black
-          ),
-        ),
       ),
     );
   }

@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         appBar: CustomAppBar(),
         body: IndexedStack(index: currentIndex, children: [
           _buildHomePage(context),
-          const ProfilePage(),
+          const SearchBarButton(),
           const ProfilePage(),
           const ProfilePage(),
         ]),
