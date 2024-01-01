@@ -14,6 +14,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  circular_countdown_timer: ^0.2.3
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.3
   firebase_messaging: ^14.7.9
@@ -32,10 +33,10 @@ dev_dependencies:
   get: ^4.6.6
   carousel_slider: ^4.2.1
   firebase_analytics_web: ^0.5.5+11
-
-
+  video_player: ^2.8.1
   flutter_riverpod: ^2.4.9
   app_popup_menu: ^1.0.0
+  intl: ^0.19.0
   
 
 flutter:
@@ -45,5 +46,7 @@ flutter:
     - lib/assets/images/google.png
     - lib/assets/images/skillbasedcourses.png
     - lib/assets/images/featuredcourses.png
+    - lib/assets/videos/cat.mp4
+    - lib/assets/videos/sigma.mp4
 
   uses-material-design: true

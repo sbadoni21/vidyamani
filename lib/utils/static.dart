@@ -5,6 +5,7 @@ const token =
     "007eJxTYPCZ2utYdKrhvd+5csl+exGtizPjt1187jBD2u2vbGSVppgCg6GBgXFSslFKclpSiomFkVliWrKBaZK5oYWhcVJSqklipkZvakMgI8O3/kBWRgYIBPFZGEpSi0sYGAAcvR7u";
 
 const bgColor = Color.fromRGBO(21, 59, 121, 1);
+const cardColor = Color.fromRGBO(240, 243, 248, 1);
 
 //text styles
 TextStyle myTextStylefontsize10 = TextStyle(
@@ -20,4 +21,11 @@ TextStyle myTextStylefontsize16 = TextStyle(
   fontStyle: FontStyle.normal,
   fontWeight: FontWeight.w600,
   color: bgColor,
+);
+TextStyle myTextStylefontsize24 = TextStyle(
+  fontFamily: 'Urbanist',
+  fontSize: 24.0,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
 );

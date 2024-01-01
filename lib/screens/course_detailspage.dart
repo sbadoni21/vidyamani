@@ -24,9 +24,14 @@ class CourseDetailPage extends StatelessWidget {
         onPressed: () {},
         child: Text(
           "Buy Now",
+          
         ),
       ),
-      appBar: const CustomAppBarBckBtn(),
+      appBar: CustomAppBarBckBtn(
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       body: ListView(
         children: [
           Container(

@@ -13,8 +13,10 @@ import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
+import 'package:vidyamani/screens/videoplayer_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class HomePage extends StatefulWidget {
@@ -52,27 +54,28 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: CustomAppBar(),
-        body: IndexedStack(index: currentIndex, children: [
-          _buildHomePage(context),
-          const SearchBarButton(),
-          const ProfilePage(),
-          const ProfilePage(),
-        ]),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: (index) {
-            setState(() {
-              currentIndex = index;
-            });
-          },
-        ));
+    return SafeArea(
+      child: Scaffold(
+          appBar: CustomAppBar(),
+          body: IndexedStack(index: currentIndex, children: [
+            _buildHomePage(context),
+            const SearchBarButton(),
+            const MyNotes(),
+            const ProfilePage(),
+          ]),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+          )),
+    );
   }
 
   Widget _buildHomePage(BuildContext context) {
     return Scaffold(
-    
       body: ListView(
         children: [
           CarouselSlider(
@@ -169,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         text1: "Basic Courses",
                         text2: "basic course",
                         pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage())),
+                            builder: (context) => VideoPlayerScreen())),
                     SizedBox(
                       width: 3,
                     ),

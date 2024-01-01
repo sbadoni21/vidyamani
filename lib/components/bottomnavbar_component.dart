@@ -20,7 +20,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       iconSize: 26,
+      elevation: 0,
       selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white54,
       backgroundColor: bgColor,
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.currentIndex,
@@ -34,9 +36,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               elevation: 0,
               backgroundColor: bgColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
             icon: Icon(
               Icons.home,
@@ -52,9 +51,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               elevation: 0,
               backgroundColor: bgColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
             icon: Icon(
               Icons.search_rounded,
@@ -70,15 +66,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               elevation: 0,
               backgroundColor: bgColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
             icon: Icon(
               Icons.library_books,
             ),
           ),
-          label: "My Courses",
+          label: "Notes",
         ),
         BottomNavigationBarItem(
           icon: IconButton(
@@ -88,9 +81,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               elevation: 0,
               backgroundColor: bgColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
             icon: Icon(
               Icons.person_pin,

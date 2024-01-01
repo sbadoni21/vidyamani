@@ -7,12 +7,11 @@ class CustomAppBarBckBtn extends StatelessWidget
     implements PreferredSizeWidget {
   final Function()? onWalletPressed;
   final Function()? onMenuPressed;
+  final Function()? onBackPressed;
 
-  const CustomAppBarBckBtn({
-    Key? key,
-    this.onWalletPressed,
-    this.onMenuPressed,
-  }) : super(key: key);
+  const CustomAppBarBckBtn(
+      {Key? key, this.onWalletPressed, this.onMenuPressed, this.onBackPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class CustomAppBarBckBtn extends StatelessWidget
         IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
         IconButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pop(
                 context, MaterialPageRoute(builder: (context) => MenuScreen()));
           },
           icon: Icon(Icons.menu),
@@ -33,7 +32,13 @@ class CustomAppBarBckBtn extends StatelessWidget
         children: [
           IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              print("Back button pressed!");
+              if (onBackPressed != null) {
+                onBackPressed!();
+              } else {
+                print("Navigator.pop(context) called");
+                Navigator.pop(context);
+              }
             },
             icon: Icon(
               Icons.arrow_back,

@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class SearchBarsection extends StatelessWidget {
+  final ValueChanged<String>? onSearch;
+
+  SearchBarsection({this.onSearch});
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double barWidth = (290); // Divide by the number of bars
+    double barWidth = 290; 
 
     return Row(
       children: [
-        SearchBar(barWidth: barWidth),
+        SearchBar(barWidth: barWidth, onChanged: onSearch),
         SizedBox(
           width: 25,
         ),
@@ -30,8 +34,9 @@ class SearchBarsection extends StatelessWidget {
 
 class SearchBar extends StatelessWidget {
   final double barWidth;
+  final ValueChanged<String>? onChanged;
 
-  const SearchBar({required this.barWidth});
+  const SearchBar({required this.barWidth, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +51,17 @@ class SearchBar extends StatelessWidget {
           Expanded(
             child: TextField(
               enableSuggestions: true,
+              onChanged: onChanged,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(10),
-                  hintText: 'Search',
-                  hintStyle: TextStyle(
-                    color: bgColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  )),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(10),
+                hintText: 'Search',
+                hintStyle: TextStyle(
+                  color: bgColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
             ),
           ),
           Container(
