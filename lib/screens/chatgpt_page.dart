@@ -56,7 +56,6 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
 
   void _sendMessage() async {
     String userMessage = _messageController.text;
-    print(userMessage);
     if (userMessage.isNotEmpty) {
       try {
         String chatGPTResponse = await getResponse(userMessage);
