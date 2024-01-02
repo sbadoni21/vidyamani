@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:vidyamani/utils/static.dart';
 
 class ChatGPTPage extends StatefulWidget {
@@ -37,20 +37,17 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       },
       body: jsonEncode({
         'messages': [
-  
           {'role': 'user', 'content': prompt}
         ],
         'model': 'gpt-3.5-turbo',
-        'prompt': prompt,
         'max_tokens': 150,
       }),
     );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data['choices'][0]['text'];
+      return data['choices'][0]['message']['content'];
     } else {
-      // Handle the error gracefully
       print('API Error: ${response.statusCode}');
       print('Error Body: ${response.body}');
       throw Exception('Failed to load data');
@@ -59,10 +56,10 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
 
   void _sendMessage() async {
     String userMessage = _messageController.text;
+    print(userMessage);
     if (userMessage.isNotEmpty) {
       try {
         String chatGPTResponse = await getResponse(userMessage);
-
 
         showDialog(
           context: context,
