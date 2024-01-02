@@ -28,8 +28,15 @@ class Tiles extends StatelessWidget {
           Container(
             height: 120,
             width: 120,
-            child: Image.asset(
-              imagePath,
+            child:
+                 imagePath.isNotEmpty
+                    ? Image.network(
+                        imagePath,
+                        fit: BoxFit.fill,
+                      )
+                :
+                Image.asset(
+              'lib/assets/images/placeholder_image.png', // Provide the path to your default image asset
               fit: BoxFit.cover,
               width: double.infinity,
             ),

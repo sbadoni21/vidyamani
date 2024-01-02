@@ -74,7 +74,6 @@ class _MyNotesState extends State<MyNotes> {
             .collection('notes')
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          logger.i(notesCollection.doc().collection('notes').snapshots());
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
@@ -264,7 +263,6 @@ class NoteSearchDelegate extends SearchDelegate {
                       noteId: note.id,
                       initialText: note['text'],
                       initialTitle: note["title"],
-                      
                     ),
                   ),
                 );
