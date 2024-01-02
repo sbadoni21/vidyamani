@@ -148,7 +148,8 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             children: [
                               CategoryItem(
-                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                imgUrl:
+                                    "lib/assets/images/skillbasedcourses.png",
                                 text: "Categories",
                                 pageRoute: MaterialPageRoute(
                                   builder: (context) => CourseDetailPage(),
@@ -158,7 +159,8 @@ class _HomePageState extends State<HomePage> {
                                 width: 20,
                               ),
                               CategoryItem(
-                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                imgUrl:
+                                    "lib/assets/images/skillbasedcourses.png",
                                 text: "Categories",
                                 pageRoute: MaterialPageRoute(
                                   builder: (context) => CourseDetailPage(),
@@ -168,7 +170,8 @@ class _HomePageState extends State<HomePage> {
                                 width: 20,
                               ),
                               CategoryItem(
-                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                imgUrl:
+                                    "lib/assets/images/skillbasedcourses.png",
                                 text: "Categories",
                                 pageRoute: MaterialPageRoute(
                                   builder: (context) => CoursesPage(),
@@ -192,12 +195,16 @@ class _HomePageState extends State<HomePage> {
                                 itemCount: coursesData.length,
                                 itemBuilder: (context, index) {
                                   Course course = coursesData[index];
-                                  return Tiles(
-                                    imagePath: course.photo,
-                                    text1: course.type,
-                                    text2: course.title,
-                                    pageRoute: MaterialPageRoute(
-                                      builder: (context) => CourseDetailPage(),
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Tiles(
+                                      imagePath: course.photo,
+                                      text1: course.type,
+                                      text2: course.title,
+                                      pageRoute: MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseDetailPage(),
+                                      ),
                                     ),
                                   );
                                 },
@@ -214,7 +221,8 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         children: [
                           Tiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
@@ -223,7 +231,8 @@ class _HomePageState extends State<HomePage> {
                             width: 3,
                           ),
                           Tiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
@@ -232,7 +241,8 @@ class _HomePageState extends State<HomePage> {
                             width: 3,
                           ),
                           Tiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
@@ -252,7 +262,8 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         children: [
                           CiruclarTiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
@@ -261,7 +272,8 @@ class _HomePageState extends State<HomePage> {
                             width: 3,
                           ),
                           CiruclarTiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
@@ -270,7 +282,8 @@ class _HomePageState extends State<HomePage> {
                             width: 3,
                           ),
                           CiruclarTiles(
-                              imagePath: "lib/assets/images/featuredcourses.png",
+                              imagePath:
+                                  "lib/assets/images/featuredcourses.png",
                               text1: "Basic Courses",
                               text2: "basic course",
                               pageRoute: MaterialPageRoute(
