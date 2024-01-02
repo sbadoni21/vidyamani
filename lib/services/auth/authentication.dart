@@ -9,7 +9,6 @@ class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-
   Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential =
@@ -23,9 +22,6 @@ class AuthenticationServices {
       return null;
     }
   }
-
-
-
 
   Future<bool> sendOTP(String email) async {
     if (EmailValidator.validate(email)) {
@@ -43,10 +39,6 @@ class AuthenticationServices {
     }
   }
 
-
-
-
-
   Future<bool> validateOTP(String otpEntered, String otpSent) async {
     return otpEntered == otpSent;
   }
@@ -61,10 +53,6 @@ class AuthenticationServices {
     }
   }
 
-
-
-
-
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -72,8 +60,7 @@ class AuthenticationServices {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
 
-        final AuthCredential credential =
-            GoogleAuthProvider.credential(
+        final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
@@ -105,14 +92,8 @@ class AuthenticationServices {
     return null;
   }
 
-
-
-
-
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await firebaseAuth.signOut();
   }
-
-  
 }

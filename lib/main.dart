@@ -6,12 +6,9 @@ import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-
-
   WidgetsFlutterBinding.ensureInitialized();
   final logger = Logger(
     printer: PrettyPrinter(),
@@ -52,11 +49,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Vidyamani',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-
       ),
       navigatorKey: navigatorKey,
       // home: HomePage(),

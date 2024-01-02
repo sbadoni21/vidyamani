@@ -1,25 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vidyamani/components/topnavbar_backbutton.dart';
 
-class CustomAppBarBckBtn extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBarBckBtn({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      title: const Text('Contact Us'),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
 
 Future<void> launchUrl(String url) async {
   await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';

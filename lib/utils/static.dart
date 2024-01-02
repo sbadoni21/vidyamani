@@ -36,4 +36,13 @@ TextStyle myTextStylefontsize24BGCOLOR = TextStyle(
   fontWeight: FontWeight.w600,
   color: bgColor,
 );
+
+TextStyle myTextStylefontsize16white = TextStyle(
+  fontFamily: 'Urbanist',
+  fontSize: 16.0,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+);
+
 const ChatGPT = "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";
