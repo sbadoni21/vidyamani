@@ -16,12 +16,12 @@ class CustomAppBarBckBtn extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
         IconButton(
           onPressed: () {
-            Navigator.pop(
-                context, MaterialPageRoute(builder: (context) => MenuScreen()));
+            Navigator.of(context).pop();
           },
           icon: Icon(Icons.menu),
         ),
