@@ -32,13 +32,14 @@ class _HomePageState extends State<HomePage> {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+
   @override
   void initState() {
     super.initState();
     coursesData = [];
     fetchImageUrls();
     imageUrls = [];
-    fetchCourses();
+    // fetchCourses();
   }
 
   Future<void> fetchImageUrls() async {
@@ -54,244 +55,249 @@ class _HomePageState extends State<HomePage> {
       imageUrls = urls;
       print('Image Data:');
       for (String url in imageUrls) {
-      print('Image URL: $url');
+        print('Image URL: $url');
       }
     });
   }
 
-  Future<void> fetchCourses() async {
+  Future<List<Course>> fetchCourses() async {
     List<Course> fetchedCourses = await _dataService.fetchCollectionData();
     logger.i(fetchedCourses);
-    setState(() {
-      coursesData = fetchedCourses;
-      print('Courses Data:');
-      for (Course course in coursesData) {
-      print(
-      'Type: ${course.type}, Title: ${course.title}, Photo: ${course.photo}');
-      }
-    });
+    return fetchedCourses;
   }
-
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CustomAppBar(),
-          body: IndexedStack(index: currentIndex, children: [
-            _buildHomePage(context),
-            const SearchBarButton(),
-            const MyNotes(),
-            const ProfilePage(),
-          ]),
-          bottomNavigationBar: CustomBottomNavigationBar(
-            currentIndex: currentIndex,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
-          )),
+        appBar: CustomAppBar(),
+        body: IndexedStack(index: currentIndex, children: [
+          _buildHomePage(context),
+          const SearchBarButton(),
+          const MyNotes(),
+          const ProfilePage(),
+        ]),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+        ),
+      ),
     );
   }
 
   Widget _buildHomePage(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              scrollPhysics: BouncingScrollPhysics(
-                decelerationRate: ScrollDecelerationRate.normal,
-              ),
-              height: 229.0,
-              viewportFraction: 1,
-              aspectRatio: 16 / 9,
-              enableInfiniteScroll: true,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
-            ),
-            items: imageUrls.map((url) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Image.network(
-                    url,
-                    fit: BoxFit.fill,
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 26),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder(
+      future: fetchCourses(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          coursesData = snapshot.data as List<Course>;
+
+          return Scaffold(
+            body: ListView(
               children: [
-                HeadingTitle(title: "Categories"),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        CategoryItem(
-                          imgUrl: "lib/assets/images/skillbasedcourses.png",
-                          text: "Categories",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CourseDetailPage(),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        CategoryItem(
-                          imgUrl: "lib/assets/images/skillbasedcourses.png",
-                          text: "Categories",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CourseDetailPage(),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        CategoryItem(
-                          imgUrl: "lib/assets/images/skillbasedcourses.png",
-                          text: "Categories",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                      ],
+                CarouselSlider(
+                  options: CarouselOptions(
+                    scrollPhysics: BouncingScrollPhysics(
+                      decelerationRate: ScrollDecelerationRate.normal,
                     ),
+                    height: 229.0,
+                    viewportFraction: 1,
+                    aspectRatio: 16 / 9,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    enlargeFactor: 0.3,
+                    scrollDirection: Axis.horizontal,
+                  ),
+                  items: imageUrls.map((url) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Image.network(
+                          url,
+                          fit: BoxFit.fill,
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 26),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeadingTitle(title: "Categories"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              CategoryItem(
+                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                text: "Categories",
+                                pageRoute: MaterialPageRoute(
+                                  builder: (context) => CourseDetailPage(),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              CategoryItem(
+                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                text: "Categories",
+                                pageRoute: MaterialPageRoute(
+                                  builder: (context) => CourseDetailPage(),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              CategoryItem(
+                                imgUrl: "lib/assets/images/skillbasedcourses.png",
+                                text: "Categories",
+                                pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      HeadingTitle(title: "Featured Courses"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        child: coursesData.isNotEmpty
+                            ? ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: coursesData.length,
+                                itemBuilder: (context, index) {
+                                  Course course = coursesData[index];
+                                  return Tiles(
+                                    imagePath: course.photo,
+                                    text1: course.type,
+                                    text2: course.title,
+                                    pageRoute: MaterialPageRoute(
+                                      builder: (context) => CourseDetailPage(),
+                                    ),
+                                  );
+                                },
+                              )
+                            : Text("No courses available."),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      HeadingTitle(title: "Upcoming lectures"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          Tiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Tiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Tiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                          SizedBox(
+                            width: 3,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      HeadingTitle(title: "Live Lectures"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        children: [
+                          CiruclarTiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          CiruclarTiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          CiruclarTiles(
+                              imagePath: "lib/assets/images/featuredcourses.png",
+                              text1: "Basic Courses",
+                              text2: "basic course",
+                              pageRoute: MaterialPageRoute(
+                                  builder: (context) => CoursesPage())),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      HeadingTitle(title: "Testimonials"),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Testimonials(
+                        imagePath: 'lib/assets/images/featuredcourses.png',
+                        name: 'John Doe',
+                        testimonial:
+                            'This is an amazing testimonial. I highly recommend!',
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                HeadingTitle(title: "Featured Courses"),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  height: 200,
-                  child: coursesData.isNotEmpty
-                      ? ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: coursesData.length,
-                          itemBuilder: (context, index) {
-                            Course course = coursesData[index];
-                            return Tiles(
-                              imagePath: course.photo,
-                              text1: course.type,
-                              text2: course.title,
-                              pageRoute: MaterialPageRoute(
-                                builder: (context) => CourseDetailPage(),
-                              ),
-                            );
-                          },
-                        )
-                      : Text("No courses available."),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                HeadingTitle(title: "Upcoming lectures"),
-                SizedBox(
-                  height: 16,
-                ),
-                // Row(
-                //   children: [
-                //     Tiles(
-                //         imagePath: "lib/assets/images/featuredcourses.png",
-                //         text1: "Basic Courses",
-                //         text2: "basic course",
-                //         pageRoute: MaterialPageRoute(
-                //             builder: (context) => CoursesPage())),
-                //     SizedBox(
-                //       width: 3,
-                //     ),
-                //     Tiles(
-                //         imagePath: "lib/assets/images/featuredcourses.png",
-                //         text1: "Basic Courses",
-                //         text2: "basic course",
-                //         pageRoute: MaterialPageRoute(
-                //             builder: (context) => CoursesPage())),
-                //     SizedBox(
-                //       width: 3,
-                //     ),
-                //     Tiles(
-                //         imagePath: "lib/assets/images/featuredcourses.png",
-                //         text1: "Basic Courses",
-                //         text2: "basic course",
-                //         pageRoute: MaterialPageRoute(
-                //             builder: (context) => CoursesPage())),
-                //     SizedBox(
-                //       width: 3,
-                //     ),
-                //   ],
-                // ),
-                SizedBox(
-                  height: 10,
-                ),
-                HeadingTitle(title: "Live Lectures"),
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  children: [
-                    CiruclarTiles(
-                        imagePath: "lib/assets/images/featuredcourses.png",
-                        text1: "Basic Courses",
-                        text2: "basic course",
-                        pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage())),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    CiruclarTiles(
-                        imagePath: "lib/assets/images/featuredcourses.png",
-                        text1: "Basic Courses",
-                        text2: "basic course",
-                        pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage())),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    CiruclarTiles(
-                        imagePath: "lib/assets/images/featuredcourses.png",
-                        text1: "Basic Courses",
-                        text2: "basic course",
-                        pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage())),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                HeadingTitle(title: "Testimonials"),
-                SizedBox(
-                  height: 16,
-                ),
-                Testimonials(
-                  imagePath: 'lib/assets/images/featuredcourses.png',
-                  name: 'John Doe',
-                  testimonial:
-                      'This is an amazing testimonial. I highly recommend!',
-                )
               ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }

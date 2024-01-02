@@ -19,8 +19,7 @@ class Tiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, pageRoute); // Use the provided MaterialPageRoute
+        Navigator.push(context, pageRoute);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,14 +28,14 @@ class Tiles extends StatelessWidget {
             height: 120,
             width: 120,
             child:
-                 imagePath.isNotEmpty
-                    ? Image.network(
-                        imagePath,
-                        fit: BoxFit.fill,
-                      )
-                :
+                //  imagePath.isNotEmpty
+                //     ? Image.network(
+                //         imagePath,
+                //         fit: BoxFit.fill,
+                //       )
+                // :
                 Image.asset(
-              'lib/assets/images/placeholder_image.png', // Provide the path to your default image asset
+              'lib/assets/images/placeholder_image.png',
               fit: BoxFit.cover,
               width: double.infinity,
             ),
