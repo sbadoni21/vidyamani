@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+class CustomAppBarBckBtn extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBarBckBtn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      title: const Text('Contact Us'),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+Future<void> launchUrl(String url) async {
+  await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+}
+
 class ContactUsPage extends StatelessWidget {
   final String websiteUrl = "https://www.vidhyamani.com";
   final List<String> emailAddresses = [
@@ -9,13 +33,13 @@ class ContactUsPage extends StatelessWidget {
     "customercare@vidhyamani.com",
   ];
 
-  void _launchEmail(String emailAddress) async {
+  Future<void> _launchEmail(String emailAddress) async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: emailAddress,
     );
     if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
+      await launchUrl(emailLaunchUri.toString());
     } else {
       throw 'Could not launch $emailLaunchUri';
     }
@@ -24,49 +48,58 @@ class ContactUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Contact Us'),
-      ),
+      appBar: const CustomAppBarBckBtn(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(20, 60, 20, 60),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'You can Contact us through our Website:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const Text(
+              "Contact Us",
+              style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 8),
+            const SizedBox(
+              height: 26,
+            ),
+            const Text(
+              'You can Contact us through our Website:',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 8),
             GestureDetector(
-              onTap: () {
-                launch(websiteUrl);
+              onTap: () async {
+                await launchUrl(websiteUrl);
               },
               child: Text(
                 websiteUrl,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.blue,
                   decoration: TextDecoration.underline,
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Or drop a mail at:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: emailAddresses
                   .map(
                     (email) => GestureDetector(
-                      onTap: () {
-                        _launchEmail(email);
+                      onTap: () async {
+                        await _launchEmail(email);
                       },
                       child: Text(
                         email,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.blue,
                           decoration: TextDecoration.underline,
@@ -81,10 +114,4 @@ class ContactUsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: ContactUsPage(),
-  ));
 }
