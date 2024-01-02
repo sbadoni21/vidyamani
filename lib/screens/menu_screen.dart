@@ -1,6 +1,7 @@
 // menu_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:vidyamani/screens/chatgpt_page.dart';
 
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/live_stream.dart';
@@ -69,13 +70,13 @@ class _MenuScreenState extends State<MenuScreen> {
             },
           ),
           ListTile(
-            title: Text('Live Stream'),
+            title: Text('Ask GPT'),
             onTap: () {
               final navigator = Navigator.of(context);
 
               navigator.push(
                 MaterialPageRoute(
-                  builder: (_) => LiveStreams(),
+                  builder: (_) => ChatGPTPage(),
                 ),
               );
             },

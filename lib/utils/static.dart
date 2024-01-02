@@ -29,3 +29,4 @@ TextStyle myTextStylefontsize24 = TextStyle(
   fontWeight: FontWeight.w600,
   color: Colors.white,
 );
+const ChatGPT = "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";
