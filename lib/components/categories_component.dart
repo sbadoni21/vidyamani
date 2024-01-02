@@ -18,7 +18,7 @@ class CategoryItem extends StatelessWidget {
       children: [
         OutlinedButton(
           onPressed: () {
-            Navigator.pushAndRemoveUntil(context, pageRoute, (route) => false);
+            Navigator.pushReplacement(context, pageRoute);
           },
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
