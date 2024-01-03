@@ -1,8 +1,8 @@
-// import 'package:flutter/material.dart';
-// import 'package:agora_uikit/agora_uikit.dart';
-// import 'package:vidyamani/utils/agoraid.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 // import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 // import 'package:permission_handler/permission_handler.dart';
+// import 'package:vidyamani/utils/static.dart';
 
 // class LiveStreams extends StatefulWidget {
 //   const LiveStreams({super.key});
@@ -15,23 +15,17 @@
 //   late RtcEngine _engine;
 //   int? _remoteUid;
 //   bool _localUserJoined = false;
-//   AgoraClient client = AgoraClient(
-//       agoraConnectionData:
-//           AgoraConnectionData(appId: appid, channelName: "test"),
-//       enabledPermission: [Permission.camera, Permission.microphone]);
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     client.initialize();
+
 //     initAgora();
 //   }
 
 //   Future<void> initAgora() async {
-//     // retrieve permissions
 //     await [Permission.microphone, Permission.camera].request();
 
-//     //create the engine
 //     _engine = createAgoraRtcEngine();
 //     await _engine.initialize(const RtcEngineContext(
 //       appId: appid,
@@ -145,7 +139,6 @@
 
 
 
-import 'package:flutter/material.dart';
 
 class LiveStreams extends StatefulWidget {
   const LiveStreams({super.key});
