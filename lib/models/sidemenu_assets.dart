@@ -9,7 +9,7 @@ List<Map<String, dynamic>> sideMenuItems = [
   {"icon": Icons.home, "text": "Home", "key": "home", 'route': const MyNotes()},
   {
     "icon": Icons.person,
-    "text": "ChatGPT",
+    "text": "Ask AI",
     "key": "user",
     'route': ChatGPTPage()
   },
