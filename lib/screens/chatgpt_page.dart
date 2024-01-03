@@ -14,6 +14,7 @@ class ChatGPTPage extends StatefulWidget {
 
 class _ChatGPTPageState extends State<ChatGPTPage> {
   TextEditingController _messageController = TextEditingController();
+  List<ChatMessage> _chatMessages = [];
 
   @override
   void initState() {
@@ -61,27 +62,9 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       try {
         String chatGPTResponse = await getResponse(userMessage);
 
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('User: $userMessage'),
-                SizedBox(height: 10),
-                Text('ChatGPT: $chatGPTResponse'),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
+        setState(() {
+          _chatMessages.add(ChatMessage(user: userMessage, chatGPT: chatGPTResponse));
+        });
 
         _messageController.clear();
       } catch (e) {
@@ -96,24 +79,48 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       appBar: CustomAppBarBckBtn(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Ask a question...',
-              ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _chatMessages.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('User: ${_chatMessages[index].user}'),
+                  subtitle: Text('ChatGPT: ${_chatMessages[index].chatGPT}'),
+                );
+              },
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: _sendMessage,
-              child: Text('Send'),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'Ask a question...',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: _sendMessage,
+                    child: Text('Send'),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
+}
+
+class ChatMessage {
+  final String user;
+  final String chatGPT;
+
+  ChatMessage({required this.user, required this.chatGPT});
 }
