@@ -8,20 +8,29 @@ class DataService {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
-  Future<List<Course>> fetchCollectionData() async {
-    try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection("courses").get();
-      logger.i(querySnapshot);
-      return querySnapshot.docs.map((DocumentSnapshot doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Course.fromMap(data);
-      }).toList();
-    } catch (e) {
-      logger.i(e);
-      return [];
-    }
+Future<List<Course>> fetchCollectionData() async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore.collection("courses").get();
+    logger.i(querySnapshot);
+
+    return querySnapshot.docs
+        .map((DocumentSnapshot doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          if (data['type'] != null && data['title'] != null && data['photo'] != null) {
+            return Course.fromMap(data);
+          } else {
+            return null;
+          }
+        })
+        .where((course) => course != null) 
+        .cast<Course>() 
+        .toList();
+  } catch (e) {
+    logger.i(e);
+    return [];
   }
+}
+
 }
 
 class Course {

@@ -19,12 +19,12 @@ class _HistoryPageState extends State<HistoryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Tiles(
-                imagePath: "lib/assets/images/featuredcourses.png",
-                text1: "Basic Courses",
-                text2: "basic course",
-                pageRoute:
-                    MaterialPageRoute(builder: (context) => CoursesPage())),
+            // Tiles(
+            //     imagePath: "lib/assets/images/featuredcourses.png",
+            //     text1: "Basic Courses",
+            //     text2: "basic course",
+            //     pageRoute:
+            //         MaterialPageRoute(builder: (context) => CoursesPage())),
           ],
         ),
       ),

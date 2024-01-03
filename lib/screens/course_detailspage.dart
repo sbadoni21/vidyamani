@@ -5,9 +5,14 @@ import 'package:vidyamani/components/coursestopbar.dart';
 import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
+import 'package:vidyamani/services/data/course_services.dart';
+import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class CourseDetailPage extends StatelessWidget {
+  final Course courses;
+
+  CourseDetailPage({required this.courses});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +29,6 @@ class CourseDetailPage extends StatelessWidget {
         onPressed: () {},
         child: Text(
           "Buy Now",
-          
         ),
       ),
       appBar: CustomAppBarBckBtn(
@@ -57,14 +61,7 @@ class CourseDetailPage extends StatelessWidget {
                 Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
-                  child: Text("Introduction to UX Design",
-                      style: TextStyle(
-                        color: Color(0xFFFFFFFF), // White color
-
-                        fontSize: 16.0,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  child: Text(courses.title, style: myTextStylefontsize16white),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

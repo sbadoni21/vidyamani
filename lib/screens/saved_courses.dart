@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/components/circular_tiles_component.dart';
 import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/screens/courses_page.dart';
@@ -20,7 +21,7 @@ class _SavedPageState extends State<SavedPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Tiles(
+            CiruclarTiles(
                 imagePath: "lib/assets/images/featuredcourses.png",
                 text1: "Basic Courses",
                 text2: "basic course",

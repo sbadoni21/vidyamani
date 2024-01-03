@@ -34,32 +34,32 @@ class _SearchBarButtonState extends State<SearchBarButton> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        Tiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                        SizedBox(width: 3),
-                        Tiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                        SizedBox(width: 3),
-                        Tiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
+                        // Tiles(
+                        //   imagePath: "lib/assets/images/featuredcourses.png",
+                        //   text1: "Basic Courses",
+                        //   text2: "basic course",
+                        //   pageRoute: MaterialPageRoute(
+                        //     builder: (context) => CoursesPage(),
+                        //   ),
+                        // ),
+                        // SizedBox(width: 3),
+                        // Tiles(
+                        //   imagePath: "lib/assets/images/featuredcourses.png",
+                        //   text1: "Basic Courses",
+                        //   text2: "basic course",
+                        //   pageRoute: MaterialPageRoute(
+                        //     builder: (context) => CoursesPage(),
+                        //   ),
+                        // ),
+                        // SizedBox(width: 3),
+                        // Tiles(
+                        //   imagePath: "lib/assets/images/featuredcourses.png",
+                        //   text1: "Basic Courses",
+                        //   text2: "basic course",
+                        //   pageRoute: MaterialPageRoute(
+                        //     builder: (context) => CoursesPage(),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

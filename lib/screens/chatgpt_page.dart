@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class ChatGPTPage extends StatefulWidget {
@@ -82,12 +83,9 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
           ),
         );
 
-        // Clear the message input
         _messageController.clear();
       } catch (e) {
-        // Handle exceptions here
         print('Error: $e');
-        // Optionally show an error message to the user
       }
     }
   }
@@ -95,9 +93,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat with ChatGPT'),
-      ),
+      appBar: CustomAppBarBckBtn(),
       body: Column(
         children: [
           Padding(

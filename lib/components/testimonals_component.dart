@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/services/data/testimonals_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class Testimonials extends StatelessWidget {
-  final String imagePath;
-  final String name;
-  final String testimonial;
+class TestimonialCard extends StatelessWidget {
+  final Testimonial testimonial;
 
-  const Testimonials({
-    Key? key,
-    required this.imagePath,
-    required this.name,
-    required this.testimonial,
-  }) : super(key: key);
+  TestimonialCard({required this.testimonial});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Color(0xFFF0F5FD),
       elevation: 0,
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -29,7 +23,7 @@ class Testimonials extends StatelessWidget {
                 color: Colors.white,
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage(imagePath),
+                  image: NetworkImage(testimonial.profilephoto),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -37,47 +31,35 @@ class Testimonials extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            Container(
-              width: 180,
+            Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    child: Text(
-                      '"',
-                      textAlign: TextAlign.left,
-                      style:
-                          TextStyle(color: bgColor, fontSize: 30, height: -1),
-                    ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Text(
-                      name,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18.0,
-                          color: bgColor),
-                    ),
-                  ),
-                  SizedBox(height: 2.0),
                   Text(
-                    testimonial,
-                    style: TextStyle(fontSize: 12.0),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Text(
-                      '"',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: bgColor,
-                        fontSize: 30,
-                      ),
+                    testimonial.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: bgColor,
                     ),
                   ),
+                  SizedBox(height: 8.0),
+                  if (testimonial.reviews.isNotEmpty)
+                    Text(
+                      testimonial.reviews[0].comments,
+                      style: TextStyle(fontSize: 12.0),
+                    ),
                 ],
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              '"',
+              style: TextStyle(
+                color: bgColor,
+                fontSize: 30,
               ),
             ),
           ],
@@ -88,8 +70,12 @@ class Testimonials extends StatelessWidget {
 }
 
 // Example Usage:
-// Testimonials(
-//   imagePath: 'assets/images/profile.jpg',
-//   name: 'John Doe',
-//   testimonial: 'This is an amazing testimonial. I highly recommend!',
+// TestimonialCard(
+//   testimonial: Testimonial(
+//     name: 'John Doe',
+//     course: 'Flutter Course',
+//     email: 'john.doe@example.com',
+//     profilephoto: 'assets/images/profile.jpg',
+//     reviews: [{'comments': 'This is an amazing testimonial. I highly recommend!'}],
+//   ),
 // )
