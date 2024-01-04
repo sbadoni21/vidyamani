@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
@@ -10,15 +11,14 @@ import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
+import 'package:vidyamani/main.dart';
 import 'package:vidyamani/models/categories_model.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
-
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
-import 'package:vidyamani/screens/videoplayer_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(),
+        appBar: const CustomAppBar(),
         body: IndexedStack(index: currentIndex, children: [
           _buildHomePage(context),
           const SearchBarButton(),
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           CarouselSlider(
             options: CarouselOptions(
-              scrollPhysics: BouncingScrollPhysics(
+              scrollPhysics:const  BouncingScrollPhysics(
                 decelerationRate: ScrollDecelerationRate.normal,
               ),
               height: 229.0,
@@ -137,8 +137,8 @@ class _HomePageState extends State<HomePage> {
               aspectRatio: 16 / 9,
               enableInfiniteScroll: true,
               autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
               autoPlayCurve: Curves.fastOutSlowIn,
               enlargeCenterPage: true,
               enlargeFactor: 0.3,
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 26),
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -165,23 +165,36 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                Container(
-                  height: 130.0,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categoriesData.length,
-                    itemBuilder: (context, index) {
-                      Category category = categoriesData[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: CategoryItem(
-                          imgUrl: category.image,
-                          text: category.name,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+               // Inside the _HomePageState class
+SizedBox(
+  height: 130.0,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: categoriesData.length,
+    itemBuilder: (context, index) {
+      Category category = categoriesData[index];
+      return GestureDetector(
+       onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => AllCoursesPage(selectedCategory: category),
+    ),
+  );
+},
+
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          child: CategoryItem(
+            imgUrl: category.image,
+            text: category.name,
+          ),
+        ),
+      );
+    },
+  ),
+),
+
                 const HeadingTitle(title: "Featured Courses"),
                 const SizedBox(
                   height: 16,
@@ -190,14 +203,14 @@ class _HomePageState extends State<HomePage> {
                   future: fetchCourses(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
                       List<Course> featuredCourses =
                           snapshot.data as List<Course>;
 
-                      return Container(
+                      return SizedBox(
                         height: 170, // Set a fixed height or use constraints
                         child: featuredCourses.isNotEmpty
                             ? ListView.builder(
@@ -227,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               )
-                            : Text("No featured courses available."),
+                            : const Text("No featured courses available."),
                       );
                     }
                   },
@@ -235,22 +248,22 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                HeadingTitle(title: "Upcoming lectures"),
-                SizedBox(
+              const   HeadingTitle(title: "Upcoming lectures"),
+               const SizedBox(
                   height: 16,
                 ),
                 FutureBuilder(
                   future: fetchCoursesLectures(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
                       List<Lectures> featuredCourses =
                           snapshot.data as List<Lectures>;
 
-                      return Container(
+                      return SizedBox(
                         height: 170, // Set a fixed height or use constraints
                         child: featuredCourses.isNotEmpty
                             ? ListView.builder(
@@ -280,23 +293,23 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               )
-                            : Text("No lectures available."),
+                            : const Text("No lectures available."),
                       );
                     }
                   },
                 ),
-                Row(
+              const  Row(
                   children: [
                     SizedBox(
                       width: 3,
                     ),
                   ],
                 ),
-                SizedBox(
+              const  SizedBox(
                   height: 10,
                 ),
-                HeadingTitle(title: "Live Lectures"),
-                SizedBox(
+               const HeadingTitle(title: "Live Lectures"),
+            const    SizedBox(
                   height: 16,
                 ),
                 Row(
@@ -307,7 +320,7 @@ class _HomePageState extends State<HomePage> {
                         text2: "basic course",
                         pageRoute: MaterialPageRoute(
                             builder: (context) => CoursesPage())),
-                    SizedBox(
+                const    SizedBox(
                       width: 3,
                     ),
                     CiruclarTiles(
@@ -316,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                         text2: "basic course",
                         pageRoute: MaterialPageRoute(
                             builder: (context) => CoursesPage())),
-                    SizedBox(
+                const    SizedBox(
                       width: 3,
                     ),
                     CiruclarTiles(
@@ -327,24 +340,23 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => CoursesPage())),
                   ],
                 ),
-                SizedBox(
+               const SizedBox(
                   height: 16,
                 ),
-                HeadingTitle(title: "Testimonials"),
-                SizedBox(
+            const   HeadingTitle(title: "Testimonials"),
+             const   SizedBox(
                   height: 16,
                 ),
                 FutureBuilder<List<Testimonial>>(
                   future: _testimonialService.fetchCollectionData(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
                       List<Testimonial> testimonials = snapshot.data ?? [];
-                      print('adadfasfasdfasf $snapshot');
-                      return Container(
+                      return SizedBox(
                           height: 180,
                           child: testimonials.isNotEmpty
                               ? ListView.builder(
@@ -356,7 +368,7 @@ class _HomePageState extends State<HomePage> {
                                         testimonial: testimonial);
                                   },
                                 )
-                              : Center(
+                              : const Center(
                                   child: Text("No testimonials available.")));
                     }
                   },
