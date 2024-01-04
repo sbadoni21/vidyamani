@@ -32,6 +32,7 @@ class _MyNotesState extends State<MyNotes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('My Notes'),
         actions: [
           IconButton(

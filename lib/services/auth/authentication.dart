@@ -74,16 +74,16 @@ class AuthenticationServices {
           final status = 'Online';
           final photoURL = userCredential.user!.photoURL;
           final coins = 0;
-          final referralCode =  randomAlphaNumeric(8);
+          final referralCode = randomAlphaNumeric(8);
 
           _fireStore.collection('users').doc(uid).set({
             'uid': uid,
             'email': email,
             'displayName': displayName,
             'status': status,
-            'profilePhoto': photoURL,
+            'profilephoto': photoURL,
             'coins': coins,
-            'referral':referralCode
+            'referral': referralCode
           });
 
           return userCredential.user;

@@ -28,10 +28,10 @@ class _SignUpPageState extends State<SignUpPage> {
   int _currentPage = 1;
 
   final ImagePicker _imagePicker = ImagePicker();
-
-  Future<void> _selectImage() async {
-    var status = await Permission.photos.request();
-    if (status.isGranted) {
+Future<void> _selectImage() async {
+  var status = await Permission.storage.status;
+  if (!status.isGranted) {
+    if (await Permission.storage.request().isGranted) {
       final XFile? pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
@@ -41,10 +41,11 @@ class _SignUpPageState extends State<SignUpPage> {
           _userImage = File(pickedFile.path);
         });
       }
-    } else {
-      print('Permission denied by the user.');
     }
+  } else {
+    print('Permission denied by the user.');
   }
+}
 
   Future<void> _submitFirstPage() async {
     if (_firstPageKey.currentState?.validate() ?? false) {
