@@ -70,7 +70,10 @@ class _SignUpPageState extends State<SignUpPage> {
           MaterialPageRoute(builder: (context) => HomePage()),
         );
       } else {
-        // Handle registration failure
+        SnackBar(
+            content: Dialog(
+          child: Text("Error has been encountered"),
+        ));
       }
 
       fullNameController.clear();
