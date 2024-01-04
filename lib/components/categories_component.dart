@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vidyamani/utils/static.dart';
 
 class CategoryItem extends StatelessWidget {
   final String imgUrl;
@@ -15,15 +16,18 @@ class CategoryItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 50,
-          height: 80,
-          child: Image.asset(imgUrl, fit: BoxFit.contain),
+          width: 60,
+          height: 60,
+          child: Image.asset(imgUrl, fit: BoxFit.fill),
         ),
         SizedBox(height: 8),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12),
-        ),
+        Container(
+            width: 60,
+            child: Text(
+              text,
+              style: myTextStylefontsize10BGCOLOR,
+              textAlign: TextAlign.center,
+            )),
       ],
     );
   }

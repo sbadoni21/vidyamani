@@ -52,5 +52,10 @@ flutter:
     - lib/assets/videos/cat.mp4
     - lib/assets/videos/sigma.mp4
     - lib/assets/images/placeholder_image.png
+    - lib/assets/images/shorts.png
+    - lib/assets/images/skillBasedCourse.png
+    - lib/assets/images/audioBooks.png
+    - lib/assets/images/humanRights.png
+    - lib/assets/images/classBasedCourse.png
 
   uses-material-design: true

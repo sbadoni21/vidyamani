@@ -28,6 +28,8 @@ class _SignUpPageState extends State<SignUpPage> {
   int _currentPage = 1;
 
   final ImagePicker _imagePicker = ImagePicker();
+
+  
 Future<void> _selectImage() async {
   var status = await Permission.storage.status;
   if (!status.isGranted) {

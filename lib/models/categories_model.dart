@@ -10,11 +10,14 @@ class Category {
   });
 }
 
-// Sample data for 5 categories
 List<Category> categoriesData = [
-  Category(image: 'lib/assets/images/featuredcourses.png', name: 'Category 1'),
-  Category(image: 'lib/assets/images/featuredcourses.png', name: 'Category 2'),
-  Category(image: 'lib/assets/images/featuredcourses.png', name: 'Category 3'),
-  Category(image: 'lib/assets/images/featuredcourses.png', name: 'Category 4'),
-  Category(image: 'lib/assets/images/featuredcourses.png', name: 'Category 5'),
+  Category(
+      image: 'lib/assets/images/skillBasedCourse.png',
+      name: 'Skill Based Courses'),
+  Category(image: 'lib/assets/images/audioBooks.png', name: 'Audiobooks'),
+  Category(
+      image: 'lib/assets/images/classBasedCourse.png',
+      name: 'Class Based Course'),
+  Category(image: 'lib/assets/images/humanRights.png', name: 'Human Rights'),
+  Category(image: 'lib/assets/images/shorts.png', name: 'Shorts'),
 ];
