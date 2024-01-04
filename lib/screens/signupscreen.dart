@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -31,27 +30,21 @@ class _SignUpPageState extends State<SignUpPage> {
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<void> _selectImage() async {
-  // Check if the user has permission to access the gallery
-  var status = await Permission.photos.request();
-
-  if (status.isGranted) {
-    // User granted permission, proceed with image selection
-    final XFile? pickedFile = await _imagePicker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 85,
-    );
-
-    if (pickedFile != null) {
-      setState(() {
-        _userImage = File(pickedFile.path);
-      });
+    var status = await Permission.photos.request();
+    if (status.isGranted) {
+      final XFile? pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          _userImage = File(pickedFile.path);
+        });
+      }
+    } else {
+      print('Permission denied by the user.');
     }
-  } else {
-    // Permission denied
-    print('Permission denied by the user.');
   }
-}
-
 
   Future<void> _submitFirstPage() async {
     if (_firstPageKey.currentState?.validate() ?? false) {
@@ -120,16 +113,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    width: double.infinity,
-                    child: Text(
-                      _currentPage == 1 ? "Signup - Page 1" : "Signup - Page 2",
-                      style: TextStyle(
-                          color: bgColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
+                  // Container(
+                  //   width: double.infinity,
+                  //   child: Text(
+                  //     _currentPage == 1 ? "Page - 1" : "Page - 2",
+                  //     style: TextStyle(
+                  //         color: bgColor,
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.w600),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 16,
                   ),
@@ -138,8 +131,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       : _buildSecondPageFields(),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _currentPage == 1 ? _submitFirstPage : _submitForm,
-                    child: const Text('Next'),
+                    onPressed:
+                        _currentPage == 1 ? _submitFirstPage : _submitForm,
+                    child: Text(
+                      _currentPage == 1 ? "Next" : "Submit",
+                    ),
                     style: ElevatedButton.styleFrom(
                       elevation: 5.0,
                       backgroundColor: bgColor, // Background color
@@ -223,6 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildFirstPageFields() {
     return Column(
       children: [
+        const SizedBox(height: 16),
         _buildTextField(
           controller: fullNameController,
           labelText: 'Full Name',
@@ -235,13 +232,6 @@ class _SignUpPageState extends State<SignUpPage> {
           labelText: 'Location',
           hintText: 'Enter your location',
           icon: Icons.location_city,
-        ),
-        const SizedBox(height: 16),
-        _buildTextField(
-          controller: emailController,
-          labelText: 'Email',
-          hintText: 'Enter your email',
-          icon: Icons.email,
         ),
         const SizedBox(height: 16),
         GestureDetector(
@@ -277,6 +267,14 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildSecondPageFields() {
     return Column(
       children: [
+        const SizedBox(height: 16),
+        _buildTextField(
+          controller: emailController,
+          labelText: 'Email',
+          hintText: 'Enter your email',
+          icon: Icons.email,
+        ),
+        const SizedBox(height: 16),
         _buildTextField(
           controller: passwordController,
           labelText: 'Password',
@@ -291,6 +289,29 @@ class _SignUpPageState extends State<SignUpPage> {
           hintText: 'Retype your password',
           icon: Icons.password,
           obscureText: true,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _currentPage = 1;
+                });
+              },
+              child: const Text('Previous'),
+              style: TextButton.styleFrom(
+                elevation: 0,
+                backgroundColor: Colors.white, // Background color
+                foregroundColor: bgColor, // Text color
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
