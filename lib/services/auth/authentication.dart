@@ -1,4 +1,3 @@
-// authentication.dart
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:random_string/random_string.dart';
@@ -74,6 +73,8 @@ class AuthenticationServices {
           final displayName = userCredential.user!.displayName;
           final status = 'Online';
           final photoURL = userCredential.user!.photoURL;
+          final coins = 0;
+          final referralCode =  randomAlphaNumeric(8);
 
           _fireStore.collection('users').doc(uid).set({
             'uid': uid,
@@ -81,6 +82,8 @@ class AuthenticationServices {
             'displayName': displayName,
             'status': status,
             'profilePhoto': photoURL,
+            'coins': coins,
+            'referral':referralCode
           });
 
           return userCredential.user;
