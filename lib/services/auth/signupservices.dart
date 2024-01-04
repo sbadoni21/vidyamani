@@ -43,7 +43,7 @@ class signup_service {
           'email': email,
           'displayName': name,
           'status': 'Online',
-          'photoURL': photoURL ?? "assets/image6.png",
+          'profilephoto': photoURL ?? "lib/assets/placeholder_image.png",
           'deviceToken': deviceToken,
         }, SetOptions(merge: true));
 

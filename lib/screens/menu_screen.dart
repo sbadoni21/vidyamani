@@ -36,7 +36,7 @@ class _MenuScreenState extends State<MenuScreen> {
         final userData = doc.data() as Map<String, dynamic>;
         setState(() {
           displayName = userData['displayName'];
-          profilePhoto = userData['profilePhoto'];
+          profilePhoto = userData['profilephoto'];
         });
       }
     }).catchError((error) {

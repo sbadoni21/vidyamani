@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,8 +10,10 @@ import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
+import 'package:vidyamani/models/categories_model.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
+
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
@@ -36,13 +40,33 @@ class _HomePageState extends State<HomePage> {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+  late Timer _timer;
+  final Duration refreshInterval = const Duration(minutes: 30);
 
   @override
   void initState() {
     super.initState();
-    coursesData = [];
+    fetchData();
+    setupRefreshTimer();
     fetchImageUrls();
-    imageUrls = [];
+  }
+
+  void setupRefreshTimer() {
+    _timer = Timer.periodic(refreshInterval, (Timer timer) {
+      fetchData();
+    });
+  }
+
+  Future<void> fetchData() async {
+    await fetchImageUrls();
+    coursesData = await fetchCourses();
+    fetchedLectures = await fetchCoursesLectures();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   Future<void> fetchImageUrls() async {
@@ -141,8 +165,22 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                const SizedBox(
-                  height: 16,
+                Container(
+                  height: 130.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categoriesData.length,
+                    itemBuilder: (context, index) {
+                      Category category = categoriesData[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: CategoryItem(
+                          imgUrl: category.image,
+                          text: category.name,
+                        ),
+                      );
+                    },
+                  ),
                 ),
                 const HeadingTitle(title: "Featured Courses"),
                 const SizedBox(
