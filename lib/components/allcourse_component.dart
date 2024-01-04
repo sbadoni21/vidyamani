@@ -50,11 +50,13 @@ class AllCoursesPage extends StatelessWidget {
       case 'Class Based Course':
         return await _allCoursesDataService.fetchClassBasedCourses();
       default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Unknown category: ${selectedCategory.name}'),
-          ),
-        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Unknown category: ${selectedCategory.name}'),
+            ),
+          );
+        });
         return [];
     }
   }

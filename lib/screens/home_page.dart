@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,13 +21,11 @@ import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   late List<String> imageUrls = [];
@@ -129,7 +126,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           CarouselSlider(
             options: CarouselOptions(
-              scrollPhysics:const  BouncingScrollPhysics(
+              scrollPhysics: const BouncingScrollPhysics(
                 decelerationRate: ScrollDecelerationRate.normal,
               ),
               height: 229.0,
@@ -165,35 +162,35 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-               // Inside the _HomePageState class
-SizedBox(
-  height: 130.0,
-  child: ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: categoriesData.length,
-    itemBuilder: (context, index) {
-      Category category = categoriesData[index];
-      return GestureDetector(
-       onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => AllCoursesPage(selectedCategory: category),
-    ),
-  );
-},
-
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8),
-          child: CategoryItem(
-            imgUrl: category.image,
-            text: category.name,
-          ),
-        ),
-      );
-    },
-  ),
-),
+                // Inside the _HomePageState class
+                SizedBox(
+                  height: 130.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categoriesData.length,
+                    itemBuilder: (context, index) {
+                      Category category = categoriesData[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AllCoursesPage(selectedCategory: category),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: CategoryItem(
+                            imgUrl: category.image,
+                            text: category.name,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
                 const HeadingTitle(title: "Featured Courses"),
                 const SizedBox(
@@ -248,8 +245,8 @@ SizedBox(
                 const SizedBox(
                   height: 16,
                 ),
-              const   HeadingTitle(title: "Upcoming lectures"),
-               const SizedBox(
+                const HeadingTitle(title: "Upcoming lectures"),
+                const SizedBox(
                   height: 16,
                 ),
                 FutureBuilder(
@@ -298,18 +295,18 @@ SizedBox(
                     }
                   },
                 ),
-              const  Row(
+                const Row(
                   children: [
                     SizedBox(
                       width: 3,
                     ),
                   ],
                 ),
-              const  SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-               const HeadingTitle(title: "Live Lectures"),
-            const    SizedBox(
+                const HeadingTitle(title: "Live Lectures"),
+                const SizedBox(
                   height: 16,
                 ),
                 Row(
@@ -320,7 +317,7 @@ SizedBox(
                         text2: "basic course",
                         pageRoute: MaterialPageRoute(
                             builder: (context) => CoursesPage())),
-                const    SizedBox(
+                    const SizedBox(
                       width: 3,
                     ),
                     CiruclarTiles(
@@ -329,7 +326,7 @@ SizedBox(
                         text2: "basic course",
                         pageRoute: MaterialPageRoute(
                             builder: (context) => CoursesPage())),
-                const    SizedBox(
+                    const SizedBox(
                       width: 3,
                     ),
                     CiruclarTiles(
@@ -340,11 +337,11 @@ SizedBox(
                             builder: (context) => CoursesPage())),
                   ],
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-            const   HeadingTitle(title: "Testimonials"),
-             const   SizedBox(
+                const HeadingTitle(title: "Testimonials"),
+                const SizedBox(
                   height: 16,
                 ),
                 FutureBuilder<List<Testimonial>>(
