@@ -15,8 +15,8 @@ class AllCoursesDataService {
     return await fetchCoursesFromCollection('classBased');
   }
 
-  Future<List<AllCourseData>> fetchCoursesFromCollection(
-      String collectionName) async {
+  Future<List<AllCourseData>> fetchCoursesFromCollection(String collectionName,
+      {String? filterType}) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('courses')
@@ -26,7 +26,13 @@ class AllCoursesDataService {
       List<AllCourseData> courses = [];
       querySnapshot.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        courses.add(AllCourseData.fromMap(data));
+        if (filterType != null ||
+            data['type'] == filterType ||
+            data['title'] == filterType ||
+            data['photo'] == filterType ||
+            data['id'] == filterType) {
+          courses.add(AllCourseData.fromMap(data));
+        }
       });
       return courses;
     } catch (error) {
