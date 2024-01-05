@@ -21,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController retypePasswordController =
       TextEditingController();
-  File? _userImage; // Removed 'late' keyword
+  File? _userImage;
 
   final GlobalKey<FormState> _firstPageKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _secondPageKey = GlobalKey<FormState>();
@@ -114,6 +114,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       Image.asset(
                         "lib/assets/images/logo.png",
                         fit: BoxFit.contain,
+                        height: 230,
+                        width: 180,
                       ),
                       Center(
                         child: Text(

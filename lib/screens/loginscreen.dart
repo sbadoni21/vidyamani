@@ -25,13 +25,13 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: [
             Container(
-              height: 230,
-              width: 180,
               child: Column(
                 children: [
                   Image.asset(
                     "lib/assets/images/logo.png",
                     fit: BoxFit.contain,
+                    height: 230,
+                    width: 180,
                   ),
                   Center(
                       child: Text(
@@ -223,4 +223,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
