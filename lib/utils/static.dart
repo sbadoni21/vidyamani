@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 const appid =
-    "007eJxTYNApFnA2/7qTo9fdf6lZ4vnQOX+Vgn+l7Qie7Fbr03w1oUqBwdDAwDgp2SglOS0pxcTCyCwxLdnANMnc0MLQOCkp1STxhvbU1IZARoazU9+zMjJAIIjPwlCSWlzCwAAAF6cf5A==";
+    "1003bc2dcfbd4826afc05b71813bbe4a";
 const token =
-    "007eJxTYPCZ2utYdKrhvd+5csl+exGtizPjt1187jBD2u2vbGSVppgCg6GBgXFSslFKclpSiomFkVliWrKBaZK5oYWhcVJSqklipkZvakMgI8O3/kBWRgYIBPFZGEpSi0sYGAAcvR7u";
+    "007eJxTYHhst3nqJP9z4irFDosLus5MEeA49GF1bmJGmHB82/bNjXkKDIYGBsZJyUYpyWlJKSYWRmaJackGpknmhhaGxklJqSaJMdOmpzYEMjJEVTgwMTJAIIjPwlCSWlzCwAAAQd8fOQ==";
 
 const bgColor = Color.fromRGBO(21, 59, 121, 1);
 const cardColor = Color.fromRGBO(240, 243, 248, 1);
