@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:vidyamani/components/coursestopbar.dart';
 import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
+import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/utils/static.dart';
@@ -13,51 +12,46 @@ class CourseDetailPage extends StatelessWidget {
   final Course courses;
 
   CourseDetailPage({required this.courses});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
-          backgroundColor: bgColor, // Background color
-          foregroundColor: Colors.white, // Text color
+          backgroundColor: bgColor,
+          foregroundColor: Colors.white,
           padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
         onPressed: () {},
-        child: Text(
-          "Buy Now",
-        ),
+        child: Text("Buy Now"),
       ),
       appBar: CustomAppBarBckBtn(
         onBackPressed: () {
           Navigator.pop(context);
         },
       ),
-      body: ListView(
+      body: Column(
         children: [
           Container(
             padding: EdgeInsets.all(16),
             color: bgColor,
             child: Column(
               children: [
-                SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
                 Container(
                   width: double.infinity,
                   child: Container(
                     width: 80,
                     height: 80,
                     alignment: Alignment.centerLeft,
-                    child: Image.asset("lib/assets/images/featuredcourses.png"),
+                    child: Image.network(courses.photo),
                   ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
                 Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
@@ -71,42 +65,37 @@ class CourseDetailPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              "4 Lectures",
+                              '${courses.lectures?.toString() ?? ""} Lectures',
                               style: myTextStylefontsize10,
                             ),
-                            SizedBox(
-                              width: 2,
-                            ),
+                            SizedBox(width: 2),
                             Icon(
                               Icons.circle,
                               size: 5,
                               color: Colors.white,
                             ),
-                            SizedBox(
-                              width: 2,
-                            ),
+                            SizedBox(width: 2),
                             Text(
                               "2 live classes",
                               style: myTextStylefontsize10,
                             ),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Text("rating", style: myTextStylefontsize10)
+                            SizedBox(height: 2),
+                            Text("rating", style: myTextStylefontsize10),
                           ],
                         ),
                       ],
                     ),
                     Text(
-                      "₹ 1500",
+                      '₹ ${courses.price?.toString() ?? ""} ',
                       style: TextStyle(
-                          fontSize: 26,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                        fontSize: 26,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     )
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -118,29 +107,25 @@ class CourseDetailPage extends StatelessWidget {
               children: [
                 Text("Course Content", style: myTextStylefontsize16),
                 const SizedBox(height: 8),
-                Column(
-                  children: [
-                    CustomListTile(
-                        imgUrl: "lib/assets/images/featuredcourses.png",
-                        text1: "text1",
-                        text2: "lorem ipsum",
-                        onPressed: () {}),
-                    CustomListTile(
-                        imgUrl: "lib/assets/images/featuredcourses.png",
-                        text1: "text1",
-                        text2: "lorem ipsum",
-                        onPressed: () {}),
-                    CustomListTile(
-                        imgUrl: "lib/assets/images/featuredcourses.png",
-                        text1: "text1",
-                        text2: "lorem ipsum",
-                        onPressed: () {}),
-                    CustomListTile(
-                        imgUrl: "lib/assets/images/featuredcourses.png",
-                        text1: "text1",
-                        text2: "lorem ipsum",
-                        onPressed: () {})
-                  ],
+                FutureBuilder<List<Videos>>(
+                  future: DataService()
+                      .fetchLecturesWithLectureKey(courses.lectureKey),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Videos> coursesWithLectureKey = snapshot.data ?? [];
+
+                      return Column(
+                        children: [
+                          for (Videos video in coursesWithLectureKey)
+                        VideoTile(title: video.title, videoUrl: video.videoUrl),
+                        ],
+                      );
+                    }
+                  },
                 )
               ],
             ),

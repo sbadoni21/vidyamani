@@ -1,8 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:random_string/random_string.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:random_string/random_string.dart';
 
 class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -71,7 +71,7 @@ class AuthenticationServices {
           final email = userCredential.user!.providerData[0].email;
           final uid = userCredential.user!.uid;
           final displayName = userCredential.user!.displayName;
-          final status = 'Online';
+          final status = 'active';
           final photoURL = userCredential.user!.photoURL;
           final coins = 0;
           final referralCode = randomAlphaNumeric(8);

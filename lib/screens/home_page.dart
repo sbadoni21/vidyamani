@@ -10,8 +10,8 @@ import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
-import 'package:vidyamani/main.dart';
 import 'package:vidyamani/models/categories_model.dart';
+import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
@@ -21,11 +21,13 @@ import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   late List<String> imageUrls = [];
@@ -77,10 +79,6 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       imageUrls = urls;
-      print('Image Data:');
-      for (String url in imageUrls) {
-        print('Image URL: $url');
-      }
     });
   }
 
@@ -208,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                           snapshot.data as List<Course>;
 
                       return SizedBox(
-                        height: 170, // Set a fixed height or use constraints
+                        height: 170,
                         child: featuredCourses.isNotEmpty
                             ? ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -242,6 +240,7 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                 ),
+
                 const SizedBox(
                   height: 16,
                 ),

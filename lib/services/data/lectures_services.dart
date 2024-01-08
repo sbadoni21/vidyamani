@@ -1,11 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/models/course_lectures_model.dart';
 
 class LectureDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+
+Future<List<Lectures>> fetchLecturesByCourseKey(String lectureKey) async {
+  try {
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection("lectures").doc(lectureKey).get();
+    
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+
+      if (data != null) {
+        return [Lectures.fromMap(data)];
+      } else {
+        return [];
+      }
+    } else {
+      return []; 
+    }
+  } catch (e) {
+    logger.i(e);
+    return [];
+  }
+}
+
 
   Future<List<Lectures>> fetchCollectionData() async {
     try {
@@ -22,7 +46,6 @@ class LectureDataService {
                 data['photo'] != null) {
               return Lectures.fromMap(data);
             } else {
-              // If any required field is empty, return null
               return null;
             }
           })
@@ -33,25 +56,5 @@ class LectureDataService {
       logger.i(e);
       return [];
     }
-  }
-}
-
-class Lectures {
-  final String type;
-  final String title;
-  final String photo;
-
-  Lectures({
-    required this.type,
-    required this.title,
-    required this.photo,
-  });
-
-  factory Lectures.fromMap(Map<String, dynamic> map) {
-    return Lectures(
-      type: map['type'],
-      title: map['title'],
-      photo: map['photo'],
-    );
   }
 }

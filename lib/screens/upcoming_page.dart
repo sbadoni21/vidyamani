@@ -18,7 +18,7 @@ class _UpcomingPageState extends State<UpcomingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          CustomListTile(imgUrl: "lib/assets/images/skillbasedcourses.png", text1: "text1", text2: "lorem ipsum", onPressed: (){})
+          // CustomListTile(imgUrl: "lib/assets/images/skillbasedcourses.png", text1: "text1", text2: "lorem ipsum", onPressed: (){})
           ],
         ),
       ),
