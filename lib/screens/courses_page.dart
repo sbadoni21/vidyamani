@@ -10,7 +10,6 @@ class CoursesPage extends StatefulWidget {
 }
 
 class _CoursesPageState extends State<CoursesPage> {
-  // Add state variables or methods as needed
 
   @override
   Widget build(BuildContext context) {
@@ -25,76 +24,11 @@ class _CoursesPageState extends State<CoursesPage> {
               SizedBox(
                 height: 16,
               ),
-              HeadingTitle(title: "Running Courses"),
+              HeadingTitle(title: "My Courses"),
               SizedBox(
                 height: 16,
               ),
-              Row(
-                children: [
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                  // SizedBox(
-                  //   width: 3,
-                  // ),
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                  // SizedBox(
-                  //   width: 3,
-                  // ),
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              HeadingTitle(title: "Completed Courses"),
-              SizedBox(
-                height: 16,
-              ),
-              Row(
-                children: [
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                  // SizedBox(
-                  //   width: 3,
-                  // ),
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                  // SizedBox(
-                  //   width: 3,
-                  // ),
-                  // Tiles(
-                  //     imagePath: "lib/assets/images/featuredcourses.png",
-                  //     text1: "Basic Courses",
-                  //     text2: "basic course",
-                  //     pageRoute: MaterialPageRoute(
-                  //         builder: (context) => CoursesPage())),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
+
             ],
           ),
         ),

@@ -9,7 +9,7 @@ class CourseTile extends StatelessWidget {
   const CourseTile({
     required this.title,
     required this.type,
-    // Add more properties as needed
+ 
   });
 
   @override

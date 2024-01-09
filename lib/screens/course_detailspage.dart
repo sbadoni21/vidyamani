@@ -120,8 +120,9 @@ class CourseDetailPage extends StatelessWidget {
 
                       return Column(
                         children: [
-                          for (Videos video in coursesWithLectureKey)
-                        VideoTile(title: video.title, videoUrl: video.videoUrl),
+                        for (int index = 0; index < coursesWithLectureKey.length; index++)
+  VideoTile(video: coursesWithLectureKey[index],   index: index, courseKey: courses.lectureKey ),
+
                         ],
                       );
                     }

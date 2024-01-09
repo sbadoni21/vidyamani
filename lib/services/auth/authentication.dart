@@ -51,6 +51,7 @@ class AuthenticationServices {
       return false;
     }
   }
+  
 
   Future<User?> signInWithGoogle() async {
     try {
@@ -94,6 +95,19 @@ class AuthenticationServices {
     }
     return null;
   }
+
+  Future<String?> getCurrentUserId() async {
+    try {
+      User? user = firebaseAuth.currentUser;
+      if (user != null) {
+        return user.uid;
+      }
+    } catch (e) {
+      print('Failed to get current user ID: $e');
+    }
+    return null;
+  }
+
 
   Future<void> signOut() async {
     await GoogleSignIn().signOut();

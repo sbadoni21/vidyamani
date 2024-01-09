@@ -34,7 +34,7 @@ dev_dependencies:
   carousel_slider: ^4.2.1
   firebase_analytics_web: ^0.5.5+11
   video_player: ^2.8.1
-  # flutter_riverpod: ^2.4.9
+  fullscreen_window: ^1.0.3
   app_popup_menu: ^1.0.0
   agora_rtc_engine: ^6.1.1
   iris_method_channel: ^1.1.0
@@ -47,6 +47,9 @@ dev_dependencies:
   meta: ^1.10.0
   json_annotation: ^4.8.1
   async: ^2.11.0
+  chewie: ^1.7.4
+  expandable_text: ^2.3.0
+  flutter_rating_bar: ^4.0.1
 
 flutter:
   assets:

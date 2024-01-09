@@ -29,6 +29,31 @@ Future<List<Lectures>> fetchLecturesByCourseKey(String lectureKey) async {
     return [];
   }
 }
+Future<String?> fetchLectureUidByIndex(String courseKey, int index) async {
+  try {
+    DocumentSnapshot courseSnapshot =
+        await _firestore.collection("lectures").doc(courseKey).get();
+
+    if (courseSnapshot.exists) {
+      if (courseSnapshot['video'] is List) {
+        List<Map<String, dynamic>> videos =
+            List<Map<String, dynamic>>.from(courseSnapshot['video']);
+
+        // Check if the selected index is within the bounds of the videos list
+        if (index >= 0 && index < videos.length) {
+          String lectureUid = videos[index]['uid'] as String;
+          return lectureUid;
+        }
+      }
+    }
+  } catch (e) {
+    logger.i(e);
+  }
+
+  return null; // Return null if there's an error or the data is not as expected
+}
+
+
 
 
   Future<List<Lectures>> fetchCollectionData() async {
