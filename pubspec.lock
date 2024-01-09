@@ -10,7 +10,7 @@ packages:
     source: hosted
     version: "1.3.16"
   agora_rtc_engine:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: agora_rtc_engine
       sha256: "2b9ea091c9123be01e9289167e0bcdd91aa7d8fdc24c94e23f1629c3a6e5391a"
@@ -18,7 +18,7 @@ packages:
     source: hosted
     version: "6.2.2"
   animated_splash_screen:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: animated_splash_screen
       sha256: f45634db6ec4e8cf034c53e03f3bd83898a16fe3c9286bf5510b6831dfcf2124
@@ -26,7 +26,7 @@ packages:
     source: hosted
     version: "1.3.0"
   app_popup_menu:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: app_popup_menu
       sha256: e05b262b65289431603a84e04e53cb2f3aca6013d3ea61e3f24ddd48d49ef848
@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "2.4.2"
   async:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: async
       sha256: "947bfcf187f74dbc5e146c9eb9c0f10c9f8b30743e341481c1e2ed3ecc18c20c"
@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "2.1.1"
   carousel_slider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: carousel_slider
       sha256: "9c695cc963bf1d04a47bd6021f68befce8970bcd61d24938e1fb0918cf5d9c42"
@@ -74,7 +74,7 @@ packages:
     source: hosted
     version: "1.3.0"
   chewie:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: chewie
       sha256: "3427e469d7cc99536ac4fbaa069b3352c21760263e65ffb4f0e1c054af43a73e"
@@ -82,7 +82,7 @@ packages:
     source: hosted
     version: "1.7.4"
   circular_countdown_timer:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: circular_countdown_timer
       sha256: "9ba5fbc076cedbcbf6190ed86762e679f43d7c67cdd903ea34df059dabdc08d4"
@@ -98,7 +98,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_firestore:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: cloud_firestore
       sha256: cb978c7512624144f24f3d06e4312b2f4ac00b016f2fed62dc8f6d56b8585d78
@@ -162,7 +162,7 @@ packages:
     source: hosted
     version: "0.7.10"
   email_validator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: email_validator
       sha256: e9a90f27ab2b915a27d7f9c2a7ddda5dd752d6942616ee83529b686fc086221b
@@ -170,7 +170,7 @@ packages:
     source: hosted
     version: "2.1.17"
   expandable_text:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: expandable_text
       sha256: "7d03ea48af6987b20ece232678b744862aa3250d4a71e2aaf1e4af90015d76b1"
@@ -186,7 +186,7 @@ packages:
     source: hosted
     version: "1.3.1"
   ffi:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: ffi
       sha256: "7bf0adc28a23d395f19f3f1eb21dd7cfd1dd9f8e1c50051c069122e6853bc878"
@@ -234,7 +234,7 @@ packages:
     source: hosted
     version: "0.9.3+1"
   firebase_analytics:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_analytics
       sha256: "5e92d510eacd66c354718fd9cc8f66ffdfa025640b645c4742297fb973770508"
@@ -250,7 +250,7 @@ packages:
     source: hosted
     version: "3.8.4"
   firebase_analytics_web:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_analytics_web
       sha256: "8b9710be7e292e2a5ad34fff449d4b668c5808fb339649e69181727a4534f579"
@@ -258,7 +258,7 @@ packages:
     source: hosted
     version: "0.5.5+11"
   firebase_auth:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_auth
       sha256: "88f88d541a2c1903c023355e13d077835573a200bbf57e12a6a2c24bf99665a1"
@@ -282,7 +282,7 @@ packages:
     source: hosted
     version: "5.8.12"
   firebase_core:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_core
       sha256: "96607c0e829a581c2a483c658f04e8b159964c3bae2730f73297070bc85d40bb"
@@ -306,7 +306,7 @@ packages:
     source: hosted
     version: "2.10.0"
   firebase_messaging:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_messaging
       sha256: "199fe8186a5370d1cf5ce0819191079afc305914e8f38715f5e23943940dfe2d"
@@ -330,7 +330,7 @@ packages:
     source: hosted
     version: "3.5.18"
   firebase_storage:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: firebase_storage
       sha256: "8126e80210c0841a5b8204590b40d6b9e87cded3d342a92833f484a564dcddb3"
@@ -367,7 +367,7 @@ packages:
     source: hosted
     version: "3.0.1"
   flutter_local_notifications:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_local_notifications
       sha256: "892ada16046d641263f30c72e7432397088810a84f34479f6677494802a2b535"
@@ -399,7 +399,7 @@ packages:
     source: hosted
     version: "2.0.17"
   flutter_rating_bar:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_rating_bar
       sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
@@ -417,7 +417,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_zoom_drawer:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_zoom_drawer
       sha256: be25be3536e030096c356b7b0fbeaee418b5e0994d87ff74875032b349cb4079
@@ -425,7 +425,7 @@ packages:
     source: hosted
     version: "3.1.1"
   fullscreen_window:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: fullscreen_window
       sha256: fe3014f91bff16a82d142ba9d834980b8a84b4bb03347a92588d389ad92bd1d3
@@ -433,7 +433,7 @@ packages:
     source: hosted
     version: "1.0.4"
   get:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: get
       sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
@@ -449,7 +449,7 @@ packages:
     source: hosted
     version: "0.3.0+2"
   google_sign_in:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: google_sign_in
       sha256: "0b8787cb9c1a68ad398e8010e8c8766bfa33556d2ab97c439fb4137756d7308f"
@@ -497,7 +497,7 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: http
       sha256: d4872660c46d929f6b8a9ef4e7a7eff7e49bbf0c4ec3f385ee32df5119175139
@@ -513,7 +513,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image_picker:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: image_picker
       sha256: "340efe08645537d6b088a30620ee5752298b1630f23a829181172610b868262b"
@@ -577,7 +577,7 @@ packages:
     source: hosted
     version: "0.2.1+1"
   intl:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: intl
       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
@@ -585,7 +585,7 @@ packages:
     source: hosted
     version: "0.19.0"
   iris_method_channel:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: iris_method_channel
       sha256: "195a3224b26a6eb60dadd96d04da9f013a00541adac60cc8fdc9dbb104e581db"
@@ -601,7 +601,7 @@ packages:
     source: hosted
     version: "0.6.7"
   json_annotation:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: json_annotation
       sha256: b10a7b2ff83d83c777edba3c6a0f97045ddadd56c944e1a23a3fdf43a1bf4467
@@ -617,7 +617,7 @@ packages:
     source: hosted
     version: "3.0.0"
   logger:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: logger
       sha256: "6bbb9d6f7056729537a4309bda2e74e18e5d9f14302489cc1e93f33b3fe32cac"
@@ -641,7 +641,7 @@ packages:
     source: hosted
     version: "0.5.0"
   meta:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: meta
       sha256: a6e590c838b18133bb482a2745ad77c5bb7715fb0451209e1a7567d416678b8e
@@ -681,7 +681,7 @@ packages:
     source: hosted
     version: "2.0.1"
   page_transition:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: page_transition
       sha256: dee976b1f23de9bbef5cd512fe567e9f6278caee11f5eaca9a2115c19dc49ef6
@@ -721,7 +721,7 @@ packages:
     source: hosted
     version: "2.2.1"
   permission_handler:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: permission_handler
       sha256: "860c6b871c94c78e202dc69546d4d8fd84bd59faeb36f8fb9888668a53ff4f78"
@@ -801,7 +801,7 @@ packages:
     source: hosted
     version: "6.1.1"
   random_string:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: random_string
       sha256: "03b52435aae8cbdd1056cf91bfc5bf845e9706724dd35ae2e99fa14a1ef79d02"
@@ -809,7 +809,7 @@ packages:
     source: hosted
     version: "2.3.1"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: "81429e4481e1ccfb51ede496e916348668fd0921627779233bd24cc3ff6abd02"
@@ -934,7 +934,7 @@ packages:
     source: hosted
     version: "1.3.2"
   url_launcher:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: url_launcher
       sha256: e9aa5ea75c84cf46b3db4eea212523591211c3cf2e13099ee4ec147f54201c86
@@ -1006,7 +1006,7 @@ packages:
     source: hosted
     version: "2.1.4"
   video_player:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: video_player
       sha256: e16f0a83601a78d165dabc17e4dac50997604eb9e4cc76e10fa219046b70cef3

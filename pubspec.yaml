@@ -10,10 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.1
   circular_countdown_timer: ^0.2.3
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.3
@@ -50,6 +46,12 @@ dev_dependencies:
   chewie: ^1.7.4
   expandable_text: ^2.3.0
   flutter_rating_bar: ^4.0.1
+
+dev_dependencies:
+  flutter_lints: ^3.0.1
+  flutter_test:
+    sdk: flutter
+
 
 flutter:
   assets:
