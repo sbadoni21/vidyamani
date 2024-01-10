@@ -118,6 +118,7 @@ extension on User {
       'status': status,
       'type': type,
       'uid': uid,
+      'location': location,
       'myCourses': myCourses.map((course) => course.toMap()).toList(),
       'savedLectures': savedLectures.map((lecture) => lecture.toMap()).toList(),
     };

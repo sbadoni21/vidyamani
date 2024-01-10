@@ -26,8 +26,6 @@ class signup_service {
 
       if (userCredential.user != null) {
         final deviceToken = await NotificationService().getDeviceToken();
-
-        // Upload user image to Firebase Storage
         String? photoURL;
         if (userImage != null) {
           final Reference storageReference = _storage.ref().child(

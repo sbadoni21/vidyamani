@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:vidyamani/Notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
-import 'package:vidyamani/services/data/lectures_services.dart';
+import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:expandable_text/expandable_text.dart';
+
+final userProvider = Provider<User?>((ref) {
+  return ref.watch(userStateNotifierProvider);
+});
 
 class CommentsWidget extends StatefulWidget {
   final List<Comments> comments;
@@ -75,7 +81,7 @@ class _CommentsWidgetState extends State<CommentsWidget> {
   }
 }
 
-class VideoPlayerScreen extends StatefulWidget {
+class VideoPlayerScreen extends ConsumerStatefulWidget {
   final Videos video;
   final int index;
   final String? videoId;
@@ -94,14 +100,14 @@ class VideoPlayerScreen extends StatefulWidget {
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
 
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   late VideoPlayerController _controller;
   late ChewieController _chewieController;
   TextEditingController _commentController = TextEditingController();
   TextEditingController _ratingController = TextEditingController();
   late Future<List<Comments>> _commentsFuture;
   bool _isLoading = true;
-
+  late User? user;
   @override
   void initState() {
     super.initState();
@@ -119,6 +125,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
     );
     _commentsFuture = _fetchComments();
+    user = ref.read(userProvider);
   }
 
   @override
@@ -146,7 +153,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           : 'not rated',
       comment: _commentController.text,
       userId: widget.userId ?? '',
-      userName: 'John Doe',
+      userName: user!.displayName,
     );
 
     try {
@@ -162,7 +169,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       _commentController.clear();
       _ratingController.clear();
 
-      // Refresh the comments after submitting a new comment
       setState(() {
         _commentsFuture = _fetchComments();
       });

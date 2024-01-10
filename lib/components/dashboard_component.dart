@@ -36,22 +36,18 @@ class _DashboardState extends State<Dashboard> {
   ];
 
   Widget buildCoursesPage() {
-    // Implement your Courses page UI here
     return CoursesPage();
   }
 
   Widget buildSavedPage() {
-    // Implement your Saved page UI here
     return SavedPage();
   }
 
   Widget buildUpcomingPage() {
-    // Implement your Upcoming page UI here
     return UpcomingPage();
   }
 
   Widget buildHistoryPage() {
-    // Implement your History page UI here
     return HistoryPage();
   }
 
@@ -66,7 +62,7 @@ class _DashboardState extends State<Dashboard> {
       case 3:
         return buildHistoryPage();
       default:
-        return Container(); // Return an empty container for an unknown index
+        return Container();
     }
   }
 

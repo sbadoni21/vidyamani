@@ -28,8 +28,9 @@ class VideoTile extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           String? userId = snapshot.data?['userId'];
-          String? videoUids = snapshot.data?['videoUids'];
-
+          String? videoUids = snapshot.data?['videoUid'];
+          print(
+              'asdasdfasfasasdf asdfasdfasdjgfasgfyasysagdfsagd  asdfasasgdygaysgfyasgfasgdf$videoUids');
           return Container(
             color: Color.fromRGBO(240, 243, 248, 1),
             margin: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
@@ -79,7 +80,7 @@ class VideoTile extends StatelessWidget {
                       video: video,
                       index: index,
                       userId: userId,
-                      videoId: videoUids,
+                      videoId: video.videoUid,
                       courseKey: courseKey,
                     ),
                   ),
@@ -100,14 +101,14 @@ class VideoTile extends StatelessWidget {
     String? videoUids =
         await lectureService.fetchLectureUidByIndex(courseKey, index);
 
-    return {'userId': userId, 'videoUids': videoUids};
+    return {'userId': userId, 'videoUid': videoUids};
   }
 
   void _saveLecture(String? userId, String? videoUids, BuildContext context,
       MiscellaneousService miscellaneousService) async {
     if (userId != null && videoUids != null) {
       print('User ID: $userId');
-      print('Video Uids: $videoUids');
+      print('Video Uid: $videoUids');
       await miscellaneousService.addLectureToSaved(
         userId,
         courseKey,
@@ -123,7 +124,7 @@ class VideoTile extends StatelessWidget {
       MiscellaneousService miscellaneousService) async {
     if (userId != null && videoUids != null) {
       print('User ID: $userId');
-      print('Video Uids: $videoUids');
+      print('Video Uid: $videoUids');
       await miscellaneousService.removeLectureFromSaved(
         userId,
         courseKey,

@@ -60,60 +60,59 @@ class MiscellaneousService {
       print('Failed to remove lecture from saved: $e');
     }
   }
-Future<void> addAndListCommentToVideoLecture(String userId, String courseId,
-    String? videoId, Comments newComment, BuildContext context) async {
-  try {
-    DocumentSnapshot courseSnapshot =
-        await _fireStore.collection("lectures").doc(courseId).get();
 
-    if (courseSnapshot.exists) {
-      if (courseSnapshot['video'] is List) {
-        List<Map<String, dynamic>> videos =
-            List<Map<String, dynamic>>.from(courseSnapshot['video']);
+  Future<void> addAndListCommentToVideoLecture(String userId, String courseId,
+      String? videoId, Comments newComment, BuildContext context) async {
+    try {
+      DocumentSnapshot courseSnapshot =
+          await _fireStore.collection("lectures").doc(courseId).get();
 
-        for (var video in videos) {
-          if (video['uid'] == videoId) {
-            // Fetch existing comments
-            List<Map<String, dynamic>> comments =
-                List<Map<String, dynamic>>.from(video['comments'] ?? []);
+      if (courseSnapshot.exists) {
+        if (courseSnapshot['video'] is List) {
+          List<Map<String, dynamic>> videos =
+              List<Map<String, dynamic>>.from(courseSnapshot['video']);
 
-            // Add new comment
-            String rating = newComment.rating?.isNotEmpty ?? false
-                ? newComment.rating!
-                : 'not rated';
+          for (var video in videos) {
+            if (video['videoUid'] == videoId) {
+              List<Map<String, dynamic>> comments =
+                  List<Map<String, dynamic>>.from(video['comments'] ?? []);
 
-            comments.add({
-              'rating': rating,
-              'comment': newComment.comment,
-              'userId': newComment.userId,
-              'userName': newComment.userName,
-            });
+              // Add new comment
+              String rating = newComment.rating?.isNotEmpty ?? false
+                  ? newComment.rating!
+                  : 'not rated';
 
-            // Update the comments in the video field
-            video['comments'] = comments;
+              comments.add({
+                'rating': rating,
+                'comment': newComment.comment,
+                'userId': newComment.userId,
+                'userName': newComment.userName,
+              });
 
-            await _fireStore.collection("lectures").doc(courseId).update({
-              'video': videos,
-            });
+              // Update the comments in the video field
+              video['comments'] = comments;
 
-            // Fetch and print all comments
-            List<Comments> allComments =
-                comments.map((comment) => Comments.fromMap(comment)).toList();
+              await _fireStore.collection("lectures").doc(courseId).update({
+                'video': videos,
+              });
 
-            print('All Comments:');
-            allComments.forEach((comment) {
-              print(
-                  'Rating: ${comment.rating}, Comment: ${comment.comment}, User: ${comment.userName}');
-            });
+              // Fetch and print all comments
+              List<Comments> allComments =
+                  comments.map((comment) => Comments.fromMap(comment)).toList();
+
+              print('All Comments:');
+              allComments.forEach((comment) {
+                print(
+                    'Rating: ${comment.rating}, Comment: ${comment.comment}, User: ${comment.userName}');
+              });
+            }
           }
         }
       }
+    } catch (e) {
+      print('Failed to add and list comments: $e');
     }
-  } catch (e) {
-    print('Failed to add and list comments: $e');
   }
-}
-
 
   Future<List<Comments>> fetchAllComments(
       String? courseId, String? videoId) async {
@@ -129,7 +128,8 @@ Future<void> addAndListCommentToVideoLecture(String userId, String courseId,
           List<Comments> allComments = [];
 
           for (var video in videos) {
-            if (video['uid'] == videoId) {
+            // Check if the videoId matches the provided videoId
+            if (video['videoUid'] == videoId) {
               List<Map<String, dynamic>> comments =
                   List<Map<String, dynamic>>.from(video['comments'] ?? []);
 
@@ -137,6 +137,7 @@ Future<void> addAndListCommentToVideoLecture(String userId, String courseId,
                   comments.map((comment) => Comments.fromMap(comment)).toList();
 
               allComments.addAll(videoComments);
+              break; 
             }
           }
 
@@ -149,11 +150,11 @@ Future<void> addAndListCommentToVideoLecture(String userId, String courseId,
 
     return [];
   }
-}
 
-void _showSnackbar(BuildContext context, String message) {
-  final snackBar = SnackBar(
-    content: Text(message),
-  );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  void _showSnackbar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }

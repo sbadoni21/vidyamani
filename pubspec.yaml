@@ -47,6 +47,10 @@ dependencies:
   expandable_text: ^2.3.0
   flutter_rating_bar: ^4.0.1
   flutter_riverpod: ^2.4.9
+  flutter_hooks: ^0.20.4
+  hooks_riverpod: ^2.4.9
+  geocoding: 
+  geolocator:
 
 
 dev_dependencies:

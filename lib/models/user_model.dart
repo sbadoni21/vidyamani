@@ -8,6 +8,7 @@ class User {
   final String status;
   final String type;
   final String uid;
+  final String? location;
   final List<MyCourse> myCourses;
   final List<SavedLecture> savedLectures;
 
@@ -21,6 +22,7 @@ class User {
     required this.status,
     required this.type,
     required this.uid,
+    this.location,
     required this.myCourses,
     required this.savedLectures,
   });
@@ -36,6 +38,7 @@ class User {
       status: map['status'] ?? '',
       type: map['type'] ?? '',
       uid: map['uid'] ?? '',
+      location: map['location'] ?? '',
       myCourses: (map['myCourses'] as List<dynamic>?)
               ?.map((e) => MyCourse.fromMap(e as Map<String, dynamic>))
               .toList() ??

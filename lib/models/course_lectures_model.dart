@@ -64,11 +64,13 @@ class Videos {
   final List<Comments> comments;
   final String title;
   final String content;
+  final String videoUid;
   Videos(
       {required this.videoUrl,
       required this.comments,
       required this.title,
-      required this.content});
+      required this.content,
+      required this.videoUid});
 
   factory Videos.fromMap(Map<String, dynamic> map) {
     return Videos(
@@ -79,6 +81,7 @@ class Videos {
                 .toList() ??
             [],
         title: map['title'],
+        videoUid: map['videoUid'],
         content: map['content']);
   }
 }
