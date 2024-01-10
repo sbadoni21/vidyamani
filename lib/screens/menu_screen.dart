@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/sidemenu_assets.dart';
-import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:vidyamani/utils/static.dart';

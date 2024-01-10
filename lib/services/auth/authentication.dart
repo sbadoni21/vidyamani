@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:random_string/random_string.dart';
+
+final authenticationServicesProvider = Provider<AuthenticationServices>((ref) {
+  return AuthenticationServices();
+});
 
 class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -51,7 +56,6 @@ class AuthenticationServices {
       return false;
     }
   }
-  
 
   Future<User?> signInWithGoogle() async {
     try {
@@ -107,7 +111,6 @@ class AuthenticationServices {
     }
     return null;
   }
-
 
   Future<void> signOut() async {
     await GoogleSignIn().signOut();

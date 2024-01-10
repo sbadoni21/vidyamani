@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/Notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
-import 'package:vidyamani/screens/splashscreen.dart';
-import 'package:vidyamani/services/auth/authentication.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -24,30 +24,19 @@ Future<void> main() async {
             appId: "1:862420344316:web:3086d929b0f710d2bbe679",
             measurementId: "G-ZC1VKV8DHC"));
     logger.i("Firebase initialized successfully");
-    runApp(MyApp());
+    runApp(ProviderScope(child: MyApp()));
   } catch (e) {
-    logger.e(e);
+    logger.e("Firebase initialization error: $e");
   }
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userStateNotifierProvider);
 
-class _MyAppState extends State<MyApp> {
-  final AuthenticationServices authServices = AuthenticationServices();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // }
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Vidyamani',
@@ -56,30 +45,7 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       navigatorKey: navigatorKey,
-      // home: HomePage(),
-
-      home: StreamBuilder(
-        stream: authServices.firebaseAuth.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          }
-
-          if (snapshot.hasError) {
-            print("Error with the stream: ${snapshot.error}");
-            return const Center(child: Text("An error occurred."));
-          }
-
-          if (snapshot.hasData && snapshot.data != null) {
-            print("User is authenticated. Navigating to HomePage.");
-            return HomePage();
-          }
-
-          print("User is not authenticated. Navigating to LoginPage.");
-
-          return LoginPage();
-        },
-      ),
+      home: userState == null ? LoginPage() : HomePage(),
     );
   }
 }
