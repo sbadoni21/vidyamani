@@ -6,6 +6,7 @@ class Course {
   final String? price;
   final String? teacher;
   final String lectureKey;
+  final String? courseKey;
 
   Course({
     required this.type,
@@ -13,11 +14,12 @@ class Course {
     required this.photo,
     this.lectures,
     this.price,
+    this.courseKey,
     required this.teacher,
     required this.lectureKey,
   });
 
-  factory Course.fromMap(Map map) {
+  factory Course.fromMap(Map<String, dynamic> map) {
     return Course(
       type: map['type'] ?? '',
       title: map['title'] ?? '',
@@ -26,6 +28,7 @@ class Course {
       price: map['price'] ?? "",
       teacher: map['teacher'] ?? '',
       lectureKey: map['lectureKey'] ?? "",
+      courseKey: map['uid'] ?? "",
     );
   }
 }
@@ -69,16 +72,16 @@ class Videos {
 
   factory Videos.fromMap(Map<String, dynamic> map) {
     return Videos(
-        videoUrl: map['videoUrl'],
+        videoUrl: map['video'],
         comments: (map['comment'] as List<dynamic>?)
-              ?.map((comment) => Comments.fromMap(comment as Map<String, dynamic>))
-              .toList() ??
-          [],
+                ?.map((comment) =>
+                    Comments.fromMap(comment as Map<String, dynamic>))
+                .toList() ??
+            [],
         title: map['title'],
         content: map['content']);
   }
 }
-
 
 class Comments {
   final String rating;
@@ -99,4 +102,3 @@ class Comments {
         userName: map['userName']);
   }
 }
-

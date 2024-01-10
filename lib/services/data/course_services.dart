@@ -10,8 +10,11 @@ class DataService {
 
   Future<List<Course>> fetchCollectionData() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection("courses").get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("courses")
+          .doc("kGrTotd8SFOUzsUH9Hpz")
+          .collection("humanRights")
+          .get();
       logger.i(querySnapshot);
 
       List<Course> courses = querySnapshot.docs
@@ -28,6 +31,43 @@ class DataService {
           .where((course) => course != null)
           .cast<Course>()
           .toList();
+
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
+    }
+  }
+
+  Future<List<Course>> fetchCoursesViaUser(String userId) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection("users").doc(userId).get();
+      logger.i(userSnapshot);
+
+      List<String> courseIds =
+          List<String>.from(userSnapshot.get("myCourses") ?? []);
+
+      List<Course> courses = await Future.wait(courseIds.map((courseId) async {
+        DocumentSnapshot courseSnapshot =
+            await _firestore.collection("courses").doc(courseId).get();
+        Map<String, dynamic>? data =
+            courseSnapshot.data() as Map<String, dynamic>?;
+
+        if (data != null) {
+          return Course.fromMap(data);
+        } else {
+          return Course(
+            type: '',
+            title: '',
+            photo: '',
+            lectures: '',
+            price: '',
+            teacher: '',
+            lectureKey: '',
+          );
+        }
+      }));
 
       return courses;
     } catch (e) {

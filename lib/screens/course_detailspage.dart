@@ -1,17 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:vidyamani/components/coursestopbar.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:vidyamani/components/customlongtile.dart';
-import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class CourseDetailPage extends StatelessWidget {
+class CourseDetailPage extends StatefulWidget {
   final Course courses;
 
   CourseDetailPage({required this.courses});
+
+  @override
+  _CourseDetailPageState createState() => _CourseDetailPageState();
+}
+
+class _CourseDetailPageState extends State<CourseDetailPage> {
+  double averageRating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateAverageRating();
+  }
+
+  Future<void> _calculateAverageRating() async {
+    LectureDataService lectureService = LectureDataService();
+
+    double avgRating =
+        await lectureService.calculateAverageRating(widget.courses.lectureKey);
+    if (mounted) {
+      setState(() {
+        averageRating = avgRating;
+      });
+    }
+    print(
+      'asdsafadfadfasfdsadfadsafasf ${widget.courses.lectureKey}',
+    );
+    await lectureService.updateOverallRating(
+        widget.courses.lectureKey, avgRating);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +77,15 @@ class CourseDetailPage extends StatelessWidget {
                     width: 80,
                     height: 80,
                     alignment: Alignment.centerLeft,
-                    child: Image.network(courses.photo),
+                    child: Image.network(widget.courses.photo),
                   ),
                 ),
                 SizedBox(height: 8),
                 Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
-                  child: Text(courses.title, style: myTextStylefontsize16white),
+                  child: Text(widget.courses.title,
+                      style: myTextStylefontsize16white),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,7 +95,7 @@ class CourseDetailPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '${courses.lectures?.toString() ?? ""} Lectures',
+                              '${widget.courses.lectures?.toString() ?? ""} Lectures',
                               style: myTextStylefontsize10,
                             ),
                             SizedBox(width: 2),
@@ -75,18 +105,26 @@ class CourseDetailPage extends StatelessWidget {
                               color: Colors.white,
                             ),
                             SizedBox(width: 2),
-                            Text(
-                              "2 live classes",
-                              style: myTextStylefontsize10,
-                            ),
                             SizedBox(height: 2),
-                            Text("rating", style: myTextStylefontsize10),
+                            RatingBar.builder(
+                              ignoreGestures: true,
+                              initialRating: averageRating,
+                              minRating: 1,
+                              itemCount: 5,
+                              itemSize: 15.0,
+                              unratedColor: Colors.blueGrey[200],
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                              onRatingUpdate: (rating) {},
+                            ),
                           ],
                         ),
                       ],
                     ),
                     Text(
-                      '₹ ${courses.price?.toString() ?? ""} ',
+                      '₹ ${widget.courses.price?.toString() ?? ""} ',
                       style: TextStyle(
                         fontSize: 26,
                         fontStyle: FontStyle.normal,
@@ -109,7 +147,7 @@ class CourseDetailPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 FutureBuilder<List<Videos>>(
                   future: DataService()
-                      .fetchLecturesWithLectureKey(courses.lectureKey),
+                      .fetchLecturesWithLectureKey(widget.courses.lectureKey),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
@@ -120,9 +158,13 @@ class CourseDetailPage extends StatelessWidget {
 
                       return Column(
                         children: [
-                        for (int index = 0; index < coursesWithLectureKey.length; index++)
-  VideoTile(video: coursesWithLectureKey[index],   index: index, courseKey: courses.lectureKey ),
-
+                          for (int index = 0;
+                              index < coursesWithLectureKey.length;
+                              index++)
+                            VideoTile(
+                                video: coursesWithLectureKey[index],
+                                index: index,
+                                courseKey: widget.courses.lectureKey),
                         ],
                       );
                     }

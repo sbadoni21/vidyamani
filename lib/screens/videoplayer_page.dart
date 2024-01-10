@@ -105,8 +105,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.video.videoUrl);
+    _controller = VideoPlayerController.network(
+      widget.video.videoUrl,
+    );
     _chewieController = ChewieController(
+      autoInitialize: true,
       videoPlayerController: _controller,
       looping: false,
       draggableProgressBar: true,
