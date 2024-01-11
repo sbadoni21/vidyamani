@@ -107,7 +107,6 @@ class _HomePageState extends State<HomePage> {
           const ProfilePage(),
         ]),
         bottomNavigationBar: CustomBottomNavigationBar(
-          
           currentIndex: currentIndex,
           onTap: (index) {
             setState(() {
@@ -123,33 +122,36 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: ListView(
         children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              scrollPhysics: const BouncingScrollPhysics(
-                decelerationRate: ScrollDecelerationRate.normal,
+          Padding(
+            padding: const EdgeInsets.only(top: 19),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                scrollPhysics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.normal,
+                ),
+                height: 229.0,
+                viewportFraction: 1,
+                aspectRatio: 16 / 9,
+                enableInfiniteScroll: true,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.3,
+                scrollDirection: Axis.horizontal,
               ),
-              height: 229.0,
-              viewportFraction: 1,
-              aspectRatio: 16 / 9,
-              enableInfiniteScroll: true,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
+              items: imageUrls.map((url) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Image.network(
+                      url,
+                      fit: BoxFit.fill,
+                    );
+                  },
+                );
+              }).toList(),
             ),
-            items: imageUrls.map((url) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Image.network(
-                    url,
-                    fit: BoxFit.fill,
-                  );
-                },
-              );
-            }).toList(),
           ),
           const SizedBox(height: 16),
           Padding(
@@ -245,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                const HeadingTitle(title: "Upcoming lectures"),
+                const HeadingTitle(title: "Upcoming Courses"),
                 const SizedBox(
                   height: 16,
                 ),
@@ -261,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                           snapshot.data as List<Lectures>;
 
                       return SizedBox(
-                        height: 170, // Set a fixed height or use constraints
+                        height: 170,
                         child: featuredCourses.isNotEmpty
                             ? ListView.builder(
                                 scrollDirection: Axis.horizontal,

@@ -19,14 +19,15 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      iconSize: 26,
+      iconSize: 25,
       elevation: 0,
       selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white54,
+      unselectedItemColor: Colors.white70,
       backgroundColor: bgColor,
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.currentIndex,
       onTap: widget.onTap,
+      selectedLabelStyle: myTextStylefontsize14,
       items: [
         BottomNavigationBarItem(
           icon: IconButton(

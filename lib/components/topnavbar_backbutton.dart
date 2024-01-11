@@ -16,7 +16,7 @@ class CustomAppBarBckBtn extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 72,
+      height: 92,
       color: bgColor,
       alignment: Alignment.center,
       padding: EdgeInsets.only(top: 10),
@@ -77,5 +77,5 @@ class CustomAppBarBckBtn extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(92);
+  Size get preferredSize => Size.fromHeight(82);
 }

@@ -34,6 +34,8 @@ dependencies:
   app_popup_menu: ^1.0.0
   agora_rtc_engine: ^6.1.1
   iris_method_channel: ^2.0.0-dev.4
+ 
+  agora_rtm: 
   intl: ^0.19.0
   http: ^1.1.2
   url_launcher: ^6.0.13
