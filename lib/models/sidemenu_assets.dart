@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:vidyamani/screens/aboutus_page.dart';
 import 'package:vidyamani/screens/chatgpt_page.dart';
 import 'package:vidyamani/screens/contact_page.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/live_stream.dart';
-import 'package:vidyamani/screens/notes_page.dart';
 
 List<Map<String, dynamic>> sideMenuItems = [
-  {"icon": Icons.home, "text": "Home", "key": "home", 'route': const MyNotes()},
+  {
+    "icon": Icons.home,
+    "text": "Home",
+    "key": "home",
+    'route': const HomePage()
+  },
   {
     "icon": Icons.person,
     "text": "Ask AI",

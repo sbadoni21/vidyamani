@@ -15,61 +15,67 @@ class CustomAppBarBckBtn extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(Icons.menu),
-        ),
-      ],
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+    return Container(
+      height: 72,
+      color: bgColor,
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 10),
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
           IconButton(
             onPressed: () {
-              print("Back button pressed!");
-              if (onBackPressed != null) {
-                onBackPressed!();
-              } else {
-                print("Navigator.pop(context) called");
-                Navigator.pop(context);
-              }
+              Navigator.of(context).pop();
             },
-            icon: Icon(
-              Icons.arrow_back,
-              size: 18,
-            ),
+            icon: Icon(Icons.menu),
           ),
-          Container(
-            height: 30,
-            width: 34,
-            child: Image.asset(
-              "lib/assets/images/logowhite.png",
-            ),
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            "Vidhyamani",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          )
         ],
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              onPressed: () {
+                print("Back button pressed!");
+                if (onBackPressed != null) {
+                  onBackPressed!();
+                } else {
+                  print("Navigator.pop(context) called");
+                  Navigator.pop(context);
+                }
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                size: 18,
+              ),
+            ),
+            Container(
+              height: 30,
+              width: 34,
+              child: Image.asset(
+                "lib/assets/images/logowhite.png",
+              ),
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              "Vidhyamani",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          ],
+        ),
+        backgroundColor: bgColor,
+        foregroundColor: Colors.white,
       ),
-      backgroundColor: bgColor,
-      foregroundColor: Colors.white,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(92);
 }

@@ -56,7 +56,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               Icons.search_rounded,
             ),
           ),
-          label: "Profile",
+          label: "Search",
         ),
         BottomNavigationBarItem(
           icon: IconButton(

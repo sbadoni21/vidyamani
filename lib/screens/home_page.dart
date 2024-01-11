@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
           const ProfilePage(),
         ]),
         bottomNavigationBar: CustomBottomNavigationBar(
+          
           currentIndex: currentIndex,
           onTap: (index) {
             setState(() {
