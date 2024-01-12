@@ -8,6 +8,7 @@ import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
+import 'package:vidyamani/services/data/watch_time_service.dart'; // Import the watch time service
 import 'package:vidyamani/utils/static.dart';
 import 'package:expandable_text/expandable_text.dart';
 
@@ -106,6 +107,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   late Future<List<Comments>> _commentsFuture;
   bool _isLoading = true;
   late User? user;
+  final WatchTimeService watchTimeService = WatchTimeService();
+
   @override
   void initState() {
     super.initState();
@@ -124,6 +127,12 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     );
     _commentsFuture = _fetchComments();
     user = ref.read(userProvider);
+    // Increment watch time when the video starts playing
+    _controller.addListener(() {
+      if (_controller.value.isPlaying) {
+        _incrementWatchTime();
+      }
+    });
   }
 
   @override
@@ -150,13 +159,13 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
           ? _ratingController.text
           : 'not rated',
       comment: _commentController.text,
-      userId: user?.uid?? '',
+      userId: user?.uid ?? '',
       userName: user!.displayName,
     );
 
     try {
       await MiscellaneousService().addAndListCommentToVideoLecture(
-       user?.uid ?? '',
+        user?.uid ?? '',
         widget.courseKey,
         widget.videoId,
         newComment,
@@ -173,6 +182,15 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     } catch (e) {
       print('Failed to submit comment: $e');
     }
+  }
+
+  // Increment watch time for the current video
+  void _incrementWatchTime() {
+    watchTimeService.updateWatchTime(
+      user!.uid,
+      widget.videoId!,
+      widget.video.lectureKey!,
+    );
   }
 
   @override

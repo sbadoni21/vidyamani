@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vidyamani/services/notification/notificationservices.dart';
@@ -41,8 +40,10 @@ class signup_service {
           'email': email,
           'displayName': name,
           'status': 'Online',
-          'profilephoto': photoURL ?? "lib/assets/placeholder_image.png",
+          'profilephoto': photoURL ?? "none",
           'deviceToken': deviceToken,
+          'type': "free",
+          'location': location
         }, SetOptions(merge: true));
 
         return userCredential.user;

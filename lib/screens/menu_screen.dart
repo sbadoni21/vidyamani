@@ -66,25 +66,25 @@ class _MenuScreenState extends State<MenuScreen> {
                             child: const Center(),
                           ),
                           // Circular Image (Upper)
-                          Positioned(
-                            left: 50,
-                            child: Container(
-                              width: 150,
-                              height: 150,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: CircleAvatar(
-                                backgroundImage: profilePhoto != null
-                                    ? NetworkImage(profilePhoto!)
-                                        as ImageProvider // Cast to ImageProvider
-                                    : AssetImage(
-                                        'lib/assets/images/placeholder_image.png'), // Use a placeholder image
-                                radius: 20, // Adjust the size as needed
-                              ),
-                            ),
-                          ),
+                          // Positioned(
+                          //   left: 50,
+                          //   child: Container(
+                          //     width: 150,
+                          //     height: 150,
+                          //     decoration: const BoxDecoration(
+                          //       shape: BoxShape.circle,
+                          //       color: Colors.blue,
+                          //     ),
+                          //     child: CircleAvatar(
+                          //       backgroundImage: profilePhoto != null
+                          //           ? NetworkImage(profilePhoto!)
+                          //               as ImageProvider // Cast to ImageProvider
+                          //           : AssetImage(
+                          //               'lib/assets/images/placeholder_image.png'), // Use a placeholder image
+                          //       radius: 20, // Adjust the size as needed
+                          //     ),
+                          //   ),
+                          // ),
                           Positioned(
                             left: 220,
                             child: Column(

@@ -23,7 +23,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void initState() {
     super.initState();
     user = ref.read(userProvider);
-
   }
 
   @override
@@ -41,55 +40,56 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 4,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Image.network(
-                          user!.photoURL,
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          user?.displayName ?? "Name",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.location_pin,
-                                size: 16, color: Colors.white),
-                           const  SizedBox(
-                              width: 8,
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 4,
                             ),
+                          ),
+                          child: ClipOval(
+                            child: Image.network(
+                              user!.photoURL,
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              user?.location ?? "City",
-                              style:
-                              const    TextStyle(fontSize: 10, color: Colors.white),
-                            )
+                              user?.displayName ?? "Name",
+                              style: myTextStylefontsize14White,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.location_pin,
+                                    size: 16, color: Colors.white),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  user?.location ?? "City",
+                                  style: myTextStylefontsize10,
+                                )
+                              ],
+                            ),
                           ],
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      width: 100,
-                    ),
-                 const   Column(
+                    const Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

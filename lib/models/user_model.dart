@@ -34,7 +34,7 @@ class User {
       displayName: map['displayName'] ?? '',
       email: map['email'] ?? '',
       phoneNumber: map['phoneNumber'] ?? '',
-      photoURL: map['photoURL'] ?? '',
+      photoURL: map['profilephoto'] ?? '',
       referralCode: map['referralCode'] ?? '',
       status: map['status'] ?? '',
       type: map['type'] ?? '',
