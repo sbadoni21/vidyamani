@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:random_string/random_string.dart';
- import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart';
 
 final authenticationServicesProvider = Provider<AuthenticationServices>((ref) {
   return AuthenticationServices();
@@ -59,68 +59,66 @@ class AuthenticationServices {
     }
   }
 
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-Future<User?> signInWithGoogle() async {
-  try {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        UserCredential userCredential =
+            await firebaseAuth.signInWithCredential(credential);
 
-      UserCredential userCredential =
-          await firebaseAuth.signInWithCredential(credential);
+        if (userCredential.user != null) {
+          final email = userCredential.user!.providerData[0].email;
+          final uid = userCredential.user!.uid;
+          final displayName = userCredential.user!.displayName;
+          final status = 'active';
+          final photoURL = userCredential.user!.photoURL;
+          final coins = 0;
+          final type = "free";
+          final referralCode = randomAlphaNumeric(8);
 
-      if (userCredential.user != null) {
-        final email = userCredential.user!.providerData[0].email;
-        final uid = userCredential.user!.uid;
-        final displayName = userCredential.user!.displayName;
-        final status = 'active';
-        final photoURL = userCredential.user!.photoURL;
-        final coins = 0;
-        final referralCode = randomAlphaNumeric(8);
+          _fireStore.collection('users').doc(uid).set({
+            'uid': uid,
+            'email': email,
+            'displayName': displayName,
+            'status': status,
+            'profilephoto': photoURL,
+            'coins': coins,
+            'referral': referralCode,
+            'type': type
+          });
 
-        _fireStore.collection('users').doc(uid).set({
-          'uid': uid,
-          'email': email,
-          'displayName': displayName,
-          'status': status,
-          'profilephoto': photoURL,
-          'coins': coins,
-          'referral': referralCode,
-        });
+          Position? position = await Geolocator.getCurrentPosition();
+          if (position != null) {
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+              position.latitude,
+              position.longitude,
+            );
 
-        // Retrieve user's location
-        Position? position = await Geolocator.getCurrentPosition();
-        if (position != null) {
-          // Reverse geocode to get city
-          List<Placemark> placemarks = await placemarkFromCoordinates(
-            position.latitude,
-            position.longitude,
-          );
-          
-          if (placemarks.isNotEmpty) {
-            String city = placemarks[0].locality ?? "Unknown City";
-            // Include city data in Firestore or perform other actions
-            _fireStore.collection('users').doc(uid).update({
-              'location': city,
-            });
+            if (placemarks.isNotEmpty) {
+              String city = placemarks[0].locality ?? "Unknown City";
+              // Include city data in Firestore or perform other actions
+              _fireStore.collection('users').doc(uid).update({
+                'location': city,
+              });
+            }
           }
+
+          return userCredential.user;
         }
-
-        return userCredential.user;
       }
+    } catch (e) {
+      print('Failed to sign in with Google: $e');
     }
-  } catch (e) {
-    print('Failed to sign in with Google: $e');
+    return null;
   }
-  return null;
-}
-
 
   Future<String?> getCurrentUserId() async {
     try {

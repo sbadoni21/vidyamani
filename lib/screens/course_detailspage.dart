@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vidyamani/Notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class CourseDetailPage extends StatefulWidget {
+final userProvider = Provider<User?>((ref) {
+  return ref.watch(userStateNotifierProvider);
+});
+
+class CourseDetailPage extends ConsumerStatefulWidget {
   final Course courses;
 
   CourseDetailPage({required this.courses});
@@ -16,48 +23,129 @@ class CourseDetailPage extends StatefulWidget {
   _CourseDetailPageState createState() => _CourseDetailPageState();
 }
 
-class _CourseDetailPageState extends State<CourseDetailPage> {
+class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
   double averageRating = 0.0;
+  late User? user;
+  bool isCourseSaved = false;
 
   @override
   void initState() {
     super.initState();
     _calculateAverageRating();
+    user = ref.read(userProvider);
+    checkCourseSaved();
+  }
+
+  Future<void> checkCourseSaved() async {
+    bool saved = await LectureDataService()
+        .isCourseSaved(user!.uid, widget.courses.courseKey!);
+    if (mounted) {
+      setState(() {
+        isCourseSaved = saved;
+      });
+    }
   }
 
   Future<void> _calculateAverageRating() async {
     LectureDataService lectureService = LectureDataService();
 
     double avgRating =
-        await lectureService.calculateAverageRating(widget.courses.lectureKey);
+        await lectureService.calculateAverageRating(widget.courses.lectureKey!);
     if (mounted) {
       setState(() {
         averageRating = avgRating;
       });
     }
-    print(
-      'asdsafadfadfasfdsadfadsafasf ${widget.courses.lectureKey}',
-    );
+
     await lectureService.updateOverallRating(
-        widget.courses.lectureKey, avgRating);
+        widget.courses.lectureKey!, avgRating);
+  }
+
+  void _showPaymentGatewayDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Payment Gateway"),
+          content: Text("Implement your payment gateway UI here."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Proceed"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSaveDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+              isCourseSaved ? "Unsave Course" : "Save Course to My Courses"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                await saveOrUnsaveCourse();
+                Navigator.of(context).pop(); // Close the AlertDialog
+              },
+              child: Text("Proceed"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the AlertDialog
+              },
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> saveOrUnsaveCourse() async {
+    if (await LectureDataService()
+        .isCourseSaved(user!.uid, widget.courses.courseKey!)) {
+      await LectureDataService().unsaveCourse(user!.uid, widget.courses);
+    } else {
+      await LectureDataService().saveCourse(user!.uid, widget.courses);
+    }
+
+    await checkCourseSaved();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          backgroundColor: bgColor,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        onPressed: () {},
-        child: Text("Buy Now"),
-      ),
+      floatingActionButton: (widget.courses.type == "premium" &&
+              user?.type != "premium")
+          ? ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 5.0,
+                backgroundColor: bgColor,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              onPressed: () {
+                _showPaymentGatewayDialog(context);
+              },
+              child: Text("Buy Now"),
+            )
+          : null,
       appBar: CustomAppBarBckBtn(
         onBackPressed: () {
           Navigator.pop(context);
@@ -84,8 +172,22 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
-                  child: Text(widget.courses.title,
-                      style: myTextStylefontsize16white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(widget.courses.title,
+                          style: myTextStylefontsize16white),
+                      TextButton(
+                        onPressed: () {
+                          _showSaveDialog(context);
+                        },
+                        child: Text(
+                          isCourseSaved ? "Unsave Course" : "Save Course",
+                          style: myTextStylefontsize14White,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,7 +207,6 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               color: Colors.white,
                             ),
                             SizedBox(width: 2),
-                            SizedBox(height: 2),
                             RatingBar.builder(
                               ignoreGestures: true,
                               initialRating: averageRating,
@@ -124,7 +225,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       ],
                     ),
                     Text(
-                      '₹ ${widget.courses.price?.toString() ?? ""} ',
+                      (widget.courses.type == "free")
+                          ? ' '
+                          : user?.type != 'premium'
+                              ? '₹ ${widget.courses.price.toString() ?? ""}'
+                              : "",
                       style: TextStyle(
                         fontSize: 26,
                         fontStyle: FontStyle.normal,
@@ -140,38 +245,47 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Course Content", style: myTextStylefontsize16),
-                const SizedBox(height: 8),
-                FutureBuilder<List<Videos>>(
-                  future: DataService()
-                      .fetchLecturesWithLectureKey(widget.courses.lectureKey),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      List<Videos> coursesWithLectureKey = snapshot.data ?? [];
+            child: widget.courses.type == "free" ||
+                    (widget.courses.type == "premium" &&
+                        user?.type == "premium")
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Course Content", style: myTextStylefontsize16),
+                      const SizedBox(height: 8),
+                      FutureBuilder<List<Videos>>(
+                        future: DataService().fetchLecturesWithLectureKey(
+                            widget.courses.lectureKey!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else {
+                            List<Videos> coursesWithLectureKey =
+                                snapshot.data ?? [];
 
-                      return Column(
-                        children: [
-                          for (int index = 0;
-                              index < coursesWithLectureKey.length;
-                              index++)
-                            VideoTile(
-                                video: coursesWithLectureKey[index],
-                                index: index,
-                                courseKey: widget.courses.lectureKey),
-                        ],
-                      );
-                    }
-                  },
-                )
-              ],
-            ),
+                            return Column(
+                              children: [
+                                for (int index = 0;
+                                    index < coursesWithLectureKey.length;
+                                    index++)
+                                  VideoTile(
+                                      video: coursesWithLectureKey[index],
+                                      index: index,
+                                      lectureKey: widget.courses.lectureKey!),
+                              ],
+                            );
+                          }
+                        },
+                      )
+                    ],
+                  )
+                : Container(
+                    child: Text("Buy Now to Access Premium Content"),
+                  ),
           ),
         ],
       ),

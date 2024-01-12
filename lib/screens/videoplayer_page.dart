@@ -85,14 +85,12 @@ class VideoPlayerScreen extends ConsumerStatefulWidget {
   final Videos video;
   final int index;
   final String? videoId;
-  final String? userId;
   final String courseKey;
 
   VideoPlayerScreen({
     required this.video,
     required this.index,
     required this.videoId,
-    required this.userId,
     required this.courseKey,
   });
 
@@ -152,13 +150,13 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
           ? _ratingController.text
           : 'not rated',
       comment: _commentController.text,
-      userId: widget.userId ?? '',
+      userId: user?.uid?? '',
       userName: user!.displayName,
     );
 
     try {
       await MiscellaneousService().addAndListCommentToVideoLecture(
-        widget.userId ?? '',
+       user?.uid ?? '',
         widget.courseKey,
         widget.videoId,
         newComment,

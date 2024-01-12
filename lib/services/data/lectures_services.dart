@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/user_model.dart';
 
 class LectureDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -31,19 +32,18 @@ class LectureDataService {
     }
   }
 
-  Future<String?> fetchLectureUidByIndex(String courseKey, int index) async {
+  Future<String?> fetchLectureUidByIndex(String lectureKey, int index) async {
     try {
       DocumentSnapshot courseSnapshot =
-          await _firestore.collection("lectures").doc(courseKey).get();
+          await _firestore.collection("lectures").doc(lectureKey).get();
 
       if (courseSnapshot.exists) {
         if (courseSnapshot['video'] is List) {
           List<Map<String, dynamic>> videos =
               List<Map<String, dynamic>>.from(courseSnapshot['video']);
 
-          // Check if the selected index is within the bounds of the videos list
           if (index >= 0 && index < videos.length) {
-            String lectureUid = videos[index]['uid'] as String;
+            String lectureUid = videos[index]['videoUid'] as String;
             return lectureUid;
           }
         }
@@ -52,19 +52,61 @@ class LectureDataService {
       logger.i(e);
     }
 
-    return null; // Return null if there's an error or the data is not as expected
+    return null;
+  }
+
+  Future<List<Videos>> fetchSavedVideos(String userId) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection("users").doc(userId).get();
+
+      List<SavedLecture> myLectures =
+          (userSnapshot.get("savedLectures") as List<dynamic>?)
+                  ?.map((courseData) =>
+                      SavedLecture.fromMap(courseData as Map<String, dynamic>))
+                  .toList() ??
+              [];
+
+      List<Videos> savedVideos = [];
+
+      for (SavedLecture myLecture in myLectures) {
+        DocumentSnapshot lectureSnapshot = await _firestore
+            .collection("lectures")
+            .doc(myLecture.lectureId)
+            .get();
+        Map<String, dynamic>? lectureData =
+            lectureSnapshot.data() as Map<String, dynamic>?;
+
+        if (lectureData != null) {
+          List<Videos> videos = (lectureData['video'] as List<dynamic>?)
+                  ?.map(
+                      (video) => Videos.fromMap(video as Map<String, dynamic>))
+                  .toList() ??
+              [];
+
+          List<Videos> selectedVideos = videos
+              .where((video) => video.videoUid == myLecture.videoId)
+              .toList();
+
+          savedVideos.addAll(selectedVideos);
+        }
+      }
+
+      return savedVideos;
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 
   Future<List<Lectures>> fetchCollectionData() async {
     try {
       QuerySnapshot querySnapshot =
           await _firestore.collection("lectures").get();
-      logger.i(querySnapshot);
       return querySnapshot.docs
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-            // Check if the required fields are not empty
             if (data['type'] != null &&
                 data['title'] != null &&
                 data['photo'] != null) {
@@ -74,7 +116,7 @@ class LectureDataService {
             }
           })
           .where((lecture) => lecture != null)
-          .cast<Lectures>() 
+          .cast<Lectures>()
           .toList();
     } catch (e) {
       logger.i(e);
@@ -97,7 +139,6 @@ class LectureDataService {
             List<dynamic>? comments = video['comments'];
 
             if (comments != null) {
-     
               for (var comment in comments) {
                 String rating = comment['rating'];
 
@@ -116,59 +157,102 @@ class LectureDataService {
         }
       }
 
-      return 0; 
+      return 0;
     } catch (e) {
       print('Error calculating average rating: $e');
       return 0;
     }
   }
 
-
-
   bool isNumeric(String value) {
-
     return double.tryParse(value) != null;
   }
 
+  Future<void> updateOverallRating(
+      String courseKey, double overallRating) async {
+    try {
+      final DocumentReference lectureDocRef =
+          _firestore.collection('lectures').doc(courseKey);
 
+      final DocumentSnapshot lectureSnapshot = await lectureDocRef.get();
 
+      if (lectureSnapshot.exists) {
+        final Map<String, dynamic> lectureData =
+            lectureSnapshot.data() as Map<String, dynamic>;
 
+        if (lectureData.containsKey('overallRating')) {
+          await lectureDocRef.update({
+            'overallRating': overallRating,
+          });
+        } else {
+          await lectureDocRef.set({
+            'overallRating': overallRating,
+          }, SetOptions(merge: true));
+        }
+      } else {
+        print('Document with ID $courseKey does not exist.');
+      }
+    } catch (e) {
+      print('Error updating overall rating: $e');
+    }
+  }
 
-Future<void> updateOverallRating(String courseKey, double overallRating) async {
-  try {
-    final DocumentReference lectureDocRef =
-        _firestore.collection('lectures').doc(courseKey);
+  Future<bool> isCourseSaved(String userId, String courseId) async {
+    try {
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection("users").doc(userId).get();
 
-    final DocumentSnapshot lectureSnapshot = await lectureDocRef.get();
+      List<dynamic> myCourses =
+          (userSnapshot.data() as Map<String, dynamic>?)?['myCourses'] ?? [];
 
-    if (lectureSnapshot.exists) {
-      final Map<String, dynamic> lectureData =
-          lectureSnapshot.data() as Map<String, dynamic>;
+      // Check if any of the saved courses has the specified courseId
+      bool isSaved = myCourses.any((course) => course['courseKey'] == courseId);
 
-      if (lectureData.containsKey('overallRating')) {
-        await lectureDocRef.update({
-          'overallRating': overallRating,
+      return isSaved;
+    } catch (e) {
+      print('Error checking if course is saved: $e');
+      return false;
+    }
+  }
+
+  Future<void> saveCourse(String userId, Course course) async {
+    try {
+      DocumentReference userDocRef = _firestore.collection('users').doc(userId);
+
+      DocumentSnapshot userSnapshot = await userDocRef.get();
+      List<dynamic> myCourses = (userSnapshot.data()
+              as Map<String, dynamic>?)?['myCourses'] as List<dynamic>? ??
+          [];
+      print("gegasdd sada  asdf ${myCourses}");
+      if (userSnapshot != null) {
+        await userDocRef.update({
+          'myCourses': FieldValue.arrayUnion([
+            {
+              'courseCollection': course.courseCollection,
+              'courseKey': course.courseKey,
+            },
+          ]),
         });
       } else {
-        await lectureDocRef.set({
-          'overallRating': overallRating,
-        }, SetOptions(merge: true));
+        print("sorry");
       }
-    } else {
-      print('Document with ID $courseKey does not exist.');
+    } catch (e) {
+      print('Failed to add lecture to saved: $e');
     }
-  } catch (e) {
-    print('Error updating overall rating: $e');
+  }
+
+  Future<void> unsaveCourse(String userId, Course course) async {
+    try {
+      await _firestore.collection('users').doc(userId).update({
+        'myCourses': FieldValue.arrayRemove([
+          {
+            'courseCollection': course.courseCollection,
+            'courseKey': course.courseKey,
+          },
+        ])
+      });
+    } catch (e) {
+      print('Failed to unsave course: $e');
+    }
   }
 }
-
-  
-}
-
-
-
-
-
-
-
-

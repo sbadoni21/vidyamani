@@ -1,36 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vidyamani/Notifier/user_state_notifier.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/screens/videoplayer_page.dart';
 import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class VideoTile extends StatelessWidget {
+final userProvider = Provider<User?>((ref) {
+  return ref.watch(userStateNotifierProvider);
+});
+
+class VideoTile extends ConsumerStatefulWidget {
   final Videos video;
-  final int index;
-  final String courseKey;
+  final int? index;
+  final String lectureKey;
 
   VideoTile({
     required this.video,
-    required this.index,
-    required this.courseKey,
+    this.index,
+    required this.lectureKey,
   });
+  @override
+  _VideoTileState createState() => _VideoTileState();
+}
+
+class _VideoTileState extends ConsumerState<VideoTile> {
+  late User? user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    user = ref.read(userProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
     MiscellaneousService miscellaneousService = MiscellaneousService();
-    AuthenticationServices authService = AuthenticationServices();
+
     LectureDataService lectureService = LectureDataService();
 
     return FutureBuilder(
-      future: _loadData(authService, lectureService),
+      future: _loadData(lectureService),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          String? userId = snapshot.data?['userId'];
           String? videoUids = snapshot.data?['videoUid'];
-          print(
-              'asdasdfasfasasdf asdfasdfasdjgfasgfyasysagdfsagd  asdfasasgdygaysgfyasgfasgdf$videoUids');
+
           return Container(
             color: Color.fromRGBO(240, 243, 248, 1),
             margin: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
@@ -39,12 +57,11 @@ class VideoTile extends StatelessWidget {
                 onSelected: (value) {
                   if (value == 'save') {
                     print("called save");
-                    _saveLecture(
-                        userId, videoUids, context, miscellaneousService);
+                    _saveLecture(videoUids, context, miscellaneousService);
                   } else if (value == 'unsave') {
                     print("called unsave");
                     _unsaveLecture(
-                        userId, videoUids, context, miscellaneousService);
+                        user!.uid, videoUids, context, miscellaneousService);
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -67,21 +84,20 @@ class VideoTile extends StatelessWidget {
                 ],
               ),
               contentPadding: EdgeInsets.fromLTRB(4, 4, 10, 4),
-              title: Text('${index + 1} - ${video.title}',
+              title: Text('${widget.index! + 1} - ${widget.video.title}',
                   style: myTextStylefontsize16),
               subtitle: Text(
-                '${video.content.split(' ').take(6).join(' ')}${video.content.split(' ').length > 6 ? '...' : ''}',
+                '${widget.video.content.split(' ').take(6).join(' ')}${widget.video.content.split(' ').length > 6 ? '...' : ''}',
               ),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => VideoPlayerScreen(
-                      video: video,
-                      index: index,
-                      userId: userId,
-                      videoId: video.videoUid,
-                      courseKey: courseKey,
+                      video: widget.video,
+                      index: widget.index!,
+                      videoId: widget.video.videoUid,
+                      courseKey: widget.video.lectureKey,
                     ),
                   ),
                 );
@@ -95,23 +111,22 @@ class VideoTile extends StatelessWidget {
     );
   }
 
-  Future<Map<String, String?>> _loadData(AuthenticationServices authService,
+  Future<Map<String, String?>> _loadData(
       LectureDataService lectureService) async {
-    String? userId = await authService.getCurrentUserId();
-    String? videoUids =
-        await lectureService.fetchLectureUidByIndex(courseKey, index);
+    String? userId = user!.uid;
+    String? videoUids = await lectureService.fetchLectureUidByIndex(
+        widget.lectureKey, widget.index!);
 
     return {'userId': userId, 'videoUid': videoUids};
   }
 
-  void _saveLecture(String? userId, String? videoUids, BuildContext context,
+  void _saveLecture(String? videoUids, BuildContext context,
       MiscellaneousService miscellaneousService) async {
-    if (userId != null && videoUids != null) {
-      print('User ID: $userId');
-      print('Video Uid: $videoUids');
+    print('Video Uid: $videoUids');
+    if (user != null && videoUids != null) {
       await miscellaneousService.addLectureToSaved(
-        userId,
-        courseKey,
+        user!.uid,
+        widget.lectureKey,
         videoUids,
         context,
       );
@@ -122,13 +137,11 @@ class VideoTile extends StatelessWidget {
 
   void _unsaveLecture(String? userId, String? videoUids, BuildContext context,
       MiscellaneousService miscellaneousService) async {
-    if (userId != null && videoUids != null) {
-      print('User ID: $userId');
-      print('Video Uid: $videoUids');
+    if (userId != null) {
       await miscellaneousService.removeLectureFromSaved(
-        userId,
-        courseKey,
-        videoUids,
+        user!.uid,
+        widget.video.lectureKey,
+        widget.video.videoUid,
         context,
       );
     } else {

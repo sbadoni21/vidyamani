@@ -138,7 +138,7 @@ extension on MyCourse {
 extension on SavedLecture {
   Map<String, dynamic> toMap() {
     return {
-      'courseId': courseId,
+      'courseId': lectureId,
       'videoId': videoId,
     };
   }

@@ -16,8 +16,8 @@ class MiscellaneousService {
           [];
 
       bool lectureExists = savedLectures.any((lecture) {
-        return lecture['courseId'] == courseId &&
-            (videoId == null || lecture['videoId'] == videoId);
+        return lecture['uid'] == courseId &&
+            (videoId == null || lecture['uid']['videoUid'] == videoId);
       });
 
       if (!lectureExists) {
@@ -137,7 +137,7 @@ class MiscellaneousService {
                   comments.map((comment) => Comments.fromMap(comment)).toList();
 
               allComments.addAll(videoComments);
-              break; 
+              break;
             }
           }
 

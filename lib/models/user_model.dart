@@ -10,6 +10,7 @@ class User {
   final String uid;
   final String? location;
   final List<MyCourse> myCourses;
+
   final List<SavedLecture> savedLectures;
 
   User({
@@ -59,21 +60,21 @@ class MyCourse {
 
   factory MyCourse.fromMap(Map<String, dynamic> map) {
     return MyCourse(
-      course: map['course'] ?? '',
-      courseId: map['courseId'] ?? '',
+      course: map['courseCollection'] ?? '',
+      courseId: map['courseKey'] ?? '',
     );
   }
 }
 
 class SavedLecture {
-  final String courseId;
+  final String lectureId;
   final String videoId;
 
-  SavedLecture({required this.courseId, required this.videoId});
+  SavedLecture({required this.lectureId, required this.videoId});
 
   factory SavedLecture.fromMap(Map<String, dynamic> map) {
     return SavedLecture(
-      courseId: map['courseId'] ?? '',
+      lectureId: map['courseId'] ?? '',
       videoId: map['videoId'] ?? '',
     );
   }

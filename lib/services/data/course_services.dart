@@ -42,7 +42,6 @@ class DataService {
 
   Future<List<Course>> fetchCoursesViaUser(String userId) async {
     try {
-      print("Fetching user data for user with ID: $userId");
       DocumentSnapshot userSnapshot =
           await _firestore.collection("users").doc(userId).get();
 
@@ -52,11 +51,8 @@ class DataService {
                       MyCourse.fromMap(courseData as Map<String, dynamic>))
                   .toList() ??
               [];
-
-      print("User's myCourses: $myCourses");
-
+      logger.i("dasfsafafadfaasdasdfasasasf            $myCourses");
       List<Course> courses = await Future.wait(myCourses.map((myCourse) async {
-        print("Fetching data for courseId: ${myCourse.courseId}");
         DocumentSnapshot courseSnapshot = await _firestore
             .collection("courses")
             .doc("kGrTotd8SFOUzsUH9Hpz")
@@ -67,20 +63,17 @@ class DataService {
             courseSnapshot.data() as Map<String, dynamic>?;
 
         if (data != null) {
-          print("Course data asdffound: $data");
           return Course.fromMap(data);
         } else {
-          print(
-              "Course data notasdaff found for courseId: ${myCourse.courseId}");
           return Course(
-            type: '',
-            title: '',
-            photo: '',
-            lectures: '',
-            price: '',
-            teacher: '',
-            lectureKey: '',
-          );
+              type: '',
+              title: '',
+              photo: '',
+              lectures: '',
+              price: '',
+              teacher: '',
+              lectureKey: '',
+              courseKey: '');
         }
       }));
 
@@ -102,7 +95,6 @@ class DataService {
             documentSnapshot.data() as Map<String, dynamic>?;
 
         if (data != null) {
-          // Log the video data
           logger.i("Video data: $data");
 
           List<Videos> videos = (data['video'] as List<dynamic>?)
@@ -129,4 +121,15 @@ class DataService {
       return [];
     }
   }
+
+
+
+
+
+
+
+
+
+
+
 }

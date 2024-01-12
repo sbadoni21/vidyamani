@@ -3,20 +3,23 @@ class Course {
   final String title;
   final String photo;
   final String? lectures;
+  
   final String? price;
   final String? teacher;
-  final String lectureKey;
+  final String? lectureKey;
   final String? courseKey;
+  final String? courseCollection;
 
   Course({
     required this.type,
     required this.title,
     required this.photo,
     this.lectures,
+    this.courseCollection,
     this.price,
     this.courseKey,
-    required this.teacher,
-    required this.lectureKey,
+    this.teacher,
+    this.lectureKey,
   });
 
   factory Course.fromMap(Map<String, dynamic> map) {
@@ -29,6 +32,7 @@ class Course {
       teacher: map['teacher'] ?? '',
       lectureKey: map['lectureKey'] ?? "",
       courseKey: map['uid'] ?? "",
+      courseCollection: map['courseCollection'] ?? "",
     );
   }
 }
@@ -37,6 +41,7 @@ class Lectures {
   final String type;
   final String title;
   final String photo;
+  final String? lectureKey;
   final List<Videos> videos;
 
   Lectures({
@@ -44,6 +49,7 @@ class Lectures {
     required this.title,
     required this.photo,
     required this.videos,
+    this.lectureKey,
   });
 
   factory Lectures.fromMap(Map<String, dynamic> map) {
@@ -51,7 +57,8 @@ class Lectures {
       type: map['type'] ?? '',
       title: map['title'] ?? '',
       photo: map['photo'] ?? '',
-      videos: (map['videos'] as List<dynamic>?)
+      lectureKey: map['uid'] ?? '',
+      videos: (map['video'] as List<dynamic>?)
               ?.map((video) => Videos.fromMap(video as Map<String, dynamic>))
               .toList() ??
           [],
@@ -65,11 +72,13 @@ class Videos {
   final String title;
   final String content;
   final String videoUid;
+  final String lectureKey;
   Videos(
       {required this.videoUrl,
       required this.comments,
       required this.title,
       required this.content,
+      required this.lectureKey,
       required this.videoUid});
 
   factory Videos.fromMap(Map<String, dynamic> map) {
@@ -80,6 +89,7 @@ class Videos {
                     Comments.fromMap(comment as Map<String, dynamic>))
                 .toList() ??
             [],
+        lectureKey: map['lectureKey'],
         title: map['title'],
         videoUid: map['videoUid'],
         content: map['content']);
