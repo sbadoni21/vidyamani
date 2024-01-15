@@ -57,6 +57,13 @@ TextStyle myTextStylefontsize24BGCOLOR = TextStyle(
   fontWeight: FontWeight.w600,
   color: bgColor,
 );
+TextStyle myTextStylefontsize20BGCOLOR = TextStyle(
+  fontFamily: 'Urbanist',
+  fontSize: 20.0,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.w600,
+  color: bgColor,
+);
 
 TextStyle myTextStylefontsize16white = TextStyle(
   fontFamily: 'Urbanist',

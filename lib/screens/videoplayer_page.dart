@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:vidyamani/Notifier/user_state_notifier.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
-import 'package:vidyamani/services/data/watch_time_service.dart'; // Import the watch time service
+import 'package:vidyamani/services/data/watch_time_service.dart';
+import 'package:vidyamani/services/profile/history_service.dart'; 
 import 'package:vidyamani/utils/static.dart';
 import 'package:expandable_text/expandable_text.dart';
 
@@ -127,12 +128,12 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     );
     _commentsFuture = _fetchComments();
     user = ref.read(userProvider);
-    // Increment watch time when the video starts playing
     _controller.addListener(() {
       if (_controller.value.isPlaying) {
         _incrementWatchTime();
       }
     });
+        sendDataToFirebase();
   }
 
   @override
@@ -143,6 +144,25 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     _ratingController.dispose();
     super.dispose();
   }
+
+
+
+  Future<void> sendDataToFirebase() async {
+    try {
+      await HistoryService().sendHistoryVideos(user!.uid, widget.video);
+      print('Data sent to Firebase successfully');
+    } catch (error) {
+      print('Error sending data to Firebase: $error');
+    }
+  }
+
+
+
+
+
+
+
+
 
   Future<List<Comments>> _fetchComments() async {
     return await MiscellaneousService()

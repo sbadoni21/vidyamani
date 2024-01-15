@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vidyamani/Notifier/user_state_notifier.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
 import 'package:vidyamani/components/courses_list_tile.dart';
 import 'package:vidyamani/components/featured_courses_component.dart';
@@ -56,43 +56,42 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
                     return Text(
                         'Error: ${snapshot.error}'); // Display error if any
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text(
-                        'No courses found.'); 
+                    return Text('No courses found.');
                   } else {
                     List<Course> courses = snapshot.data!;
 
                     return SizedBox(
-                        height: 170,
-                        child: courses.isNotEmpty
-                            ? ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: courses.length,
-                                itemBuilder: (context, index) {
-                                  Course course = courses[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CourseDetailPage(courses: course),
-                                        ),
-                                      );
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8),
-                                      child: Tiles(
-                                        imagePath: course.photo,
-                                        text1: course.type,
-                                        text2: course.title,
+                      height: 170,
+                      child: courses.isNotEmpty
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: courses.length,
+                              itemBuilder: (context, index) {
+                                Course course = courses[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseDetailPage(courses: course),
                                       ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8),
+                                    child: Tiles(
+                                      imagePath: course.photo,
+                                      text1: course.type,
+                                      text2: course.title,
                                     ),
-                                  );
-                                },
-                              )
-                            : const Text("No featured courses available."),
-                      );
+                                  ),
+                                );
+                              },
+                            )
+                          : const Text("No featured courses available."),
+                    );
                   }
                 },
               ),

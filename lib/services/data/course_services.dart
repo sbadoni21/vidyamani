@@ -42,9 +42,12 @@ class DataService {
 
   Future<List<Course>> fetchCoursesViaUser(String userId) async {
     try {
-      DocumentSnapshot userSnapshot =
-          await _firestore.collection("users").doc(userId).get();
+      DocumentReference userRef = _firestore.collection("users").doc(userId);
+      DocumentSnapshot userSnapshot = await userRef.get();
 
+      if (!userSnapshot.exists) {
+        await userRef.set({'myCourses': []});
+      }
       List<MyCourse> myCourses =
           (userSnapshot.get("myCourses") as List<dynamic>?)
                   ?.map((courseData) =>
@@ -52,6 +55,8 @@ class DataService {
                   .toList() ??
               [];
       logger.i("dasfsafafadfaasdasdfasasasf            $myCourses");
+
+      // Fetch courses bed on 'myCourses'
       List<Course> courses = await Future.wait(myCourses.map((myCourse) async {
         DocumentSnapshot courseSnapshot = await _firestore
             .collection("courses")
@@ -121,15 +126,4 @@ class DataService {
       return [];
     }
   }
-
-
-
-
-
-
-
-
-
-
-
 }

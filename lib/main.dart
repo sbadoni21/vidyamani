@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:vidyamani/Notifier/user_state_notifier.dart';
+import 'package:vidyamani/notifier/testimonal_state.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,10 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userState = ref.watch(userStateNotifierProvider);
+    final userState = ref.watch(
+      userStateNotifierProvider,
+    );
+
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/utils/static.dart';
+import 'package:vidyamani/services/data/lectures_services.dart'; // Import your service
 
 class SearchBarsection extends StatelessWidget {
   final ValueChanged<String>? onSearch;
@@ -9,11 +10,13 @@ class SearchBarsection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double barWidth = 290; 
+    double barWidth = 290;
 
     return Row(
       children: [
-        SearchBar(barWidth: barWidth, onChanged: onSearch),
+        Expanded(
+          child: SearchBar(barWidth: barWidth, onChanged: onSearch),
+        ),
         SizedBox(
           width: 25,
         ),

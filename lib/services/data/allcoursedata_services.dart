@@ -42,7 +42,6 @@ class AllCoursesDataService {
   }
 }
 
-// course_model.dart
 
 class AllCourseData {
   final String id;

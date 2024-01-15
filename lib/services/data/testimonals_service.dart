@@ -1,82 +1,62 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
+import 'package:vidyamani/models/testimonial_model.dart';
 
-class TestimonialDataService {
+class TestimonialService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final logger = Logger(
-    printer: PrettyPrinter(),
-  );
-
-  Future<List<Testimonial>> fetchCollectionData() async {
+  Future<List<Review>> fetchCollectionData() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection("testimonials").get();
-      logger.i(querySnapshot);
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('testimonials')
+          .doc('26dC6h9xOvLxtqoPf4e1')
+          .get();
 
-      return querySnapshot.docs
-          .map((DocumentSnapshot doc) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            if (data['displayName'] != null &&
-     
-                data['email'] != null &&
-                data['profilephoto'] != null &&
-                data['reviews'] != null) {
-              return Testimonial.fromMap(data);
-            } else {
-              return null;
-            }
-          })
-          .where((testimonial) => testimonial != null)
-          .cast<Testimonial>()
+      if (!snapshot.exists) {
+        return [];
+      }
+
+      List<Review> testimonials = (snapshot.data()?['reviews'] as List<dynamic>)
+          .map((review) => Review.fromMap(review))
           .toList();
+
+      return testimonials;
     } catch (e) {
-      logger.i(e);
-      return [];
+      throw e.toString();
     }
   }
-}
 
-class Testimonial {
-  final String name;
+  Future<void> addTestimonial(
+    rating,
+    comment,
+    lectureKey,
+    courseKey,
+    profilephoto,
+    userId,
+    displayName,
+  ) async {
+    try {
+      DocumentReference<Map<String, dynamic>> docRef =
+          _firestore.collection('testimonials').doc('26dC6h9xOvLxtqoPf4e1');
 
-  final String email;
-  final String profilephoto;
-  final List<Review> reviews;
+      await _firestore.runTransaction((transaction) async {
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+            await transaction.get(docRef);
 
-  Testimonial({
-    required this.name,
+        List<dynamic> existingReviews = snapshot.data()?['reviews'] ?? [];
 
-    required this.email,
-    required this.profilephoto,
-    required this.reviews,
-  });
+        existingReviews.add({
+          'ratings': rating,
+          'comments': comment,
+          'lectureKey': lectureKey,
+          'courseKey': courseKey,
+          'profilephoto': profilephoto,
+          'userId': userId,
+          'displayName': displayName,
+        });
 
-  factory Testimonial.fromMap(Map<String, dynamic> map) {
-    return Testimonial(
-      name: map['displayName'],
-
-      email: map['email'],
-      profilephoto: map["profilephoto"],
-      reviews: (map['reviews'] as List<dynamic>)
-          .map((review) => Review.fromMap(review))
-          .toList(),
-    );
-  }
-}
-
-class Review {
-  final String rating;
-  final String comments;
-
-  Review({
-    required this.rating,
-    required this.comments,
-  });
-
-  factory Review.fromMap(Map<String, dynamic> map) {
-    return Review(
-      rating: map['ratings'],
-      comments: map['comments'],
-    );
+        transaction.update(docRef, {'reviews': existingReviews});
+      });
+    } catch (e) {
+      throw e.toString();
+    }
   }
 }

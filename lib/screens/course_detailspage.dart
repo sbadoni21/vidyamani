@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vidyamani/Notifier/user_state_notifier.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
+import 'package:vidyamani/services/data/testimonals_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
 final userProvider = Provider<User?>((ref) {
@@ -21,6 +22,73 @@ class CourseDetailPage extends ConsumerStatefulWidget {
 
   @override
   _CourseDetailPageState createState() => _CourseDetailPageState();
+}
+
+Future<void> _showReviewDialog(
+    BuildContext context, User? user, Course course) async {
+  double rating = 0.0;
+  String review = "";
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Add Review"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RatingBar.builder(
+              initialRating: rating,
+              minRating: 1,
+              itemCount: 5,
+              itemSize: 30.0,
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.yellow,
+              ),
+              onRatingUpdate: (newRating) {
+                rating = newRating;
+              },
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: "Enter your review here...",
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                review = value;
+              },
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () async {
+              await TestimonialService().addTestimonial(
+                rating.toString(),
+                review,
+                course.lectureKey,
+                course.courseKey,
+                user?.photoURL,
+                user?.uid,
+                user?.displayName,
+              );
+              Navigator.of(context).pop();
+            },
+            child: Text("Submit"),
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
@@ -151,7 +219,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
           Navigator.pop(context);
         },
       ),
-      body: Column(
+      body: ListView(
         children: [
           Container(
             padding: EdgeInsets.all(16),
@@ -161,14 +229,29 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                 SizedBox(height: 8),
                 Container(
                   width: double.infinity,
-                  child: Container(
-                    width: 80,
-                    height: 80,
-                    alignment: Alignment.centerLeft,
-                    child: Image.network(widget.courses.photo),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        alignment: Alignment.centerLeft,
+                        child: Image.network(widget.courses.photo),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (user?.type == 'premium') {
+                            _showReviewDialog(context, user, widget.courses);
+                          }
+                        },
+                        child: Text(
+                          (user?.type == 'premium') ? 'Add Review' : "",
+                          style: myTextStylefontsize14White,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 8),
                 Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,

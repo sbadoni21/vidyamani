@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vidyamani/components/categories_component.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
-import 'package:vidyamani/components/featured_courses_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/search_bar.dart';
 import 'package:vidyamani/screens/courses_page.dart';
-
+import 'package:vidyamani/services/data/allcoursedata_services.dart';
+import 'package:vidyamani/services/data/search_course_lectures.dart';
 class SearchBarButton extends StatefulWidget {
   const SearchBarButton({super.key});
 
@@ -14,6 +13,9 @@ class SearchBarButton extends StatefulWidget {
 }
 
 class _SearchBarButtonState extends State<SearchBarButton> {
+  List<AllCourseData> searchResults =
+      []; // Add a state variable for search results
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,115 +28,55 @@ class _SearchBarButtonState extends State<SearchBarButton> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchBarsection(),
+                  SearchBarsection(
+                    onSearch: (query) async {
+                      List<AllCourseData> results = await SearchDataService()
+                          .fetchAllCourses(searchQuery: query);
+
+                      setState(() {
+                        searchResults = results;
+                      });
+
+                      // Do something with the search results
+                      print('Search Results: ${searchResults.asMap()}');
+                    },
+                  ),
                   const SizedBox(height: 26),
                   const HeadingTitle(title: "Courses"),
                   const SizedBox(height: 16),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+
+                  // Render search results for Courses
+                  if (searchResults.isNotEmpty)
+                    Column(
                       children: [
-                        // Tiles(
-                        //   imagePath: "lib/assets/images/featuredcourses.png",
-                        //   text1: "Basic Courses",
-                        //   text2: "basic course",
-                        //   pageRoute: MaterialPageRoute(
-                        //     builder: (context) => CoursesPage(),
-                        //   ),
-                        // ),
-                        // SizedBox(width: 3),
-                        // Tiles(
-                        //   imagePath: "lib/assets/images/featuredcourses.png",
-                        //   text1: "Basic Courses",
-                        //   text2: "basic course",
-                        //   pageRoute: MaterialPageRoute(
-                        //     builder: (context) => CoursesPage(),
-                        //   ),
-                        // ),
-                        // SizedBox(width: 3),
-                        // Tiles(
-                        //   imagePath: "lib/assets/images/featuredcourses.png",
-                        //   text1: "Basic Courses",
-                        //   text2: "basic course",
-                        //   pageRoute: MaterialPageRoute(
-                        //     builder: (context) => CoursesPage(),
-                        //   ),
-                        // ),
+                        for (var course in searchResults)
+                          ListTile(
+                            title: Text(course.title),
+                            subtitle: Text(course.type),
+                            // Add more details or customize as needed
+                          ),
                       ],
                     ),
-                  ),
+                  // End of Courses
+
                   const SizedBox(height: 16),
                   const HeadingTitle(title: "Lectures"),
                   const SizedBox(height: 16),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+
+                  if (searchResults.isNotEmpty)
+                    Column(
                       children: [
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
+                        for (var lecture in searchResults)
+                          ListTile(
+                            title: Text(lecture.title),
+                            subtitle: Text(lecture.type),
+                            // Add more details or customize as needed
                           ),
-                        ),
-                        SizedBox(width: 3),
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                        SizedBox(width: 3),
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  const HeadingTitle(title: "Lectures"), // Duplicate?
-                  const SizedBox(height: 16),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                        SizedBox(width: 3),
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                        SizedBox(width: 3),
-                        CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                            builder: (context) => CoursesPage(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // End of Lectures
+
+                  // Your existing widgets for displaying other content
                 ],
               ),
             ),

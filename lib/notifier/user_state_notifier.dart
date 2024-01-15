@@ -16,8 +16,6 @@ class UserStateNotifier extends StateNotifier<User?> {
   UserStateNotifier(this.ref) : super(null) {
     _initUser();
   }
-
-  // Initialize user data when the notifier is created
   Future<void> _initUser() async {
     var firebaseUser = auth.FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
@@ -119,13 +117,13 @@ extension on User {
       'type': type,
       'uid': uid,
       'location': location,
+      'myHistory': myCourses.map((lecture) => lecture.toMap()).toList(),
       'myCourses': myCourses.map((course) => course.toMap()).toList(),
       'savedLectures': savedLectures.map((lecture) => lecture.toMap()).toList(),
     };
   }
 }
 
-// Add toMap() method to MyCourse and SavedLecture classes
 extension on MyCourse {
   Map<String, dynamic> toMap() {
     return {
@@ -136,6 +134,14 @@ extension on MyCourse {
 }
 
 extension on SavedLecture {
+  Map<String, dynamic> toMap() {
+    return {
+      'courseId': lectureId,
+      'videoId': videoId,
+    };
+  }
+}
+extension on History {
   Map<String, dynamic> toMap() {
     return {
       'courseId': lectureId,

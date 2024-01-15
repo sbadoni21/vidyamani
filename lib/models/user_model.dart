@@ -10,7 +10,7 @@ class User {
   final String uid;
   final String? location;
   final List<MyCourse> myCourses;
-
+  final List<History>? myHistory;
   final List<SavedLecture> savedLectures;
 
   User({
@@ -24,6 +24,7 @@ class User {
     required this.type,
     required this.uid,
     this.location,
+    this.myHistory,
     required this.myCourses,
     required this.savedLectures,
   });
@@ -46,6 +47,10 @@ class User {
           [],
       savedLectures: (map['savedLectures'] as List<dynamic>?)
               ?.map((e) => SavedLecture.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      myHistory: (map['myHistory'] as List<dynamic>?)
+              ?.map((e) => History.fromMap(e as Map<String, dynamic>))
               .toList() ??
           [],
     );
@@ -75,6 +80,20 @@ class SavedLecture {
   factory SavedLecture.fromMap(Map<String, dynamic> map) {
     return SavedLecture(
       lectureId: map['courseId'] ?? '',
+      videoId: map['videoId'] ?? '',
+    );
+  }
+}
+
+class History {
+  final String lectureId;
+  final String videoId;
+
+  History({required this.lectureId, required this.videoId});
+
+  factory History.fromMap(Map<String, dynamic> map) {
+    return History(
+      lectureId: map['lectureId'] ?? '',
       videoId: map['videoId'] ?? '',
     );
   }

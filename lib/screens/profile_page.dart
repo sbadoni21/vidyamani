@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vidyamani/Notifier/user_state_notifier.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/dashboard_component.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/utils/static.dart';
@@ -53,12 +53,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                           ),
                           child: ClipOval(
-                            child: Image.network(
-                              user!.photoURL,
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
-                            ),
+                            child: user!.photoURL == "none"
+                                ? Image.asset(
+                                    'lib/assets/images/placeholder_image.png',
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    user!.photoURL,
+                                    width: 120,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                         const SizedBox(
