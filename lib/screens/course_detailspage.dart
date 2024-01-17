@@ -83,7 +83,7 @@ Future<void> _showReviewDialog(
               );
               Navigator.of(context).pop();
             },
-            child: Text("Submit"),
+            child:const Text("Submit"),
           ),
         ],
       );
@@ -134,20 +134,20 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Payment Gateway"),
-          content: Text("Implement your payment gateway UI here."),
+          title: const Text("Payment Gateway"),
+          content:const Text("Implement your payment gateway UI here."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Proceed"),
+              child: const Text("Proceed"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child:const Text("Cancel"),
             ),
           ],
         );

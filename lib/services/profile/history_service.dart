@@ -7,7 +7,6 @@ class HistoryService {
 
   Future<void> sendHistoryVideos(String userId, Videos videos) async {
     try {
-      print('Sending history videos for userId: $userId');
       DocumentReference userDocRef = _firestore.collection('users').doc(userId);
 
       DocumentSnapshot userSnapshot = await userDocRef.get();
@@ -30,19 +29,14 @@ class HistoryService {
           'myHistory': myHistory,
         });
 
-        print('History videos added successfully.');
       } else {
-        print(
-            'Data already exists for lectureId: ${videos.lectureKey}, videoId: ${videos.videoUid}');
       }
     } catch (e) {
-      print('Error sending history videos: $e');
     }
   }
 
   Future<List<Videos>> fetchSavedVideos(String userId) async {
     try {
-      print('Fetching saved videos for userId: $userId');
       DocumentSnapshot userSnapshot =
           await _firestore.collection("users").doc(userId).get();
 
@@ -78,10 +72,8 @@ class HistoryService {
         }
       }
 
-      print('Fetched ${myVideos.length} saved videos successfully.');
       return myVideos;
     } catch (e) {
-      print('Error fetching saved videos: $e');
       return [];
     }
   }
