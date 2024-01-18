@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/notifier/testimonal_state.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
             appId: "1:862420344316:web:3086d929b0f710d2bbe679",
             measurementId: "G-ZC1VKV8DHC"));
     logger.i("Firebase initialized successfully");
+    MobileAds.instance.initialize();
     runApp(ProviderScope(child: MyApp()));
   } catch (e) {
     logger.e("Firebase initialization error: $e");

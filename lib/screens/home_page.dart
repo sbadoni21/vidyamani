@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
@@ -19,6 +21,7 @@ import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
+import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -36,25 +39,55 @@ class _HomePageState extends State<HomePage> {
   late List<Lectures> fetchedLectures = [];
   final DataService _dataService = DataService();
   final LectureDataService _lectureService = LectureDataService();
-  final TestimonialService _testimonialService = TestimonialService();
   final logger = Logger(
     printer: PrettyPrinter(),
   );
   late Timer _timer;
   final Duration refreshInterval = const Duration(minutes: 30);
+ late BannerAd _bannerAd;
 
+  final String _adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-3940256099942544/2934735716';
   @override
   void initState() {
     super.initState();
     fetchData();
     setupRefreshTimer();
     fetchImageUrls();
+    _loadAd();
   }
 
   void setupRefreshTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
       fetchData();
     });
+  }
+
+Future <void> _loadAd() async {
+   await BannerAd(
+      adUnitId: _adUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
   }
 
   Future<void> fetchData() async {
@@ -67,6 +100,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+    _bannerAd?.dispose();
   }
 
   Future<void> fetchImageUrls() async {
@@ -167,6 +201,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
+            Container(
+              height: 50,
+              width:50,
+              child: AdWidget(ad: _bannerAd),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
