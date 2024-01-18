@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   );
   late Timer _timer;
   final Duration refreshInterval = const Duration(minutes: 30);
- late BannerAd _bannerAd;
+  BannerAd? _bannerAd;
 
   final String _adUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
@@ -64,30 +64,30 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-Future <void> _loadAd() async {
-   await BannerAd(
-      adUnitId: _adUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
+  Future<void> _loadAd() async {
+    try {
+      await BannerAd(
+        adUnitId: _adUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _bannerAd = ad as BannerAd;
+            });
+          },
+          onAdFailedToLoad: (ad, err) {
+            ad.dispose();
+            print('Ad failed to load: $err');
+          },
+          onAdOpened: (Ad ad) {},
+          onAdClosed: (Ad ad) {},
+          onAdImpression: (Ad ad) {},
+        ),
+      ).load();
+    } catch (e) {
+      print('Error loading ad: $e');
+    }
   }
 
   Future<void> fetchData() async {
@@ -203,8 +203,10 @@ Future <void> _loadAd() async {
             const SizedBox(height: 16),
             Container(
               height: 50,
-              width:50,
-              child: AdWidget(ad: _bannerAd),
+              width: double.infinity,
+              child: _bannerAd != null
+                  ? AdWidget(ad: _bannerAd!)
+                  : SizedBox.shrink(),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
