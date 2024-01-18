@@ -11,20 +11,47 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: AnimatedSplashScreen(
+      animationDuration: const Duration(seconds: 2),
       duration: 3000,
-      splash: Column(children: [
-        Image.asset("lib/assets/images/logowhite.png"),
-        Text(
-          "Vidhyamani",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+      // splash: (
+      //   children: [
+
+      //     // const Text(
+      //     //   "Vidhyamani",
+      //     //   style: TextStyle(
+      //     //     color: Colors.white,
+      //     //     fontSize: 24,
+      //     //     fontWeight: FontWeight.w600,
+      //     //   ),
+      //     // )
+      //   ]
+      // ),
+      splash: ListView(
+        children: [
+          Image.asset(
+            "lib/assets/images/logowhite.png",
+            height: 270,
+            width: 270,
           ),
-        )
-      ]),
+          Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: const Text(
+              "Vidhyamani",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          )
+        ],
+      ),
+      splashIconSize: 350,
+      centered: true,
+
       nextScreen: LoginPage(),
-      splashTransition: SplashTransition.fadeTransition,
+      splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.bottomToTop,
       backgroundColor: bgColor,
     ));

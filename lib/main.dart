@@ -7,6 +7,7 @@ import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:flutter/services.dart';
+import 'package:vidyamani/screens/splashscreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -42,7 +43,6 @@ class MyApp extends ConsumerWidget {
       userStateNotifierProvider,
     );
 
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Vidyamani',
@@ -51,7 +51,7 @@ class MyApp extends ConsumerWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       navigatorKey: navigatorKey,
-      home: userState == null ? LoginPage() : HomePage(),
+      home: userState == null ? SplashScreen() : HomePage(),
     );
   }
 }
