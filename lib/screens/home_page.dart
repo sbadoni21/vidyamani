@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
@@ -20,20 +21,24 @@ import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
-import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 
-class HomePage extends StatefulWidget {
+final adProvider = ChangeNotifierProvider<AdProvider>(
+  (ref) => AdProvider(),
+);
+
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends ConsumerState<HomePage> {
   int currentIndex = 0;
+  final AdProvider adProvider = AdProvider();
   late List<String> imageUrls = [];
   late List<Course> coursesData = [];
   late List<Lectures> fetchedLectures = [];
@@ -49,6 +54,7 @@ class _HomePageState extends State<HomePage> {
   final String _adUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +62,9 @@ class _HomePageState extends State<HomePage> {
     setupRefreshTimer();
     fetchImageUrls();
     _loadAd();
+    adProvider.createInterstitialAd();
+    adProvider.createRewardedAd();
+    adProvider.createRewardedInterstitialAd();
   }
 
   void setupRefreshTimer() {
@@ -143,8 +152,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: const CustomAppBar(),
         body: IndexedStack(index: currentIndex, children: [
-          _buildHomePage(context),
-          const SearchBarButton(),
+          _buildHomePage(context, ref, adProvider),
           const MyNotes(),
           const ProfilePage(),
         ]),
@@ -160,8 +168,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildHomePage(BuildContext context) {
+  Widget _buildHomePage(
+      BuildContext context, WidgetRef ref, AdProvider adProvider) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          adProvider.showRewardedInterstitialAd();
+        },
+        child: Icon(Icons.play_arrow),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await fetchImageUrls();

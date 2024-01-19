@@ -94,16 +94,11 @@ class UserStateNotifier extends StateNotifier<User?> {
     }
   }
 
-// Add more functions as needed for other user-related operations
 }
-
-// Define the provider for the UserStateNotifier
 final userStateNotifierProvider =
     StateNotifierProvider<UserStateNotifier, User?>(
   (ref) => UserStateNotifier(ref),
 );
-
-// Extend the User model to include a method to convert to Map for Firestore
 extension on User {
   Map<String, dynamic> toMap() {
     return {
