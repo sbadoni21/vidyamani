@@ -21,6 +21,7 @@ import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
+import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
@@ -153,6 +154,7 @@ class HomePageState extends ConsumerState<HomePage> {
         appBar: const CustomAppBar(),
         body: IndexedStack(index: currentIndex, children: [
           _buildHomePage(context, ref, adProvider),
+          const SearchBarButton(),
           const MyNotes(),
           const ProfilePage(),
         ]),
