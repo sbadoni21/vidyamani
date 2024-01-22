@@ -16,6 +16,8 @@ import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/models/categories_model.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/testimonial_model.dart';
+import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
@@ -23,6 +25,7 @@ import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
+import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -31,6 +34,9 @@ final adProvider = ChangeNotifierProvider<AdProvider>(
   (ref) => AdProvider(),
 );
 
+final userProvider = Provider<User?>((ref) {
+  return ref.watch(userStateNotifierProvider);
+});
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
@@ -49,9 +55,9 @@ class HomePageState extends ConsumerState<HomePage> {
     printer: PrettyPrinter(),
   );
   late Timer _timer;
-  final Duration refreshInterval = const Duration(minutes: 30);
+  final Duration refreshInterval = const Duration(seconds: 120);
   BannerAd? _bannerAd;
-
+   User? user;
   final String _adUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
@@ -62,43 +68,46 @@ class HomePageState extends ConsumerState<HomePage> {
     fetchData();
     setupRefreshTimer();
     fetchImageUrls();
-    _loadAd();
+    // _loadAd();
     adProvider.createInterstitialAd();
     adProvider.createRewardedAd();
     adProvider.createRewardedInterstitialAd();
+    user = ref.read(userProvider);
+
   }
 
   void setupRefreshTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
       fetchData();
+     if(user!.type == "free"){ adProvider.showInterstitialAd();}
     });
   }
 
-  Future<void> _loadAd() async {
-    try {
-      await BannerAd(
-        adUnitId: _adUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            setState(() {
-              _bannerAd = ad as BannerAd;
-            });
-          },
-          onAdFailedToLoad: (ad, err) {
-            ad.dispose();
-            print('Ad failed to load: $err');
-          },
-          onAdOpened: (Ad ad) {},
-          onAdClosed: (Ad ad) {},
-          onAdImpression: (Ad ad) {},
-        ),
-      ).load();
-    } catch (e) {
-      print('Error loading ad: $e');
-    }
-  }
+  // Future<void> _loadAd() async {
+  //   try {
+  //     await BannerAd(
+  //       adUnitId: _adUnitId,
+  //       request: const AdRequest(),
+  //       size: AdSize.banner,
+  //       listener: BannerAdListener(
+  //         onAdLoaded: (ad) {
+  //           setState(() {
+  //             _bannerAd = ad as BannerAd;
+  //           });
+  //         },
+  //         onAdFailedToLoad: (ad, err) {
+  //           ad.dispose();
+  //           print('Ad failed to load: $err');
+  //         },
+  //         onAdOpened: (Ad ad) {},
+  //         onAdClosed: (Ad ad) {},
+  //         onAdImpression: (Ad ad) {},
+  //       ),
+  //     ).load();
+  //   } catch (e) {
+  //     print('Error loading ad: $e');
+  //   }
+  // }
 
   Future<void> fetchData() async {
     await fetchImageUrls();
@@ -173,12 +182,7 @@ class HomePageState extends ConsumerState<HomePage> {
   Widget _buildHomePage(
       BuildContext context, WidgetRef ref, AdProvider adProvider) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          adProvider.showRewardedInterstitialAd();
-        },
-        child: Icon(Icons.play_arrow),
-      ),
+
       body: RefreshIndicator(
         onRefresh: () async {
           await fetchImageUrls();
@@ -218,13 +222,13 @@ class HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            Container(
-              height: 50,
-              width: double.infinity,
-              child: _bannerAd != null
-                  ? AdWidget(ad: _bannerAd!)
-                  : SizedBox.shrink(),
-            ),
+            // Container(
+            //   height: 50,
+            //   width: double.infinity,
+            //   child: _bannerAd != null
+            //       ? AdWidget(ad: _bannerAd!)
+            //       : SizedBox.shrink(),
+            // ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -234,7 +238,6 @@ class HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  // Inside the _HomePageState class
                   SizedBox(
                     height: 130.0,
                     child: ListView.builder(
@@ -263,7 +266,6 @@ class HomePageState extends ConsumerState<HomePage> {
                       },
                     ),
                   ),
-
                   const HeadingTitle(title: "Featured Courses"),
                   const SizedBox(
                     height: 16,
@@ -315,7 +317,6 @@ class HomePageState extends ConsumerState<HomePage> {
                       }
                     },
                   ),
-
                   const SizedBox(
                     height: 16,
                   ),

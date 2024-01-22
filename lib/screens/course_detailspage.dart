@@ -102,6 +102,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
     _calculateAverageRating();
     user = ref.read(userProvider);
     checkCourseSaved();
+
   }
 
   Future<void> checkCourseSaved() async {
@@ -328,10 +329,10 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: widget.courses.type == "free" ||
+            child:( widget.courses.type == "free" ||
                     (widget.courses.type == "premium" &&
                         user?.type == "premium")
-                ? Column(
+                )? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Course Content", style: myTextStylefontsize16),

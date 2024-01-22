@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/dashboard_component.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/utils/static.dart';
-
 final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
+  return ref.read(userStateNotifierProvider);
 });
-
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
-
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   late User? user;
-
   @override
   void initState() {
     super.initState();
     user = ref.read(userProvider);
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

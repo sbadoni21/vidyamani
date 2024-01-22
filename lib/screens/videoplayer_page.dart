@@ -1,17 +1,18 @@
+import 'dart:async';
+import 'package:chewie/chewie.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/services/data/watch_time_service.dart';
-import 'package:vidyamani/services/profile/history_service.dart'; 
+import 'package:vidyamani/services/profile/history_service.dart';
 import 'package:vidyamani/utils/static.dart';
-import 'package:expandable_text/expandable_text.dart';
 
 final userProvider = Provider<User?>((ref) {
   return ref.watch(userStateNotifierProvider);
@@ -19,9 +20,7 @@ final userProvider = Provider<User?>((ref) {
 
 class CommentsWidget extends StatefulWidget {
   final List<Comments> comments;
-
   CommentsWidget({required this.comments, Key? key}) : super(key: key);
-
   @override
   _CommentsWidgetState createState() => _CommentsWidgetState();
 }
@@ -88,14 +87,12 @@ class VideoPlayerScreen extends ConsumerStatefulWidget {
   final int index;
   final String? videoId;
   final String courseKey;
-
   VideoPlayerScreen({
     required this.video,
     required this.index,
     required this.videoId,
     required this.courseKey,
   });
-
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
@@ -108,11 +105,15 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   late Future<List<Comments>> _commentsFuture;
   bool _isLoading = true;
   late User? user;
+  Timer? _timer;
   final WatchTimeService watchTimeService = WatchTimeService();
-
   @override
   void initState() {
     super.initState();
+    if (user!.type == 'free') {
+      
+    }
+
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,
     );
@@ -130,22 +131,34 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     user = ref.read(userProvider);
     _controller.addListener(() {
       if (_controller.value.isPlaying) {
-        _incrementWatchTime();
+        _startTimer();
+      } else {
+        _stopTimer();
       }
     });
-        sendDataToFirebase();
+    sendDataToFirebase();
+  }
+
+  void _startTimer() {
+    _timer?.cancel(); // Cancel any existing timer
+    _timer = Timer.periodic(Duration(minutes: 1), (Timer t) {
+      _incrementWatchTime();
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
   }
 
   @override
   void dispose() {
+    _stopTimer();
     _controller.dispose();
     _chewieController.dispose();
     _commentController.dispose();
     _ratingController.dispose();
     super.dispose();
   }
-
-
 
   Future<void> sendDataToFirebase() async {
     try {
@@ -156,14 +169,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-
-
-
-
-
-
-
-
   Future<List<Comments>> _fetchComments() async {
     return await MiscellaneousService()
         .fetchAllComments(widget.courseKey, widget.videoId);
@@ -173,7 +178,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     if (_commentController.text.isEmpty) {
       return;
     }
-
     Comments newComment = Comments(
       rating: _ratingController.text.isNotEmpty
           ? _ratingController.text
@@ -182,7 +186,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       userId: user?.uid ?? '',
       userName: user!.displayName,
     );
-
     try {
       await MiscellaneousService().addAndListCommentToVideoLecture(
         user?.uid ?? '',
@@ -191,11 +194,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         newComment,
         context,
       );
-
       // Clear the comment and rating controllers
       _commentController.clear();
       _ratingController.clear();
-
       setState(() {
         _commentsFuture = _fetchComments();
       });
@@ -265,7 +266,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                       );
                     } else {
                       _isLoading = false;
-
                       return _isLoading
                           ? CircularProgressIndicator()
                           : CommentsWidget(

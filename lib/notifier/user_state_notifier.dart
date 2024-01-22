@@ -23,7 +23,6 @@ class UserStateNotifier extends StateNotifier<User?> {
     }
   }
 
-  // Fetch user data from Firestore
   Future<void> fetchUserData(String userId) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -32,7 +31,6 @@ class UserStateNotifier extends StateNotifier<User?> {
       if (snapshot.exists && snapshot.data() != null) {
         state = User.fromMap(snapshot.data()!);
       } else {
-        // Handle the case when the user document doesn't exist
         state = null;
       }
     } catch (e) {
@@ -41,7 +39,6 @@ class UserStateNotifier extends StateNotifier<User?> {
     }
   }
 
-  // Update user data in Firestore
   Future<void> updateUserData(User updatedUser) async {
     try {
       await _firestore
@@ -49,10 +46,8 @@ class UserStateNotifier extends StateNotifier<User?> {
           .doc(updatedUser.uid)
           .set(updatedUser.toMap(), SetOptions(merge: true));
 
-      // Update local state after successful Firestore update
       state = updatedUser;
     } catch (e) {
-      // Handle exceptions
     }
   }
 
