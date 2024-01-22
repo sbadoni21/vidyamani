@@ -57,14 +57,22 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
   }
-
-  Future<void> _submitFirstPage() async {
-    if (_firstPageKey.currentState?.validate() ?? false) {
+Future<void> _submitFirstPage() async {
+  if (_firstPageKey.currentState?.validate() ?? false) {
+    if (_userImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+       const SnackBar(
+          content: Text('Please select an image'),
+        ),
+      );
+    } else {
       setState(() {
         _currentPage = 2;
       });
     }
   }
+}
+
 
   Future<void> _submitForm() async {
     if (_secondPageKey.currentState?.validate() ?? false) {
