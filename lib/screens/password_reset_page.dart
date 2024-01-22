@@ -46,7 +46,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             ),
             TextField(
               controller: newPasswordController,
-              obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Please enter your registered email',
                 prefixIcon: Icon(Icons.lock),
@@ -69,22 +68,34 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     ),
                   );
                 } else {
-                  bool passwordReset =
-                      await AuthenticationServices().resetPassword(newPassword);
+                  bool isGoogleUser = AuthenticationServices().isGoogleUser();
 
-                  if (passwordReset) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Password reset link sent via email'),
-                      ),
-                    );
-                  } else {
+                  if (isGoogleUser) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                            'Failed to reset the password. Please try again.'),
+                            "Cannot reset Gmail password. Go to Gmail services."),
                       ),
                     );
+                  } else {
+                    bool passwordReset = await AuthenticationServices()
+                        .resetPassword(newPassword);
+
+                    if (passwordReset) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Password reset link sent via email, Note: Google Sign-in User need to change their password via GOOGLE MAIL'),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Failed to reset the password. Please try again.'),
+                        ),
+                      );
+                    }
                   }
                 }
               },

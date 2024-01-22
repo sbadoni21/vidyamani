@@ -40,6 +40,17 @@ class AuthenticationServices {
       return false;
     }
   }
+   bool isGoogleUser() {
+    try {
+      User? user = firebaseAuth.currentUser;
+      if (user != null) {
+        return user.providerData.any((userInfo) => userInfo.providerId == 'google.com');
+      }
+    } catch (e) {
+      print('Error checking if user signed up with Google: $e');
+    }
+    return false;
+  }
   Future<bool> validateOTP(String otpEntered, String otpSent) async {
     return otpEntered == otpSent;
   }

@@ -9,9 +9,7 @@ import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:flutter/services.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -35,16 +33,13 @@ Future<void> main() async {
     logger.e("Firebase initialization error: $e");
   }
 }
-
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(
       userStateNotifierProvider,
     );
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Vidyamani',
@@ -57,12 +52,9 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
 class ErrorApp extends StatelessWidget {
   final String errorMessage;
-
   ErrorApp(this.errorMessage);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

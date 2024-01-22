@@ -17,18 +17,6 @@ class SplashScreen extends ConsumerWidget {
         child: AnimatedSplashScreen(
       animationDuration: const Duration(seconds: 2),
       duration: 3000,
-      // splash: (
-      //   children: [
-      //     // const Text(
-      //     //   "Vidhyamani",
-      //     //   style: TextStyle(
-      //     //     color: Colors.white,
-      //     //     fontSize: 24,
-      //     //     fontWeight: FontWeight.w600,
-      //     //   ),
-      //     // )
-      //   ]
-      // ),
       splash: ListView(
         children: [
           Image.asset(

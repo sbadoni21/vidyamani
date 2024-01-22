@@ -2,15 +2,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/services/admanager/rewards_callback.dart';
 
 class AdProvider extends ChangeNotifier {
   InterstitialAd? _interstitialAd;
   int _numInterstitialLoadAttempts = 3;
-    RewardedAd? rewardedAd;
+  RewardedAd? rewardedAd;
   int _numRewardedLoadAttempts = 3;
-    RewardedInterstitialAd? _rewardedInterstitialAd;
+  RewardedInterstitialAd? _rewardedInterstitialAd;
   int _numRewardedInterstitialLoadAttempts = 3;
-
+  UserCoinsService userCoinsService = UserCoinsService();
   void createInterstitialAd() {
     InterstitialAd.load(
       adUnitId: Platform.isAndroid
@@ -51,19 +53,20 @@ class AdProvider extends ChangeNotifier {
         print('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         createInterstitialAd();
-        notifyListeners(); // Notify listeners when ad is dismissed
+        notifyListeners();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
         print('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         createInterstitialAd();
-        notifyListeners(); // Notify listeners on failure to show ad
+        notifyListeners();
       },
     );
     _interstitialAd!.show();
     _interstitialAd = null;
   }
-    void createRewardedAd() async {
+
+  void createRewardedAd() async {
     RewardedAd.load(
         adUnitId: Platform.isAndroid
             ? 'ca-app-pub-3940256099942544/5224354917'
@@ -86,7 +89,7 @@ class AdProvider extends ChangeNotifier {
         ));
   }
 
-  void showRewardedAd() async {
+  void showRewardedAd(User user) async {
     if (rewardedAd == null) {
       print('Warning: attempt to show rewarded before loaded.');
       return;
@@ -107,13 +110,15 @@ class AdProvider extends ChangeNotifier {
     );
 
     rewardedAd!.setImmersiveMode(true);
-    rewardedAd!.show(
-        onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-      print('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+    rewardedAd!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
+      userCoinsService.updateCoins(user.uid, reward.amount.toInt());
+      print(
+          '$ad aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa with reward $RewardItem(${reward.amount}, ${reward.type})');
     });
     rewardedAd = null;
   }
-   void createRewardedInterstitialAd() {
+
+  void createRewardedInterstitialAd() {
     RewardedInterstitialAd.load(
         adUnitId: Platform.isAndroid
             ? 'ca-app-pub-3940256099942544/5354046379'
@@ -129,7 +134,8 @@ class AdProvider extends ChangeNotifier {
             print('RewardedInterstitialAd failed to load: $error');
             _rewardedInterstitialAd = null;
             _numRewardedInterstitialLoadAttempts += 1;
-            if (_numRewardedInterstitialLoadAttempts < _numRewardedInterstitialLoadAttempts) {
+            if (_numRewardedInterstitialLoadAttempts <
+                _numRewardedInterstitialLoadAttempts) {
               createRewardedInterstitialAd();
             }
           },

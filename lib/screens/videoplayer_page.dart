@@ -9,6 +9,7 @@ import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/services/data/watch_time_service.dart';
 import 'package:vidyamani/services/profile/history_service.dart';
@@ -17,6 +18,9 @@ import 'package:vidyamani/utils/static.dart';
 final userProvider = Provider<User?>((ref) {
   return ref.watch(userStateNotifierProvider);
 });
+final adProvider = ChangeNotifierProvider<AdProvider>(
+  (ref) => AdProvider(),
+);
 
 class CommentsWidget extends StatefulWidget {
   final List<Comments> comments;
@@ -99,21 +103,27 @@ class VideoPlayerScreen extends ConsumerStatefulWidget {
 
 class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   late VideoPlayerController _controller;
+  final AdProvider adProvider = AdProvider();
   late ChewieController _chewieController;
   TextEditingController _commentController = TextEditingController();
   TextEditingController _ratingController = TextEditingController();
   late Future<List<Comments>> _commentsFuture;
   bool _isLoading = true;
   late User? user;
-  Timer? _timer;
+  late Timer? _timer;
+  bool _isTimerStarted = false;
+  final Duration refreshInterval = const Duration(minutes: 10);
   final WatchTimeService watchTimeService = WatchTimeService();
   @override
   void initState() {
     super.initState();
-    if (user!.type == 'free') {
-      
-    }
-
+    user = ref.read(userProvider);
+    adProvider.createRewardedInterstitialAd();
+    adProvider.showRewardedInterstitialAd();
+    setupRefreshTimer();
+    // if (user!.type == 'free') {
+    //   adProvider.showRewardedInterstitialAd();
+    // }
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,
     );
@@ -128,19 +138,22 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       ),
     );
     _commentsFuture = _fetchComments();
-    user = ref.read(userProvider);
     _controller.addListener(() {
       if (_controller.value.isPlaying) {
-        _startTimer();
+        if (!_isTimerStarted) {
+          _startTimer();
+        }
       } else {
         _stopTimer();
       }
     });
     sendDataToFirebase();
+    _timer = Timer.periodic(Duration(minutes: 1), (Timer t) {});
   }
 
   void _startTimer() {
-    _timer?.cancel(); // Cancel any existing timer
+    // _timer?.cancel();
+    _isTimerStarted = true;
     _timer = Timer.periodic(Duration(minutes: 1), (Timer t) {
       _incrementWatchTime();
     });
@@ -148,6 +161,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   void _stopTimer() {
     _timer?.cancel();
+    _isTimerStarted = false;
   }
 
   @override
@@ -194,7 +208,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         newComment,
         context,
       );
-      // Clear the comment and rating controllers
       _commentController.clear();
       _ratingController.clear();
       setState(() {
@@ -205,12 +218,17 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-  // Increment watch time for the current video
+  void setupRefreshTimer() {
+    _timer = Timer.periodic(refreshInterval, (Timer timer) {
+      adProvider.showRewardedInterstitialAd();
+    });
+  }
+
   void _incrementWatchTime() {
     watchTimeService.updateWatchTime(
       user!.uid,
       widget.videoId!,
-      widget.video.lectureKey!,
+      widget.video.lectureKey,
     );
   }
 

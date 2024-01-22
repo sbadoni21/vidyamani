@@ -25,7 +25,6 @@ import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
-import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -55,7 +54,7 @@ class HomePageState extends ConsumerState<HomePage> {
     printer: PrettyPrinter(),
   );
   late Timer _timer;
-  final Duration refreshInterval = const Duration(seconds: 120);
+  final Duration refreshInterval = const Duration(seconds: 10);
   BannerAd? _bannerAd;
    User? user;
   final String _adUnitId = Platform.isAndroid
@@ -68,7 +67,6 @@ class HomePageState extends ConsumerState<HomePage> {
     fetchData();
     setupRefreshTimer();
     fetchImageUrls();
-    // _loadAd();
     adProvider.createInterstitialAd();
     adProvider.createRewardedAd();
     adProvider.createRewardedInterstitialAd();
@@ -79,7 +77,7 @@ class HomePageState extends ConsumerState<HomePage> {
   void setupRefreshTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
       fetchData();
-     if(user!.type == "free"){ adProvider.showInterstitialAd();}
+
     });
   }
 
