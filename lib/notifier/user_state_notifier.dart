@@ -90,6 +90,9 @@ class UserStateNotifier extends StateNotifier<User?> {
   }
 
 }
+
+
+
 final userStateNotifierProvider =
     StateNotifierProvider<UserStateNotifier, User?>(
   (ref) => UserStateNotifier(ref),
@@ -106,6 +109,7 @@ extension on User {
       'status': status,
       'type': type,
       'uid': uid,
+      'coins': coins,
       'location': location,
       'myHistory': myCourses.map((lecture) => lecture.toMap()).toList(),
       'myCourses': myCourses.map((course) => course.toMap()).toList(),

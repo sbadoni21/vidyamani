@@ -1,3 +1,4 @@
+
 class User {
   final String deviceToken;
   final String displayName;
@@ -8,6 +9,7 @@ class User {
   final String status;
   final String type;
   final String uid;
+  final int coins;
   final String? location;
   final List<MyCourse> myCourses;
   final List<History>? myHistory;
@@ -23,6 +25,7 @@ class User {
     required this.status,
     required this.type,
     required this.uid,
+    required this.coins,
     this.location,
     this.myHistory,
     required this.myCourses,
@@ -40,6 +43,7 @@ class User {
       status: map['status'] ?? '',
       type: map['type'] ?? '',
       uid: map['uid'] ?? '',
+      coins: map['coins'] ?? 0,
       location: map['location'] ?? '',
       myCourses: (map['myCourses'] as List<dynamic>?)
               ?.map((e) => MyCourse.fromMap(e as Map<String, dynamic>))

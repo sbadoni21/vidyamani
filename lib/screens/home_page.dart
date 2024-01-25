@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
@@ -15,18 +13,21 @@ import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/models/categories_model.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/meeting_model.dart';
 import 'package:vidyamani/models/testimonial_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
+import 'package:vidyamani/screens/meetingdetail_page.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
+import 'package:vidyamani/services/data/livelecture_service.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 
 final adProvider = ChangeNotifierProvider<AdProvider>(
@@ -36,6 +37,7 @@ final adProvider = ChangeNotifierProvider<AdProvider>(
 final userProvider = Provider<User?>((ref) {
   return ref.watch(userStateNotifierProvider);
 });
+
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
@@ -45,6 +47,7 @@ class HomePage extends ConsumerStatefulWidget {
 class HomePageState extends ConsumerState<HomePage> {
   int currentIndex = 0;
   final AdProvider adProvider = AdProvider();
+  final MeetingService meetingProvider = MeetingService();
   late List<String> imageUrls = [];
   late List<Course> coursesData = [];
   late List<Lectures> fetchedLectures = [];
@@ -54,58 +57,26 @@ class HomePageState extends ConsumerState<HomePage> {
     printer: PrettyPrinter(),
   );
   late Timer _timer;
-  final Duration refreshInterval = const Duration(seconds: 10);
-  BannerAd? _bannerAd;
-   User? user;
-  final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
-
+  final Duration refreshInterval = const Duration(minutes: 10);
+  User? user;
   @override
   void initState() {
     super.initState();
     fetchData();
     setupRefreshTimer();
     fetchImageUrls();
+    meetingProvider.getMeetings();
     adProvider.createInterstitialAd();
     adProvider.createRewardedAd();
     adProvider.createRewardedInterstitialAd();
     user = ref.read(userProvider);
-
   }
 
   void setupRefreshTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
       fetchData();
-
     });
   }
-
-  // Future<void> _loadAd() async {
-  //   try {
-  //     await BannerAd(
-  //       adUnitId: _adUnitId,
-  //       request: const AdRequest(),
-  //       size: AdSize.banner,
-  //       listener: BannerAdListener(
-  //         onAdLoaded: (ad) {
-  //           setState(() {
-  //             _bannerAd = ad as BannerAd;
-  //           });
-  //         },
-  //         onAdFailedToLoad: (ad, err) {
-  //           ad.dispose();
-  //           print('Ad failed to load: $err');
-  //         },
-  //         onAdOpened: (Ad ad) {},
-  //         onAdClosed: (Ad ad) {},
-  //         onAdImpression: (Ad ad) {},
-  //       ),
-  //     ).load();
-  //   } catch (e) {
-  //     print('Error loading ad: $e');
-  //   }
-  // }
 
   Future<void> fetchData() async {
     await fetchImageUrls();
@@ -117,7 +88,6 @@ class HomePageState extends ConsumerState<HomePage> {
   void dispose() {
     _timer.cancel();
     super.dispose();
-    _bannerAd?.dispose();
   }
 
   Future<void> fetchImageUrls() async {
@@ -179,8 +149,9 @@ class HomePageState extends ConsumerState<HomePage> {
 
   Widget _buildHomePage(
       BuildContext context, WidgetRef ref, AdProvider adProvider) {
-    return Scaffold(
+    final meetingService = ref.read(meetingServiceProvider);
 
+    return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
           await fetchImageUrls();
@@ -220,13 +191,6 @@ class HomePageState extends ConsumerState<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            // Container(
-            //   height: 50,
-            //   width: double.infinity,
-            //   child: _bannerAd != null
-            //       ? AdWidget(ad: _bannerAd!)
-            //       : SizedBox.shrink(),
-            // ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -382,33 +346,46 @@ class HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    children: [
-                      CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                              builder: (context) => CoursesPage())),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                              builder: (context) => CoursesPage())),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      CiruclarTiles(
-                          imagePath: "lib/assets/images/featuredcourses.png",
-                          text1: "Basic Courses",
-                          text2: "basic course",
-                          pageRoute: MaterialPageRoute(
-                              builder: (context) => CoursesPage())),
-                    ],
+                  FutureBuilder<List<Meeting>>(
+                    future: meetingService.getMeetings(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        List<Meeting> meetings = snapshot.data ?? [];
+
+                        return SizedBox(
+                          height: 200,
+                          child: meetings.isNotEmpty
+                              ? ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: meetings.length,
+                                  itemBuilder: (context, index) {
+                                    Meeting meeting = meetings[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MeetingDetailPage(meeting: meeting),
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8),
+                                          child: CiruclarTiles(
+                                            meeting: meeting,
+                                          )),
+                                    );
+                                  },
+                                )
+                              : const Text("No meetings available."),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(
                     height: 16,
@@ -430,7 +407,8 @@ class HomePageState extends ConsumerState<HomePage> {
                             height: 180,
                             child: testimonials.isNotEmpty
                                 ? ListView.builder(
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemCount: testimonials.length,
                                     itemBuilder: (context, index) {
