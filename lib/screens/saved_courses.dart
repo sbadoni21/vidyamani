@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
 import 'package:vidyamani/components/customlongtile.dart';
-import 'package:vidyamani/components/featured_courses_component.dart';
+import 'package:vidyamani/components/coursestile_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
@@ -55,8 +55,6 @@ class _SavedPageState extends ConsumerState<SavedPage> {
                   ),
                   VideoTile(
                     video: savedVideo,
-                    index: index,
-                    lectureKey: savedVideo.videoUid,
                   ),
                 ],
               );

@@ -4,32 +4,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileServices {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  Future<void> updateName(String userId, String newName) async {
+ Future<void> validateOldPassword(String userId, String oldPassword, String email) async {
     try {
-      await _firestore
-          .collection('users')
-          .doc(userId)
-          .update({'name': newName});
-    } catch (e) {
-      print('Error updating name: $e');
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: oldPassword,
+      );      if (userCredential.user?.uid != userId) {
+        throw Exception('Invalid user credentials');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Error validating old password: $e');
     }
   }
-
   Future<void> updatePassword(String userId, String newPassword) async {
     try {
       await _yourAuthUpdatePasswordMethod(newPassword);
     } catch (e) {
       print('Error updating password: $e');
-    }
-  }
-
-  Future<void> updatePhoneNumber(String userId, String newPhoneNumber) async {
-    try {
-      // Implement logic to update phone number in Firebase
-    } catch (e) {
-      print('Error updating phone number: $e');
     }
   }
 

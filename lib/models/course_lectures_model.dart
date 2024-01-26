@@ -69,14 +69,14 @@ class Lectures {
 class Videos {
   final String videoUrl;
   final List<Comments> comments;
-  final String title;
+  final String? title;
   final String content;
   final String videoUid;
   final String lectureKey;
   Videos(
       {required this.videoUrl,
       required this.comments,
-      required this.title,
+     this.title,
       required this.content,
       required this.lectureKey,
       required this.videoUid});
@@ -90,7 +90,7 @@ class Videos {
                 .toList() ??
             [],
         lectureKey: map['lectureKey'],
-        title: map['title'],
+        title: map['title'] ?? "",
         videoUid: map['videoUid'],
         content: map['content']);
   }

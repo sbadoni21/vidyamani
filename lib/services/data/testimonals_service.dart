@@ -5,10 +5,8 @@ class TestimonialService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<List<Review>> fetchCollectionData() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
-          .collection('testimonials')
-          .doc('26dC6h9xOvLxtqoPf4e1')
-          .get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _firestore.collection('testimonials').doc('testimonials').get();
 
       if (!snapshot.exists) {
         return [];
@@ -35,7 +33,7 @@ class TestimonialService {
   ) async {
     try {
       DocumentReference<Map<String, dynamic>> docRef =
-          _firestore.collection('testimonials').doc('26dC6h9xOvLxtqoPf4e1');
+          _firestore.collection('testimonials').doc('testimonials');
 
       await _firestore.runTransaction((transaction) async {
         DocumentSnapshot<Map<String, dynamic>> snapshot =

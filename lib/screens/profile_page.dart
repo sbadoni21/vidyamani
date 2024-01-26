@@ -3,29 +3,143 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vidyamani/components/dashboard_component.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/services/profile/profile_services.dart';
 import 'package:vidyamani/utils/static.dart';
+
 final userProvider = Provider<User?>((ref) {
   return ref.read(userStateNotifierProvider);
 });
+
 class ProfilePage extends ConsumerStatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+   const ProfilePage({Key? key}) : super(key: key);
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
-class _ProfilePageState extends ConsumerState<ProfilePage> {
+
+class ProfilePageState extends ConsumerState<ProfilePage> {
   late User? user;
+  String obscuringCharacter = '*';
+
   @override
   void initState() {
     super.initState();
     user = ref.read(userProvider);
   }
+
+  Future<void> _showChangePasswordDialog(BuildContext context) async {
+    TextEditingController oldPasswordController = TextEditingController();
+    TextEditingController newPasswordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: bgColor,
+          title: Text(
+            "Change Password",
+            style: myTextStylefontsize24,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: oldPasswordController,
+                obscureText: true,
+                obscuringCharacter: obscuringCharacter,
+                decoration: const InputDecoration(
+                  labelText: 'Old Password',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                  floatingLabelStyle: TextStyle(color: Colors.white),
+                  fillColor: Colors.white,
+                  helperStyle: TextStyle(color: Colors.white),
+                ),
+                style: myTextStylefontsize14White,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: newPasswordController,
+                obscureText: true,
+                obscuringCharacter: obscuringCharacter,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                  floatingLabelStyle: TextStyle(color: Colors.white),
+                  fillColor: Colors.white,
+                  helperStyle: TextStyle(color: Colors.white),
+                ),
+                style: myTextStylefontsize14White,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: confirmPasswordController,
+                obscureText: true,
+                obscuringCharacter: obscuringCharacter,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm New Password',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+                  floatingLabelStyle: TextStyle(color: Colors.white),
+                  fillColor: Colors.white,
+                  helperStyle: TextStyle(color: Colors.white),
+                ),
+                style: myTextStylefontsize14White,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: bgColor,
+                ),
+                onPressed: () async {
+                  String oldPassword = oldPasswordController.text;
+                  String newPassword = newPasswordController.text;
+                  String confirmPassword = confirmPasswordController.text;
+
+                  if (newPassword != confirmPassword) {
+                    _showSnackBar(context, 'New passwords do not match');
+                    return;
+                  }
+
+                  try {
+                    await ProfileServices().validateOldPassword(
+                        user?.uid ?? "", oldPassword, user?.email ?? "");
+                    await ProfileServices().updatePassword(
+                      user?.uid ?? "",
+                      newPassword,
+                    );
+
+                    _showSnackBar(context, 'Password updated successfully');
+                  } catch (e) {
+                    _showSnackBar(context, 'Error updating password: $e');
+                  }
+
+                  Navigator.pop(context);
+                },
+                child: const Text('Update Password'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 30, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 30, left: 16, right: 16),
             alignment: Alignment.bottomCenter,
             height: 180,
             color: bgColor,
@@ -90,19 +204,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                       ],
                     ),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.published_with_changes, color: Colors.white),
-                        SizedBox(
+                        IconButton(
+                          onPressed: () => _showChangePasswordDialog(context),
+                          icon: const Icon(Icons.published_with_changes,
+                              color: Colors.white),
+                        ),
+                        const SizedBox(
                           height: 5,
                         ),
-                        Text(
+                        const Text(
                           "Change",
                           style: TextStyle(fontSize: 10, color: Colors.white),
                         ),
-                        Text(
+                        const Text(
                           "Password",
                           style: TextStyle(fontSize: 10, color: Colors.white),
                         )
@@ -114,9 +232,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
           ),
           Expanded(
-            child: ListView(children: [
-              Dashboard(),
-            ]),
+            child: ListView(
+              children: [
+                Dashboard(),
+              ],
+            ),
           ),
         ],
       ),

@@ -88,14 +88,9 @@ class _CommentsWidgetState extends State<CommentsWidget> {
 
 class VideoPlayerScreen extends ConsumerStatefulWidget {
   final Videos video;
-  final int index;
-  final String? videoId;
-  final String courseKey;
+
   VideoPlayerScreen({
     required this.video,
-    required this.index,
-    required this.videoId,
-    required this.courseKey,
   });
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -118,23 +113,31 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   void initState() {
     super.initState();
     user = ref.read(userProvider);
-    adProvider.createRewardedInterstitialAd();
-    adProvider.showRewardedInterstitialAd();
-    setupRefreshTimer();
-    // if (user!.type == 'free') {
-    //   adProvider.showRewardedInterstitialAd();
-    // }
+    if (user!.type == 'free') {
+      adProvider.createRewardedInterstitialAd();
+      adProvider.showRewardedInterstitialAd(user!);
+      adTimer();
+    }
+
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,
     );
     _chewieController = ChewieController(
       autoInitialize: true,
+      allowPlaybackSpeedChanging: true,
+      showControlsOnInitialize: true,
+      allowMuting: true,
+      aspectRatio: 16 / 9,
+      materialProgressColors: ChewieProgressColors(
+        backgroundColor: Colors.white24,
+      ),
       videoPlayerController: _controller,
       looping: false,
       draggableProgressBar: true,
       cupertinoProgressColors: ChewieProgressColors(
         backgroundColor: bgColor,
         handleColor: Colors.white,
+        bufferedColor: bgColor,
       ),
     );
     _commentsFuture = _fetchComments();
@@ -148,11 +151,9 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
       }
     });
     sendDataToFirebase();
-    _timer = Timer.periodic(Duration(minutes: 1), (Timer t) {});
   }
 
   void _startTimer() {
-    // _timer?.cancel();
     _isTimerStarted = true;
     _timer = Timer.periodic(Duration(minutes: 1), (Timer t) {
       _incrementWatchTime();
@@ -177,7 +178,6 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   Future<void> sendDataToFirebase() async {
     try {
       await HistoryService().sendHistoryVideos(user!.uid, widget.video);
-      print('Data sent to Firebase successfully');
     } catch (error) {
       print('Error sending data to Firebase: $error');
     }
@@ -185,7 +185,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   Future<List<Comments>> _fetchComments() async {
     return await MiscellaneousService()
-        .fetchAllComments(widget.courseKey, widget.videoId);
+        .fetchAllComments(widget.video.lectureKey, widget.video.videoUid);
   }
 
   void _submitComment() async {
@@ -203,8 +203,8 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     try {
       await MiscellaneousService().addAndListCommentToVideoLecture(
         user?.uid ?? '',
-        widget.courseKey,
-        widget.videoId,
+        widget.video.lectureKey,
+        widget.video.videoUid,
         newComment,
         context,
       );
@@ -218,16 +218,16 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-  void setupRefreshTimer() {
+  void adTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
-      adProvider.showRewardedInterstitialAd();
+      adProvider.showRewardedInterstitialAd(user!);
     });
   }
 
   void _incrementWatchTime() {
     watchTimeService.updateWatchTime(
       user!.uid,
-      widget.videoId!,
+      widget.video.videoUid,
       widget.video.lectureKey,
     );
   }
@@ -248,10 +248,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  '${widget.index + 1} - ${widget.video.title}',
+                  '${widget.video.title}',
                   style: myTextStylefontsize16,
                 ),
-                SizedBox(
+            const    SizedBox(
                   height: 10,
                 ),
                 ExpandableText(
@@ -261,21 +261,21 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                   maxLines: 3,
                   style: myTextStylefontsize12Black,
                 ),
-                SizedBox(
+              const  SizedBox(
                   height: 20,
                 ),
                 Text(
                   'Feedbacks',
                   style: myTextStylefontsize16,
                 ),
-                SizedBox(
+               const SizedBox(
                   height: 10,
                 ),
                 FutureBuilder(
                   future: _commentsFuture,
                   builder: (context, AsyncSnapshot<List<Comments>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     } else if (snapshot.hasError) {

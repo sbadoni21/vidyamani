@@ -1,21 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vidyamani/models/course_lectures_model.dart';
 
 class AllCoursesDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<AllCourseData>> fetchHumanRightsCourses() async {
+  Future<List<Course>> fetchHumanRightsCourses() async {
     return await fetchCoursesFromCollection('humanRights');
   }
 
-  Future<List<AllCourseData>> fetchSkillBasedCourses() async {
+  Future<List<Course>> fetchSkillBasedCourses() async {
     return await fetchCoursesFromCollection('skillBased');
   }
 
-  Future<List<AllCourseData>> fetchClassBasedCourses() async {
+  Future<List<Course>> fetchClassBasedCourses() async {
     return await fetchCoursesFromCollection('classBased');
   }
 
-  Future<List<AllCourseData>> fetchCoursesFromCollection(String collectionName,
+  Future<List<Course>> fetchCoursesFromCollection(String collectionName,
       {String? filterType}) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -23,15 +24,11 @@ class AllCoursesDataService {
           .doc('kGrTotd8SFOUzsUH9Hpz')
           .collection('$collectionName')
           .get();
-      List<AllCourseData> courses = [];
+      List<Course> courses = [];
       querySnapshot.docs.forEach((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        if (filterType != null ||
-            data['type'] == filterType ||
-            data['title'] == filterType ||
-            data['photo'] == filterType ||
-            data['id'] == filterType) {
-          courses.add(AllCourseData.fromMap(data));
+        if (data != null) {
+          courses.add(Course.fromMap(data));
         }
       });
       return courses;
@@ -42,26 +39,25 @@ class AllCoursesDataService {
   }
 }
 
+// class AllCourseData {
+//   final String id;
+//   final String title;
+//   final String type;
+//   final String photo;
 
-class AllCourseData {
-  final String id;
-  final String title;
-  final String type;
-  final String photo;
+//   AllCourseData({
+//     required this.id,
+//     required this.title,
+//     required this.type,
+//     required this.photo,
+//   });
 
-  AllCourseData({
-    required this.id,
-    required this.title,
-    required this.type,
-    required this.photo,
-  });
-
-  factory AllCourseData.fromMap(Map<String, dynamic> map) {
-    return AllCourseData(
-      id: map['id'] ?? '',
-      title: map['title'] ?? '',
-      type: map['type'] ?? '',
-      photo: map['photo'] ?? '',
-    );
-  }
-}
+//   factory AllCourseData.fromMap(Map<String, dynamic> map) {
+//     return AllCourseData(
+//       id: map['uid'] ?? '',
+//       title: map['title'] ?? '',
+//       type: map['type'] ?? '',
+//       photo: map['photo'] ?? '',
+//     );
+//   }
+// }

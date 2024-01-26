@@ -7,7 +7,7 @@ import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
-import 'package:vidyamani/components/featured_courses_component.dart';
+import 'package:vidyamani/components/coursestile_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
@@ -66,9 +66,9 @@ class HomePageState extends ConsumerState<HomePage> {
     setupRefreshTimer();
     fetchImageUrls();
     meetingProvider.getMeetings();
-    adProvider.createInterstitialAd();
-    adProvider.createRewardedAd();
-    adProvider.createRewardedInterstitialAd();
+    // adProvider.createInterstitialAd();
+    // adProvider.createRewardedAd();
+    // adProvider.createRewardedInterstitialAd();
     user = ref.read(userProvider);
   }
 
@@ -209,6 +209,7 @@ class HomePageState extends ConsumerState<HomePage> {
                         Category category = categoriesData[index];
                         return GestureDetector(
                           onTap: () {
+                           
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -265,11 +266,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             left: 8.0, right: 8),
-                                        child: Tiles(
-                                          imagePath: course.photo,
-                                          text1: course.type,
-                                          text2: course.title,
-                                        ),
+                                        child: Tiles(course: course),
                                       ),
                                     );
                                   },
@@ -286,52 +283,52 @@ class HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  FutureBuilder(
-                    future: fetchCoursesLectures(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        List<Lectures> featuredCourses =
-                            snapshot.data as List<Lectures>;
+                  // FutureBuilder(
+                  //   future: fetchCoursesLectures(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return const Center(child: CircularProgressIndicator());
+                  //     } else if (snapshot.hasError) {
+                  //       return Center(child: Text('Error: ${snapshot.error}'));
+                  //     } else {
+                  //       List<Lectures> featuredCourses =
+                  //           snapshot.data as List<Lectures>;
 
-                        return SizedBox(
-                          height: 170,
-                          child: featuredCourses.isNotEmpty
-                              ? ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: featuredCourses.length,
-                                  itemBuilder: (context, index) {
-                                    Lectures lecture = featuredCourses[index];
-                                    return GestureDetector(
-                                      //                 onTap: () {
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           CourseDetailPage(lecture: lecture),
-                                      //     ),
-                                      //   );
-                                      // },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8),
-                                        child: Tiles(
-                                          imagePath: lecture.photo,
-                                          text1: lecture.type,
-                                          text2: lecture.title,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Text("No lectures available."),
-                        );
-                      }
-                    },
-                  ),
+                  //       return SizedBox(
+                  //         height: 170,
+                  //         child: featuredCourses.isNotEmpty
+                  //             ? ListView.builder(
+                  //                 scrollDirection: Axis.horizontal,
+                  //                 itemCount: featuredCourses.length,
+                  //                 itemBuilder: (context, index) {
+                  //                   Lectures lecture = featuredCourses[index];
+                  //                   return GestureDetector(
+                  //                     //                 onTap: () {
+                  //                     //   Navigator.push(
+                  //                     //     context,
+                  //                     //     MaterialPageRoute(
+                  //                     //       builder: (context) =>
+                  //                     //           CourseDetailPage(lecture: lecture),
+                  //                     //     ),
+                  //                     //   );
+                  //                     // },
+                  //                     child: Padding(
+                  //                       padding: const EdgeInsets.only(
+                  //                           left: 8.0, right: 8),
+                  //                       child: Tiles(
+                  //                         imagePath: lecture.photo,
+                  //                         text1: lecture.type,
+                  //                         text2: lecture.title,
+                  //                       ),
+                  //                     ),
+                  //                   );
+                  //                 },
+                  //               )
+                  //             : const Text("No lectures available."),
+                  //       );
+                  //     }
+                  //   },
+                  // ),
                   const Row(
                     children: [
                       SizedBox(
@@ -369,7 +366,9 @@ class HomePageState extends ConsumerState<HomePage> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MeetingDetailPage(meeting: meeting),
+                                            builder: (context) =>
+                                                MeetingDetailPage(
+                                                    meeting: meeting),
                                           ),
                                         );
                                       },

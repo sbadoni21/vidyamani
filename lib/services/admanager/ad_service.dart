@@ -112,8 +112,7 @@ class AdProvider extends ChangeNotifier {
     rewardedAd!.setImmersiveMode(true);
     rewardedAd!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
       userCoinsService.updateCoins(user.uid, reward.amount.toInt());
-      print(
-          '$ad aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa with reward $RewardItem(${reward.amount}, ${reward.type})');
+     
     });
     rewardedAd = null;
   }
@@ -142,7 +141,7 @@ class AdProvider extends ChangeNotifier {
         ));
   }
 
-  void showRewardedInterstitialAd() {
+  void showRewardedInterstitialAd(User user) {
     if (_rewardedInterstitialAd == null) {
       print('Warning: attempt to show rewarded interstitial before loaded.');
       return;
@@ -167,7 +166,7 @@ class AdProvider extends ChangeNotifier {
     _rewardedInterstitialAd!.setImmersiveMode(true);
     _rewardedInterstitialAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-      print('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+      userCoinsService.updateCoins(user.uid, reward.amount.toInt());
     });
     _rewardedInterstitialAd = null;
   }

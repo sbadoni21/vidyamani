@@ -23,8 +23,8 @@ class CiruclarTiles extends StatelessWidget {
           child: Container(
             height: 120,
             width: 120,
-            child: Image.asset(
-              imageStatic,
+            child: Image.network(
+              meeting.photo,
               fit: BoxFit.cover,
               width: double.infinity,
             ),

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/circular_tiles_component.dart';
 import 'package:vidyamani/components/courses_list_tile.dart';
-import 'package:vidyamani/components/featured_courses_component.dart';
+import 'package:vidyamani/components/coursestile_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
@@ -82,9 +82,7 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
                                     padding: const EdgeInsets.only(
                                         left: 8.0, right: 8),
                                     child: Tiles(
-                                      imagePath: course.photo,
-                                      text1: course.type,
-                                      text2: course.title,
+                                      course: course,
                                     ),
                                   ),
                                 );

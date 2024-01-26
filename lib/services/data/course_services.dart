@@ -40,6 +40,36 @@ class DataService {
     }
   }
 
+  Future<List<Course>> fetchCollectionDatawithName(String collectionName) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("courses")
+          .doc("kGrTotd8SFOUzsUH9Hpz")
+          .collection(collectionName)
+          .get();
+      logger.i(querySnapshot);
+
+      List<Course> courses = querySnapshot.docs
+          .map((DocumentSnapshot doc) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            if (data['type'] != null
+                ) {
+              return Course.fromMap(data);
+            } else {
+              return null;
+            }
+          })
+          .where((course) => course != null)
+          .cast<Course>()
+          .toList();
+
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
+    }
+  }
+
   Future<List<Course>> fetchCoursesViaUser(String userId) async {
     try {
       DocumentReference userRef = _firestore.collection("users").doc(userId);
@@ -54,9 +84,6 @@ class DataService {
                       MyCourse.fromMap(courseData as Map<String, dynamic>))
                   .toList() ??
               [];
-      logger.i("dasfsafafadfaasdasdfasasasf            $myCourses");
-
-      // Fetch courses bed on 'myCourses'
       List<Course> courses = await Future.wait(myCourses.map((myCourse) async {
         DocumentSnapshot courseSnapshot = await _firestore
             .collection("courses")
@@ -126,4 +153,52 @@ class DataService {
       return [];
     }
   }
+
+  Future<List<Course>> fetchCollectionCourseData() async {
+  try {
+    final List<QuerySnapshot> snapshots = await Future.wait([
+      _firestore
+          .collection("courses")
+          .doc( "kGrTotd8SFOUzsUH9Hpz ")
+          .collection("classBased")
+          .get(),
+      _firestore
+          .collection("courses")
+          .doc( "kGrTotd8SFOUzsUH9Hpz ")
+          .collection("skillBased")
+          .get(),
+      _firestore
+          .collection("courses")
+          .doc( "kGrTotd8SFOUzsUH9Hpz ")
+          .collection("humanRights")
+          .get(),
+    ]);
+
+    final List<Course> courses = [];
+
+    for (QuerySnapshot querySnapshot in snapshots) {
+      courses.addAll(
+        querySnapshot.docs
+            .map((DocumentSnapshot doc) {
+              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+              if (data['type'] != null &&
+                  data['title'] != null &&
+                  data['photo'] != null) {
+                return Course.fromMap(data);
+              } else {
+                return null;
+              }
+            })
+            .where((course) => course != null)
+            .cast<Course>(),
+      );
+    }
+
+    return courses;
+  } catch (e) {
+    logger.i(e);
+    return [];
+  }
+}
+
 }

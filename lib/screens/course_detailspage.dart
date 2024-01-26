@@ -83,7 +83,7 @@ Future<void> _showReviewDialog(
               );
               Navigator.of(context).pop();
             },
-            child:const Text("Submit"),
+            child: const Text("Submit"),
           ),
         ],
       );
@@ -102,7 +102,6 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
     _calculateAverageRating();
     user = ref.read(userProvider);
     checkCourseSaved();
-
   }
 
   Future<void> checkCourseSaved() async {
@@ -136,7 +135,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Payment Gateway"),
-          content:const Text("Implement your payment gateway UI here."),
+          content: const Text("Implement your payment gateway UI here."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -148,7 +147,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child:const Text("Cancel"),
+              child: const Text("Cancel"),
             ),
           ],
         );
@@ -167,7 +166,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
             TextButton(
               onPressed: () async {
                 await saveOrUnsaveCourse();
-                Navigator.of(context).pop(); // Close the AlertDialog
+                Navigator.of(context).pop();
               },
               child: Text("Proceed"),
             ),
@@ -204,7 +203,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                 elevation: 5.0,
                 backgroundColor: bgColor,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -329,10 +328,10 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child:( widget.courses.type == "free" ||
+            child: (widget.courses.type == "free" ||
                     (widget.courses.type == "premium" &&
-                        user?.type == "premium")
-                )? Column(
+                        user?.type == "premium"))
+                ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Course Content", style: myTextStylefontsize16),
@@ -348,23 +347,20 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           } else {
-                            List<Videos> coursesWithLectureKey =
-                                snapshot.data ?? [];
+                            List<Videos> videos = snapshot.data ?? [];
 
-                            return Column(
-                              children: [
-                                for (int index = 0;
-                                    index < coursesWithLectureKey.length;
-                                    index++)
-                                  VideoTile(
-                                      video: coursesWithLectureKey[index],
-                                      index: index,
-                                      lectureKey: widget.courses.lectureKey!),
-                              ],
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: videos.length,
+                              itemBuilder: (context, index) {
+                                return VideoTile(
+                                  video: videos[index],
+                                );
+                              },
                             );
                           }
                         },
-                      )
+                      ),
                     ],
                   )
                 : Container(

@@ -7,8 +7,8 @@ class Meeting {
   final String startTime;
   final String endTime;
   final String title;
-    final String description;
-
+  final String photo;
+  final String description;
 
   Meeting(
       {required this.link,
@@ -18,6 +18,7 @@ class Meeting {
       required this.startTime,
       required this.endTime,
       required this.title,
+            required this.photo,
       required this.description,
       required this.uid});
 
@@ -31,6 +32,7 @@ class Meeting {
         endTime: map['endTime'] ?? '',
         title: map['title'] ?? "",
         description: map['description'] ?? '',
+        photo: map['photo']?? '',
         uid: map['uid'] ?? "");
   }
 }

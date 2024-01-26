@@ -107,9 +107,7 @@ class LectureDataService {
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-            if (data['type'] != null &&
-                data['title'] != null &&
-                data['photo'] != null) {
+            if (data != null ) {
               return Lectures.fromMap(data);
             } else {
               return null;

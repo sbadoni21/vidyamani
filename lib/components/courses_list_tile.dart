@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class CourseTile extends StatelessWidget {
-  final String title;
+  final String? title;
   final String type; // Assuming 'type' is a property of AllCourseData
-  // You can add more properties as needed
+
 
   const CourseTile({
-    required this.title,
+     this.title,
     required this.type,
  
   });
@@ -35,7 +35,7 @@ class CourseTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    title?? "",
                     style: myTextStylefontsize16,
                   ),
                   Text(
