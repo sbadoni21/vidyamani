@@ -75,12 +75,13 @@ class _MenuScreenState extends State<MenuScreen> {
                                 color: Colors.blue,
                               ),
                               child: CircleAvatar(
-                                backgroundImage: profilePhoto != null
+                                backgroundImage: (profilePhoto != null ||
+                                        profilePhoto == 'none')
                                     ? NetworkImage(profilePhoto!)
-                                        as ImageProvider // Cast to ImageProvider
-                                    : AssetImage(
-                                        'lib/assets/images/placeholder_image.png'), // Use a placeholder image
-                                radius: 20, // Adjust the size as needed
+                                        as ImageProvider
+                                    : const AssetImage(
+                                        'lib/assets/images/placeholder_image.png'),
+                                radius: 20,
                               ),
                             ),
                           ),
@@ -91,13 +92,14 @@ class _MenuScreenState extends State<MenuScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Hi", style: myTextStylefontsize24),
-                                Text(
-                                    displayName != null
-                                        ? displayName as String
-                                        : "Username",
-                                    style: myTextStylefontsize24),
-                                Text(_firebaseAuth.currentUser!.email as String,
-                                    style: myTextStylefontsize16white),
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                      displayName != null
+                                          ? displayName as String
+                                          : "Username",
+                                      style: myTextStylefontsize24),
+                                ),
                               ],
                             ),
                           ),
@@ -143,19 +145,16 @@ class _MenuScreenState extends State<MenuScreen> {
                                 width: 100,
                                 height: 70,
                                 child: Icon(
-                                  asset[
-                                      'icon'], // Use asset['icon'] to access the icon
+                                  asset['icon'],
                                   key: Key(
                                     asset['key'],
                                   ),
-                                  color:
-                                      bgColor, // Provide a unique key for the Icon
+                                  color: bgColor,
                                 ),
                               ),
                               Text(
                                 asset['text'],
-                                style:
-                                    myTextStylefontsize16, // Use asset['text'] for the text
+                                style: myTextStylefontsize16,
                               ),
                             ],
                           ),

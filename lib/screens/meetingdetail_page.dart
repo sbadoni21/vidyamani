@@ -65,7 +65,7 @@ class MeetingDetailPage extends StatelessWidget {
             SizedBox(
               width: double.infinity - 40,
               child: Text(
-                '${formattedMeetingTimeStart} - ${formattedMeetingTimeEnd}  ',
+                '${formattedMeetingTimeStart}  ',
                 style: myTextStylefontsize16,
                 textAlign: TextAlign.center,
               ),

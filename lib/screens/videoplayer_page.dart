@@ -109,15 +109,12 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   bool _isTimerStarted = false;
   final Duration refreshInterval = const Duration(minutes: 10);
   final WatchTimeService watchTimeService = WatchTimeService();
+  final Duration displayAdsInterval = const Duration(minutes: 10);
+
   @override
   void initState() {
     super.initState();
     user = ref.read(userProvider);
-    if (user!.type == 'free') {
-      adProvider.createRewardedInterstitialAd();
-      adProvider.showRewardedInterstitialAd(user!, context);
-      adTimer();
-    }
 
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,
@@ -150,6 +147,16 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
         _stopTimer();
       }
     });
+
+    Future.delayed(const Duration(seconds: 10), () {
+      if (user!.type == 'free') {
+        adProvider.createInterstitialAd();
+        adProvider.createRewardedAd();
+        adProvider.createRewardedInterstitialAd();
+        displayAds();
+      }
+    });
+
     sendDataToFirebase();
   }
 
@@ -165,14 +172,10 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     _isTimerStarted = false;
   }
 
-  @override
-  void dispose() {
-    _stopTimer();
-    _controller.dispose();
-    _chewieController.dispose();
-    _commentController.dispose();
-    _ratingController.dispose();
-    super.dispose();
+  void displayAds() {
+    _timer = Timer.periodic(displayAdsInterval, (Timer timer) {
+      adProvider.showRewardedInterstitialAd(user!, context);
+    });
   }
 
   Future<void> sendDataToFirebase() async {
@@ -181,6 +184,14 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     } catch (error) {
       print('Error sending data to Firebase: $error');
     }
+  }
+
+  void _incrementWatchTime() {
+    watchTimeService.updateWatchTime(
+      user!.uid,
+      widget.video.videoUid,
+      widget.video.lectureKey,
+    );
   }
 
   Future<List<Comments>> _fetchComments() async {
@@ -218,24 +229,20 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     }
   }
 
-  void adTimer() {
-    _timer = Timer.periodic(refreshInterval, (Timer timer) {
-      adProvider.showRewardedInterstitialAd(user!, context);
-    });
-  }
-
-  void _incrementWatchTime() {
-    watchTimeService.updateWatchTime(
-      user!.uid,
-      widget.video.videoUid,
-      widget.video.lectureKey,
-    );
+  @override
+  void dispose() {
+    _stopTimer();
+    _controller.dispose();
+    _chewieController.dispose();
+    _commentController.dispose();
+    _ratingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarBckBtn(),
+      appBar: const CustomAppBarBckBtn(),
       body: ListView(
         children: [
           AspectRatio(

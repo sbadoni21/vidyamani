@@ -6,7 +6,7 @@ import 'package:vidyamani/utils/static.dart';
 class TestimonialCard extends StatelessWidget {
   final Review testimonial;
 
-   TestimonialCard({required this.testimonial});
+  TestimonialCard({required this.testimonial});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class TestimonialCard extends StatelessWidget {
         color: const Color(0xFFF0F5FD),
         elevation: 0,
         child: Padding(
-          padding:const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
               Container(
@@ -33,7 +33,7 @@ class TestimonialCard extends StatelessWidget {
                   ),
                 ),
               ),
-            const  SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Container(
@@ -45,7 +45,7 @@ class TestimonialCard extends StatelessWidget {
                       top: 0,
                       left: 0,
                       child: Text(
-                        '""',
+                        '"',
                         style: myTextStylefontsize24BGCOLOR,
                       ),
                     ),
@@ -59,7 +59,7 @@ class TestimonialCard extends StatelessWidget {
                         minRating: 1,
                         itemCount: 5,
                         itemSize: 15.0,
-                        itemBuilder: (context, _) =>const Icon(
+                        itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
                         ),
@@ -90,7 +90,7 @@ class TestimonialCard extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: Text(
-                        '""',
+                        '"',
                         style: myTextStylefontsize24BGCOLOR,
                       ),
                     ),

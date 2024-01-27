@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:vidyamani/screens/home_page.dart';
-import 'package:vidyamani/screens/menu_screen.dart';
+import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/utils/static.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 
-class CustomAppBarBckBtn extends StatelessWidget
+final userProvider = Provider<User?>((ref) {
+  return ref.watch(userStateNotifierProvider);
+});
+
+class CustomAppBarBckBtn extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
   final Function()? onWalletPressed;
   final Function()? onMenuPressed;
   final Function()? onBackPressed;
 
-  const CustomAppBarBckBtn(
-      {Key? key, this.onWalletPressed, this.onMenuPressed, this.onBackPressed})
-      : super(key: key);
+  const CustomAppBarBckBtn({
+    Key? key,
+    this.onWalletPressed,
+    this.onMenuPressed,
+    this.onBackPressed,
+  }) : super(key: key);
 
+  @override
+  _CustomAppBarBckBtnState createState() => _CustomAppBarBckBtnState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(82);
+}
+
+class _CustomAppBarBckBtnState extends ConsumerState<CustomAppBarBckBtn> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +39,11 @@ class CustomAppBarBckBtn extends StatelessWidget
       child: AppBar(
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.wallet_outlined)),
+          IconButton(
+              onPressed: () {
+                _showWalletBottomSheet(context);
+              },
+              icon: Icon(Icons.wallet_outlined)),
           IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -38,8 +58,8 @@ class CustomAppBarBckBtn extends StatelessWidget
             IconButton(
               onPressed: () {
                 print("Back button pressed!");
-                if (onBackPressed != null) {
-                  onBackPressed!();
+                if (widget.onBackPressed != null) {
+                  widget.onBackPressed!();
                 } else {
                   print("Navigator.pop(context) called");
                   Navigator.pop(context);
@@ -76,6 +96,68 @@ class CustomAppBarBckBtn extends StatelessWidget
     );
   }
 
-  @override
-  Size get preferredSize => Size.fromHeight(82);
+  void _showWalletBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        User? user = ref.watch(userProvider);
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            height: 200,
+            width: double.infinity,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                gradient: const LinearGradient(
+                  colors: [bgColor, bgColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Current Balance :',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        user!.coins.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                      backgroundColor: Colors.white,
+                    ),
+                    child: const Text('Add Money'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
