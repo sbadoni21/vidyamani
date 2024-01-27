@@ -16,8 +16,6 @@ class DataService {
           .doc("kGrTotd8SFOUzsUH9Hpz")
           .collection("humanRights")
           .get();
-      logger.i(querySnapshot);
-
       List<Course> courses = querySnapshot.docs
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -32,24 +30,16 @@ class DataService {
           .where((course) => course != null)
           .cast<Course>()
           .toList();
-
       return courses;
     } catch (e) {
       logger.i(e);
       return [];
     }
   }
-
-
-
-
-
-
-Future<List<Course>> fetchFeaturedCollectionData() async {
+Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
   try {
-    QuerySnapshot querySnapshot = await _firestore.collection("featuredCourses").get();
+    QuerySnapshot querySnapshot = await _firestore.collection("upcomingCourses").get();
     DateTime nowLocal = DateTime.now();
-
     List<Course> courses = querySnapshot.docs.map((DocumentSnapshot doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       if (data.containsKey('startTime') && data['startTime'] != null) {
@@ -63,7 +53,6 @@ Future<List<Course>> fetchFeaturedCollectionData() async {
         return null; 
       }
     }).where((course) => course != null).cast<Course>().toList();
-
     return courses;
   } catch (e) {
     logger.i(e);
@@ -73,13 +62,11 @@ Future<List<Course>> fetchFeaturedCollectionData() async {
 
 
 
-  Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
+  Future<List<Course>> fetchFeaturedCoursesCollectionData() async {
     try {
       QuerySnapshot querySnapshot = await _firestore
-          .collection("upcomingCourse")
+          .collection("featuredCourses")
           .get();
-      logger.i(querySnapshot);
-
       List<Course> courses = querySnapshot.docs
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -94,7 +81,6 @@ Future<List<Course>> fetchFeaturedCollectionData() async {
           .where((course) => course != null)
           .cast<Course>()
           .toList();
-
       return courses;
     } catch (e) {
       logger.i(e);
@@ -106,23 +92,18 @@ Future<List<Course>> fetchFeaturedCollectionData() async {
       if (dateString.isEmpty) {
         throw FormatException("Empty date string");
       }
-
       List<String> dateTimeParts = dateString.split('T');
       if (dateTimeParts.length == 2) {
         String datePart = dateTimeParts[0];
         String timePart = dateTimeParts[1];
-
         List<String> dateComponents = datePart.split('-');
         List<String> timeComponents = timePart.split(':');
-
         int year = int.parse(dateComponents[0]);
         int month = int.parse(dateComponents[1]);
         int day = int.parse(dateComponents[2]);
         int hour = int.parse(timeComponents[0]);
         int minute = int.parse(timeComponents[1]);
-
         DateTime localDateTime = DateTime(year, month, day, hour, minute);
-
         return localDateTime;
       } else {
         throw FormatException("Invalid date format");

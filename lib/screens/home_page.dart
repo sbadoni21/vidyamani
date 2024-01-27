@@ -51,7 +51,6 @@ class HomePageState extends ConsumerState<HomePage> {
   late List<Course> coursesData = [];
   late List<Lectures> fetchedLectures = [];
   final DataService _dataService = DataService();
-  final LectureDataService _lectureService = LectureDataService();
   final logger = Logger(
     printer: PrettyPrinter(),
   );
@@ -94,7 +93,6 @@ class HomePageState extends ConsumerState<HomePage> {
   Future<void> fetchData() async {
     await fetchImageUrls();
     coursesData = await fetchFeaturedCollectionData();
-    fetchedLectures = await fetchCoursesLectures();
   }
 
   @override
@@ -119,9 +117,14 @@ class HomePageState extends ConsumerState<HomePage> {
 
   Future<List<Course>> fetchFeaturedCollectionData() async {
     List<Course> fetchedCourses =
-        await _dataService.fetchFeaturedCollectionData();
-    logger.i(fetchedCourses);
+        await _dataService.fetchFeaturedCoursesCollectionData();
     return fetchedCourses;
+  }
+
+  Future<List<Course>> fetchUpcomingCollectionData() async {
+    List<Course> upcomingCourses =
+        await _dataService.fetchUpcomingCoursesCollectionData();
+    return upcomingCourses;
   }
 
   Future<List<Review>> fetchTestimonials() async {
@@ -129,13 +132,6 @@ class HomePageState extends ConsumerState<HomePage> {
         await TestimonialService().fetchCollectionData();
 
     return testimonials;
-  }
-
-  Future<List<Lectures>> fetchCoursesLectures() async {
-    List<Lectures> fetchedLectures =
-        await _lectureService.fetchCollectionData();
-    logger.i(fetchedLectures);
-    return fetchedLectures;
   }
 
   @override
@@ -297,52 +293,50 @@ class HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  // FutureBuilder(
-                  //   future: fetchCoursesLectures(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return const Center(child: CircularProgressIndicator());
-                  //     } else if (snapshot.hasError) {
-                  //       return Center(child: Text('Error: ${snapshot.error}'));
-                  //     } else {
-                  //       List<Lectures> featuredCourses =
-                  //           snapshot.data as List<Lectures>;
+                  FutureBuilder(
+                    future: fetchUpcomingCollectionData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        List<Course> upcomingCourses =
+                            snapshot.data as List<Course>;
 
-                  //       return SizedBox(
-                  //         height: 170,
-                  //         child: featuredCourses.isNotEmpty
-                  //             ? ListView.builder(
-                  //                 scrollDirection: Axis.horizontal,
-                  //                 itemCount: featuredCourses.length,
-                  //                 itemBuilder: (context, index) {
-                  //                   Lectures lecture = featuredCourses[index];
-                  //                   return GestureDetector(
-                  //                     //                 onTap: () {
-                  //                     //   Navigator.push(
-                  //                     //     context,
-                  //                     //     MaterialPageRoute(
-                  //                     //       builder: (context) =>
-                  //                     //           CourseDetailPage(lecture: lecture),
-                  //                     //     ),
-                  //                     //   );
-                  //                     // },
-                  //                     child: Padding(
-                  //                       padding: const EdgeInsets.only(
-                  //                           left: 8.0, right: 8),
-                  //                       child: Tiles(
-                  //                         imagePath: lecture.photo,
-                  //                         text1: lecture.type,
-                  //                         text2: lecture.title,
-                  //                       ),
-                  //                     ),
-                  //                   );
-                  //                 },
-                  //               )
-                  //             : const Text("No lectures available."),
-                  //       );
-                  //     }
-                  //   },
-                  // ),
+                        return SizedBox(
+                          height: 170,
+                          child: upcomingCourses.isNotEmpty
+                              ? ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: upcomingCourses.length,
+                                  itemBuilder: (context, index) {
+                                    Course course = upcomingCourses[index];
+                                    return GestureDetector(
+                                      //                 onTap: () {
+                                      //   Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           CourseDetailPage(lecture: lecture),
+                                      //     ),
+                                      //   );
+                                      // },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, right: 8),
+                                        child: Tiles(
+                                          course: course,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const Text("No lectures available."),
+                        );
+                      }
+                    },
+                  ),
                   const Row(
                     children: [
                       SizedBox(
