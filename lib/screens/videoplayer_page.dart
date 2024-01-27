@@ -251,7 +251,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                   '${widget.video.title}',
                   style: myTextStylefontsize16,
                 ),
-            const    SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ExpandableText(
@@ -261,14 +261,14 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
                   maxLines: 3,
                   style: myTextStylefontsize12Black,
                 ),
-              const  SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(
                   'Feedbacks',
                   style: myTextStylefontsize16,
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 FutureBuilder(

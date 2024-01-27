@@ -11,7 +11,7 @@ final userProvider = Provider<User?>((ref) {
 });
 
 class ProfilePage extends ConsumerStatefulWidget {
-   const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
   @override
   ProfilePageState createState() => ProfilePageState();
 }
