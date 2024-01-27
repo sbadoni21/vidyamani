@@ -57,7 +57,7 @@ class HomePageState extends ConsumerState<HomePage> {
   );
   late Timer _timer;
   final Duration refreshInterval = const Duration(minutes: 10);
-  final Duration displayAdsInterval = const Duration(minutes: 10);
+  final Duration displayAdsInterval = const Duration(seconds: 10);
 
   User? user;
   @override

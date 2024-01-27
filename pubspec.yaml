@@ -53,6 +53,7 @@ dependencies:
   hooks_riverpod: ^2.4.9
   geocoding: 
   geolocator:
+  lottie:
 
 
 dev_dependencies:
@@ -76,6 +77,6 @@ flutter:
     - lib/assets/images/audioBooks.png
     - lib/assets/images/humanRights.png
     - lib/assets/images/classBasedCourse.png
-    - lib/assets/images/coins.png
+    - lib/assets/lottie/coin_animation.json
 
   uses-material-design: true

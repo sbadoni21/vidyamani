@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/utils/static.dart';
+import 'package:lottie/lottie.dart';
 
 class AdRewardPopup extends StatelessWidget {
   final num rewardpoints;
@@ -15,11 +16,10 @@ class AdRewardPopup extends StatelessWidget {
         height: width,
         child: Column(
           children: [
-            Image.asset(
-              imageStatic,
-              width: 250,
-              height: 250,
-            ),
+            Container(
+                height: 200,
+                width: 200,
+                child: LottieBuilder.asset(coinsLottie)),
             const SizedBox(
               height: 10,
             ),
