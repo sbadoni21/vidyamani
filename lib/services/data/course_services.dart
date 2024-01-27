@@ -40,6 +40,115 @@ class DataService {
     }
   }
 
+
+
+
+
+
+Future<List<Course>> fetchFeaturedCollectionData() async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore.collection("featuredCourses").get();
+    DateTime nowLocal = DateTime.now();
+
+    List<Course> courses = querySnapshot.docs.map((DocumentSnapshot doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      if (data.containsKey('startTime') && data['startTime'] != null) {
+        DateTime startTime = parseCustomDate(data['startTime']);
+                if (nowLocal.isBefore(startTime)) {
+          return Course.fromMap(data);
+        } else {
+          return null; 
+        }
+      } else {
+        return null; 
+      }
+    }).where((course) => course != null).cast<Course>().toList();
+
+    return courses;
+  } catch (e) {
+    logger.i(e);
+    return [];
+  }
+}
+
+
+
+  Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("upcomingCourse")
+          .get();
+      logger.i(querySnapshot);
+
+      List<Course> courses = querySnapshot.docs
+          .map((DocumentSnapshot doc) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            if (data['type'] != null &&
+                data['title'] != null &&
+                data['photo'] != null) {
+              return Course.fromMap(data);
+            } else {
+              return null;
+            }
+          })
+          .where((course) => course != null)
+          .cast<Course>()
+          .toList();
+
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
+    }
+  }
+   DateTime parseCustomDate(String dateString) {
+    try {
+      if (dateString.isEmpty) {
+        throw FormatException("Empty date string");
+      }
+
+      List<String> dateTimeParts = dateString.split('T');
+      if (dateTimeParts.length == 2) {
+        String datePart = dateTimeParts[0];
+        String timePart = dateTimeParts[1];
+
+        List<String> dateComponents = datePart.split('-');
+        List<String> timeComponents = timePart.split(':');
+
+        int year = int.parse(dateComponents[0]);
+        int month = int.parse(dateComponents[1]);
+        int day = int.parse(dateComponents[2]);
+        int hour = int.parse(timeComponents[0]);
+        int minute = int.parse(timeComponents[1]);
+
+        DateTime localDateTime = DateTime(year, month, day, hour, minute);
+
+        return localDateTime;
+      } else {
+        throw FormatException("Invalid date format");
+      }
+    } catch (e) {
+      print("Error in parseCustomDate: $e, Date String: $dateString");
+      throw Exception("Error parsing date: $e");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Future<List<Course>> fetchCollectionDatawithName(String collectionName) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -62,7 +171,33 @@ class DataService {
           .where((course) => course != null)
           .cast<Course>()
           .toList();
+  Future<List<Course>> fetchFeaturedCollectionData() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("featuredCourses")
+          .get();
+      DateTime nowLocal = DateTime.now();
 
+      List<Course> courses = querySnapshot.docs
+          .map((DocumentSnapshot doc) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            
+            if (data['startTime'] ) {
+              return Course.fromMap(data);
+            } else {
+              return null;
+            }
+          })
+          .where((course) => course != null)
+          .cast<Course>()
+          .toList();
+
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
+    }
+  }
       return courses;
     } catch (e) {
       logger.i(e);
@@ -147,9 +282,7 @@ class DataService {
         return [];
       }
     } catch (e) {
-      // Use the logger inside the catch block for error logging
       logger.i("Error fetching videos: $e");
-      // Return an empty list in case of an error
       return [];
     }
   }
@@ -200,5 +333,6 @@ class DataService {
     return [];
   }
 }
+ 
 
 }

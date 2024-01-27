@@ -18,7 +18,6 @@ import 'package:vidyamani/models/testimonial_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
-import 'package:vidyamani/screens/courses_page.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/meetingdetail_page.dart';
 import 'package:vidyamani/screens/notes_page.dart';
@@ -58,6 +57,8 @@ class HomePageState extends ConsumerState<HomePage> {
   );
   late Timer _timer;
   final Duration refreshInterval = const Duration(minutes: 10);
+  final Duration displayAdsInterval = const Duration(minutes: 10);
+
   User? user;
   @override
   void initState() {
@@ -66,10 +67,14 @@ class HomePageState extends ConsumerState<HomePage> {
     setupRefreshTimer();
     fetchImageUrls();
     meetingProvider.getMeetings();
-    // adProvider.createInterstitialAd();
-    // adProvider.createRewardedAd();
-    // adProvider.createRewardedInterstitialAd();
+
     user = ref.read(userProvider);
+    if (user!.type == 'free') {
+      adProvider.createInterstitialAd();
+      adProvider.createRewardedAd();
+      adProvider.createRewardedInterstitialAd();
+      displayAds();
+    }
   }
 
   void setupRefreshTimer() {
@@ -78,9 +83,15 @@ class HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  void displayAds() {
+    _timer = Timer.periodic(displayAdsInterval, (Timer timer) {
+      adProvider.showRewardedInterstitialAd(user!, context);
+    });
+  }
+
   Future<void> fetchData() async {
     await fetchImageUrls();
-    coursesData = await fetchCourses();
+    coursesData = await fetchFeaturedCollectionData();
     fetchedLectures = await fetchCoursesLectures();
   }
 
@@ -104,8 +115,9 @@ class HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-  Future<List<Course>> fetchCourses() async {
-    List<Course> fetchedCourses = await _dataService.fetchCollectionData();
+  Future<List<Course>> fetchFeaturedCollectionData() async {
+    List<Course> fetchedCourses =
+        await _dataService.fetchFeaturedCollectionData();
     logger.i(fetchedCourses);
     return fetchedCourses;
   }
@@ -156,6 +168,7 @@ class HomePageState extends ConsumerState<HomePage> {
         onRefresh: () async {
           await fetchImageUrls();
           await fetchTestimonials();
+          await fetchData();
         },
         child: ListView(
           children: [
@@ -209,7 +222,6 @@ class HomePageState extends ConsumerState<HomePage> {
                         Category category = categoriesData[index];
                         return GestureDetector(
                           onTap: () {
-                           
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -234,7 +246,7 @@ class HomePageState extends ConsumerState<HomePage> {
                     height: 16,
                   ),
                   FutureBuilder(
-                    future: fetchCourses(),
+                    future: fetchFeaturedCollectionData(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

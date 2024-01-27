@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vidyamani/components/adreward_component.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/services/admanager/rewards_callback.dart';
 
@@ -25,7 +26,7 @@ class AdProvider extends ChangeNotifier {
           _interstitialAd = ad;
           _numInterstitialLoadAttempts = 0;
           _interstitialAd!.setImmersiveMode(true);
-          notifyListeners(); // Notify listeners when ad is loaded
+          notifyListeners();
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('InterstitialAd failed to load: $error.');
@@ -112,7 +113,6 @@ class AdProvider extends ChangeNotifier {
     rewardedAd!.setImmersiveMode(true);
     rewardedAd!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
       userCoinsService.updateCoins(user.uid, reward.amount.toInt());
-     
     });
     rewardedAd = null;
   }
@@ -141,7 +141,7 @@ class AdProvider extends ChangeNotifier {
         ));
   }
 
-  void showRewardedInterstitialAd(User user) {
+  void showRewardedInterstitialAd(User user, BuildContext context) {
     if (_rewardedInterstitialAd == null) {
       print('Warning: attempt to show rewarded interstitial before loaded.');
       return;
@@ -159,6 +159,7 @@ class AdProvider extends ChangeNotifier {
           (RewardedInterstitialAd ad, AdError error) {
         print('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
+
         createRewardedInterstitialAd();
       },
     );
@@ -166,6 +167,12 @@ class AdProvider extends ChangeNotifier {
     _rewardedInterstitialAd!.setImmersiveMode(true);
     _rewardedInterstitialAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AdRewardPopup(rewardpoints: reward.amount);
+        },
+      );
       userCoinsService.updateCoins(user.uid, reward.amount.toInt());
     });
     _rewardedInterstitialAd = null;

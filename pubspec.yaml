@@ -76,5 +76,6 @@ flutter:
     - lib/assets/images/audioBooks.png
     - lib/assets/images/humanRights.png
     - lib/assets/images/classBasedCourse.png
+    - lib/assets/images/coins.png
 
   uses-material-design: true

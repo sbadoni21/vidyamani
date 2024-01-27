@@ -115,7 +115,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
     user = ref.read(userProvider);
     if (user!.type == 'free') {
       adProvider.createRewardedInterstitialAd();
-      adProvider.showRewardedInterstitialAd(user!);
+      adProvider.showRewardedInterstitialAd(user!, context);
       adTimer();
     }
 
@@ -220,7 +220,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
 
   void adTimer() {
     _timer = Timer.periodic(refreshInterval, (Timer timer) {
-      adProvider.showRewardedInterstitialAd(user!);
+      adProvider.showRewardedInterstitialAd(user!, context);
     });
   }
 
