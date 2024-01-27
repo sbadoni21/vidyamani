@@ -8,12 +8,11 @@ class AdRewardPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = double.infinity - 60;
     return AlertDialog(
       backgroundColor: Colors.white,
       content: SizedBox(
-        width: double.infinity - 60,
-        height: width,
+        width: double.infinity - 80,
+        height: 350,
         child: Column(
           children: [
             Container(
@@ -30,7 +29,10 @@ class AdRewardPopup extends StatelessWidget {
             SizedBox(
               height: 5,
             ),
-            Text('You earned $rewardpoints Coins'),
+            Text(
+              'You earned $rewardpoints Coins',
+              style: myTextStylefontsize14,
+            ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
