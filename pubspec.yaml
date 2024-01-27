@@ -78,5 +78,6 @@ flutter:
     - lib/assets/images/humanRights.png
     - lib/assets/images/classBasedCourse.png
     - lib/assets/lottie/coin_animation.json
+    - lib/assets/images/logohalf.png
 
   uses-material-design: true

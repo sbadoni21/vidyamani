@@ -202,8 +202,6 @@ class LectureDataService {
 
       List<dynamic> myCourses =
           (userSnapshot.data() as Map<String, dynamic>?)?['myCourses'] ?? [];
-
-      // Check if any of the saved courses has the specified courseId
       bool isSaved = myCourses.any((course) => course['courseKey'] == courseId);
 
       return isSaved;

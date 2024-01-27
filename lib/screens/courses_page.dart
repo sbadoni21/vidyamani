@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
-import 'package:vidyamani/components/circular_tiles_component.dart';
-import 'package:vidyamani/components/courses_list_tile.dart';
 import 'package:vidyamani/components/coursestile_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
-import 'package:vidyamani/components/testimonals_component.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
-import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 
 final userProvider = Provider<User?>((ref) {

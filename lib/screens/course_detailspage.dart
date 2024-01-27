@@ -6,6 +6,7 @@ import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/screens/buyplans_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -172,7 +173,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the AlertDialog
+                Navigator.of(context).pop();
               },
               child: Text("Cancel"),
             ),
@@ -196,24 +197,26 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: (widget.courses.type == "premium" &&
-              user?.type != "premium")
-          ? ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 5.0,
-                backgroundColor: bgColor,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 12.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              onPressed: () {
-                _showPaymentGatewayDialog(context);
-              },
-              child: Text("Buy Now"),
-            )
-          : null,
+      floatingActionButton:
+          (widget.courses.type == "premium" && user?.type != "premium")
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5.0,
+                    backgroundColor: bgColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 45.0, vertical: 12.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BuyPlans()));
+                  },
+                  child: Text("Buy Now"),
+                )
+              : null,
       appBar: CustomAppBarBckBtn(
         onBackPressed: () {
           Navigator.pop(context);
@@ -307,19 +310,19 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                         ),
                       ],
                     ),
-                    Text(
-                      (widget.courses.type == "free")
-                          ? ' '
-                          : user?.type != 'premium'
-                              ? '₹ ${widget.courses.price.toString() ?? ""}'
-                              : "",
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    )
+                    // Text(
+                    //   (widget.courses.type == "free")
+                    //       ? ' '
+                    //       : user?.type != 'premium'
+                    //           ? '₹ ${widget.courses.price.toString() ?? ""}'
+                    //           : "",
+                    //   style: TextStyle(
+                    //     fontSize: 26,
+                    //     fontStyle: FontStyle.normal,
+                    //     fontWeight: FontWeight.w600,
+                    //     color: Colors.white,
+                    //   ),
+                    // )
                   ],
                 ),
               ],

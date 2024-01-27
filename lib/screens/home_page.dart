@@ -25,7 +25,6 @@ import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
-import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/livelecture_service.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 

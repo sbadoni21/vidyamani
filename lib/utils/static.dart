@@ -90,3 +90,6 @@ TextStyle myTextStylefontsize12BGCOLOR = TextStyle(
 const ChatGPT = "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";
 const imageStatic = "lib/assets/images/classBasedCourse.png";
 const coinsLottie = 'lib/assets/lottie/coin_animation.json';
+const logo = 'lib/assets/images/logo.png';
+const logohalf = 'lib/assets/images/logohalf.png';
+
