@@ -69,12 +69,14 @@ class HomePageState extends ConsumerState<HomePage> {
     meetingProvider.getMeetings();
 
     user = ref.read(userProvider);
-    if (user!.type == 'free') {
-      adProvider.createInterstitialAd();
-      adProvider.createRewardedAd();
-      adProvider.createRewardedInterstitialAd();
-      displayAds();
-    }
+    Future.delayed(const Duration(seconds: 10), () {
+      if (user!.type == 'free') {
+        adProvider.createInterstitialAd();
+        adProvider.createRewardedAd();
+        adProvider.createRewardedInterstitialAd();
+        displayAds();
+      }
+    });
   }
 
   void setupRefreshTimer() {
