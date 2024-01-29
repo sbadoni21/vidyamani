@@ -39,7 +39,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
 
   Future<User?> fetchData() async {
     try {
-      return ref.read(userProvider);
+      return ref.watch(userProvider);
     } catch (e) {
       print('Error fetching data: $e');
       return null;
