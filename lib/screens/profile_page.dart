@@ -180,7 +180,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                           ),
                           child: ClipOval(
-                            child: user != null && user!.photoURL == "none"
+                            child: user == null
                                 ? Image.asset(
                                     'lib/assets/images/placeholder_image.png',
                                     width: 120,

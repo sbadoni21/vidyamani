@@ -75,12 +75,10 @@ class AdProvider extends ChangeNotifier {
         request: AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (RewardedAd ad) {
-            print('$ad loaded.');
             rewardedAd = ad;
             _numRewardedLoadAttempts = 0;
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('RewardedAd failed to load: $error');
             rewardedAd = null;
             _numRewardedLoadAttempts += 1;
             if (_numRewardedLoadAttempts < _numRewardedLoadAttempts) {
@@ -99,12 +97,10 @@ class AdProvider extends ChangeNotifier {
       onAdShowedFullScreenContent: (RewardedAd ad) =>
           print('ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (RewardedAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         createRewardedAd();
       },
       onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         createRewardedAd();
       },
@@ -125,12 +121,10 @@ class AdProvider extends ChangeNotifier {
         request: AdRequest(),
         rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
           onAdLoaded: (RewardedInterstitialAd ad) {
-            print('$ad loaded.');
             _rewardedInterstitialAd = ad;
             _numRewardedInterstitialLoadAttempts = 0;
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('RewardedInterstitialAd failed to load: $error');
             _rewardedInterstitialAd = null;
             _numRewardedInterstitialLoadAttempts += 1;
             if (_numRewardedInterstitialLoadAttempts <
@@ -143,7 +137,6 @@ class AdProvider extends ChangeNotifier {
 
   void showRewardedInterstitialAd(User user, BuildContext context) {
     if (_rewardedInterstitialAd == null) {
-      print('Warning: attempt to show rewarded interstitial before loaded.');
       return;
     }
     _rewardedInterstitialAd!.fullScreenContentCallback =

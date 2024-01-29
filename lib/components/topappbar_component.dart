@@ -86,7 +86,11 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        User? user = ref.watch(userProvider);
+        User? user = ref.read(userProvider);
+        print(user!.coins);
+        print(user!.displayName);
+        print(user!.email);
+        print(user!.coins);
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: SizedBox(

@@ -207,7 +207,6 @@ class DataService {
               title: '',
               photo: '',
               lectures: '',
-              price: '',
               teacher: '',
               lectureKey: '',
               courseKey: '');

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
 class UserCoinsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+
   Future<void> updateCoins(String userId, int coinsToAdd) async {
     try {
       DocumentSnapshot userSnapshot =

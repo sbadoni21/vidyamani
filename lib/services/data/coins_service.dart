@@ -18,7 +18,8 @@ class CoinsService {
         print(coins.rupeesForGold);
         return coins;
       } else {
-        return Coins(coinsToRupee: 0, coinsForGold: 0, rupeesForGold: 0);
+        return Coins(
+            coinsToRupee: 0, coinsForGold: 0, rupeesForGold: 0, id: '');
       }
     } catch (e) {
       print("Error fetching coins data: $e");

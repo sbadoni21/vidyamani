@@ -4,40 +4,35 @@ class Course {
   final String photo;
   final String? lectures;
   final String? description;
-  final String? price;
   final String? teacher;
   final String? lectureKey;
   final String? courseKey;
   final String? courseCollection;
   final String? startTime;
-  Course({
-    required this.type,
-    required this.title,
-    required this.photo,
-    required this.description,
-    this.lectures,
-    this.courseCollection,
-    this.price,
-    this.courseKey,
-    this.teacher,
-    this.lectureKey,
-    this.startTime
-  });
+  Course(
+      {required this.type,
+      required this.title,
+      required this.photo,
+      required this.description,
+      this.lectures,
+      this.courseCollection,
+      this.courseKey,
+      this.teacher,
+      this.lectureKey,
+      this.startTime});
 
   factory Course.fromMap(Map<String, dynamic> map) {
     return Course(
-      type: map['type'] ?? '',
-      title: map['title'] ?? '',
-      photo: map['photo'] ?? '',
-      description: map['description'] ?? '',
-      lectures: map['lectures'] ?? "",
-      price: map['price'] ?? "",
-      teacher: map['teacher'] ?? '',
-      lectureKey: map['lectureKey'] ?? "",
-      courseKey: map['uid'] ?? "",
-      courseCollection: map['courseCollection'] ?? "",
-      startTime: map['startTime']?? ""
-    );
+        type: map['type'] ?? '',
+        title: map['title'] ?? '',
+        photo: map['photo'] ?? '',
+        description: map['description'] ?? '',
+        lectures: map['lectures'] ?? "",
+        teacher: map['teacher'] ?? '',
+        lectureKey: map['lectureKey'] ?? "",
+        courseKey: map['uid'] ?? "",
+        courseCollection: map['courseCollection'] ?? "",
+        startTime: map['startTime'] ?? "");
   }
 }
 
@@ -72,14 +67,14 @@ class Lectures {
 
 class Videos {
   final String videoUrl;
-  final List<Comments> comments;
+  final List<Comments>? comments;
   final String? title;
   final String content;
   final String videoUid;
   final String lectureKey;
   Videos(
       {required this.videoUrl,
-      required this.comments,
+      this.comments,
       this.title,
       required this.content,
       required this.lectureKey,
@@ -88,7 +83,7 @@ class Videos {
   factory Videos.fromMap(Map<String, dynamic> map) {
     return Videos(
         videoUrl: map['video'],
-        comments: (map['comment'] as List<dynamic>?)
+        comments: (map['comments'] as List<dynamic>?)
                 ?.map((comment) =>
                     Comments.fromMap(comment as Map<String, dynamic>))
                 .toList() ??
