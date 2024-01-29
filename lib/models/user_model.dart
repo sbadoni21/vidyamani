@@ -11,7 +11,7 @@ class User {
   final bool isGoogleUser;
   final int coins;
   final String location;
-  final List<MyCourse> myCourses;
+  final List<MyCourse>? myCourses;
   final List<History>? myHistory;
   final List<SavedLecture>? savedLectures;
 
@@ -29,7 +29,7 @@ class User {
     required this.location,
     required this.isGoogleUser,
     this.myHistory,
-    required this.myCourses,
+     this.myCourses,
     this.savedLectures,
   });
 

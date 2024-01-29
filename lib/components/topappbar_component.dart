@@ -6,7 +6,7 @@ import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:vidyamani/utils/static.dart';
 
 final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
+  return ref.read(userStateNotifierProvider);
 });
 
 class CustomAppBar extends ConsumerStatefulWidget

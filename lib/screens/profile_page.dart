@@ -204,18 +204,18 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                           children: [
                             Text(
                               user?.displayName ?? "Name",
-                              style: myTextStylefontsize14White,
+                              style: myTextStylefontsize16white,
                             ),
                             Row(
                               children: [
                                 const Icon(Icons.location_pin,
-                                    size: 16, color: Colors.white),
+                                    size: 20, color: Colors.white),
                                 const SizedBox(
                                   width: 8,
                                 ),
                                 Text(
                                   user?.location ?? "City",
-                                  style: myTextStylefontsize10,
+                                  style: myTextStylefontsize14White,
                                 )
                               ],
                             ),
