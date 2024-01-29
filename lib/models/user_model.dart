@@ -44,7 +44,7 @@ class User {
       status: map['status'] ?? '',
       type: map['type'] ?? '',
       uid: map['uid'] ?? '',
-      isGoogleUser: map['isGoogleUser'] ,
+      isGoogleUser: map['isGoogleUser'] ?? false ,
       coins: map['coins'] ?? 0,
       location: map['location'] ?? '',
       myCourses: (map['myCourses'] as List<dynamic>?)

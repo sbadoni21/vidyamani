@@ -19,22 +19,25 @@ class UserStateNotifier extends StateNotifier<User?> {
   Future<void> _initUser() async {
     var firebaseUser = auth.FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
-      await fetchUserData(firebaseUser.uid);
+      var user = await fetchUserData(firebaseUser.uid);
+      if (user != null) {
+        state = user;
+      }
     }
   }
 
-  Future<void> fetchUserData(String userId) async {
+  Future<User?> fetchUserData(String userId) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
           await _firestore.collection('users').doc(userId).get();
 
       if (snapshot.exists && snapshot.data() != null) {
         state = User.fromMap(snapshot.data()!);
+        return state;
       } else {
         state = null;
       }
     } catch (e) {
-      // Handle exceptions
       state = null;
     }
   }
@@ -47,17 +50,16 @@ class UserStateNotifier extends StateNotifier<User?> {
           .set(updatedUser.toMap(), SetOptions(merge: true));
 
       state = updatedUser;
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<User?> signIn(String email, String password) async {
     try {
       var firebaseUser = await ref
           .read(authenticationServicesProvider)
           .signIn(email, password);
       if (firebaseUser != null) {
-        await fetchUserData(firebaseUser.uid);
+        return await fetchUserData(firebaseUser.uid);
       } else {
         state = null;
       }
@@ -75,28 +77,31 @@ class UserStateNotifier extends StateNotifier<User?> {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     try {
       var firebaseUser =
           await ref.read(authenticationServicesProvider).signInWithGoogle();
       if (firebaseUser != null) {
-        await fetchUserData(firebaseUser.uid);
+        User? user = await fetchUserData(firebaseUser.uid);
+        print(
+            'helllpppppp sdadsasdasdadsasdadasdadasd    ${firebaseUser.uid}   ');
+        return user;
       } else {
         state = null;
+        return null;
       }
     } catch (e) {
-      state = null; // Handle exceptions
+      state = null;
+      return null;
     }
   }
-
 }
-
-
 
 final userStateNotifierProvider =
     StateNotifierProvider<UserStateNotifier, User?>(
   (ref) => UserStateNotifier(ref),
 );
+
 extension on User {
   Map<String, dynamic> toMap() {
     return {
@@ -113,7 +118,8 @@ extension on User {
       'location': location,
       'myHistory': myCourses?.map((lecture) => lecture.toMap()).toList() ?? [],
       'myCourses': myCourses?.map((course) => course.toMap()).toList() ?? [],
-      'savedLectures': savedLectures?.map((lecture) => lecture.toMap()).toList() ?? [],
+      'savedLectures':
+          savedLectures?.map((lecture) => lecture.toMap()).toList() ?? [],
     };
   }
 }
@@ -135,6 +141,7 @@ extension on SavedLecture {
     };
   }
 }
+
 extension on History {
   Map<String, dynamic> toMap() {
     return {

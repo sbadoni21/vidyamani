@@ -22,7 +22,7 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
 
   Future<User?> fetchData() async {
     try {
-      return ref.watch(userProvider);
+      return ref.read(userProvider);
     } catch (e) {
       print('Error fetching user data: $e');
       return null;
@@ -39,18 +39,18 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+            const SizedBox(
                 height: 16,
               ),
-              HeadingTitle(title: "My Courses"),
-              SizedBox(
+          const     HeadingTitle(title: "My Courses"),
+            const  SizedBox(
                 height: 16,
               ),
               FutureBuilder<User?>(
                 future: fetchData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -59,8 +59,9 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
                     return FutureBuilder<List<Course>>(
                       future: DataService().fetchCoursesViaUser(user!.uid),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return  const Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else if (!snapshot.hasData ||

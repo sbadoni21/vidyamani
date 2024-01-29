@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/password_reset_page.dart';
 import 'package:vidyamani/screens/signupscreen.dart';
-import 'package:vidyamani/services/auth/authentication.dart';
-import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:vidyamani/utils/static.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  AuthenticationServices authenticationService = AuthenticationServices();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,8 +126,9 @@ class _LoginPageState extends State<LoginPage> {
                     String password = passwordController.text.trim();
 
                     if (email.isNotEmpty && password.isNotEmpty) {
-                      User? user =
-                          await authenticationService.signIn(email, password);
+                      User? user = await ref
+                          .read(userStateNotifierProvider.notifier)
+                          .signIn(email, password);
 
                       if (user != null) {
                         Navigator.push(
@@ -157,8 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
-                    User? user = await authenticationService.signInWithGoogle();
-
+                    User? user = await ref
+                        .read(userStateNotifierProvider.notifier)
+                        .signInWithGoogle();
                     if (user != null) {
                       Navigator.push(
                         context,

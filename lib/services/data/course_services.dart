@@ -173,54 +173,55 @@ class DataService {
       return [];
     }
   }
+Future<List<Course>> fetchCoursesViaUser(String userId) async {
+  try {
+    DocumentReference userRef = _firestore.collection("users").doc(userId);
+    DocumentSnapshot userSnapshot = await userRef.get();
 
-  Future<List<Course>> fetchCoursesViaUser(String userId) async {
-    try {
-      DocumentReference userRef = _firestore.collection("users").doc(userId);
-      DocumentSnapshot userSnapshot = await userRef.get();
+    List<MyCourse>? myCourses =
+        (userSnapshot.get("myCourses") as List<dynamic>?)
+            ?.map((courseData) =>
+                MyCourse.fromMap(courseData as Map<String, dynamic>))
+            .toList();
 
-      if (!userSnapshot.exists) {
-        await userRef.set({'myCourses': []});
-      }
-      List<MyCourse> myCourses =
-          (userSnapshot.get("myCourses") as List<dynamic>?)
-                  ?.map((courseData) =>
-                      MyCourse.fromMap(courseData as Map<String, dynamic>))
-                  .toList() ??
-              [];
-      List<Course> courses = await Future.wait(myCourses.map((myCourse) async {
-        DocumentSnapshot courseSnapshot = await _firestore
-            .collection("courses")
-            .doc("kGrTotd8SFOUzsUH9Hpz")
-            .collection(myCourse.course)
-            .doc(myCourse.courseId)
-            .get();
-        Map<String, dynamic>? data =
-            courseSnapshot.data() as Map<String, dynamic>?;
-
-        if (data != null) {
-          return Course.fromMap(data);
-        } else {
-          return Course(
-              description: '',
-              type: '',
-              title: '',
-              photo: '',
-              lectures: '',
-              teacher: '',
-              lectureKey: '',
-              courseKey: '');
-        }
-      }));
-
-      print("Courses fetched successfully: ${courses}");
-      return courses;
-    } catch (e) {
-      print("Error fetching courses: $e");
-      logger.i(e);
+    if (myCourses == null || myCourses.isEmpty) {
       return [];
     }
+
+    List<Course> courses = await Future.wait(myCourses.map((myCourse) async {
+      DocumentSnapshot courseSnapshot = await _firestore
+          .collection("courses")
+          .doc("kGrTotd8SFOUzsUH9Hpz")
+          .collection(myCourse.course)
+          .doc(myCourse.courseId)
+          .get();
+      Map<String, dynamic>? data =
+          courseSnapshot.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        return Course.fromMap(data);
+      } else {
+        return Course(
+            description: '',
+            type: '',
+            title: '',
+            photo: '',
+            lectures: '',
+            teacher: '',
+            lectureKey: '',
+            courseKey: '');
+      }
+    }));
+
+    print("Courses fetched successfully: $courses");
+    return courses;
+  } catch (e) {
+    print("Error fetching courses: $e");
+    logger.i(e);
+    return [];
   }
+}
+
 
   Future<List<Videos>> fetchLecturesWithLectureKey(String lectureKey) async {
     try {
