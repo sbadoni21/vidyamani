@@ -36,37 +36,40 @@ class DataService {
       return [];
     }
   }
-Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
-  try {
-    QuerySnapshot querySnapshot = await _firestore.collection("upcomingCourses").get();
-    DateTime nowLocal = DateTime.now();
-    List<Course> courses = querySnapshot.docs.map((DocumentSnapshot doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      if (data.containsKey('startTime') && data['startTime'] != null) {
-        DateTime startTime = parseCustomDate(data['startTime']);
-                if (nowLocal.isBefore(startTime)) {
-          return Course.fromMap(data);
-        } else {
-          return null; 
-        }
-      } else {
-        return null; 
-      }
-    }).where((course) => course != null).cast<Course>().toList();
-    return courses;
-  } catch (e) {
-    logger.i(e);
-    return [];
+
+  Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firestore.collection("upcomingCourses").get();
+      DateTime nowLocal = DateTime.now();
+      List<Course> courses = querySnapshot.docs
+          .map((DocumentSnapshot doc) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            if (data.containsKey('startTime') && data['startTime'] != null) {
+              DateTime startTime = parseCustomDate(data['startTime']);
+              if (nowLocal.isBefore(startTime)) {
+                return Course.fromMap(data);
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
+          })
+          .where((course) => course != null)
+          .cast<Course>()
+          .toList();
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
+    }
   }
-}
-
-
 
   Future<List<Course>> fetchFeaturedCoursesCollectionData() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection("featuredCourses")
-          .get();
+      QuerySnapshot querySnapshot =
+          await _firestore.collection("featuredCourses").get();
       List<Course> courses = querySnapshot.docs
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -87,7 +90,8 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
       return [];
     }
   }
-   DateTime parseCustomDate(String dateString) {
+
+  DateTime parseCustomDate(String dateString) {
     try {
       if (dateString.isEmpty) {
         throw FormatException("Empty date string");
@@ -114,23 +118,8 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  Future<List<Course>> fetchCollectionDatawithName(String collectionName) async {
+  Future<List<Course>> fetchCollectionDatawithName(
+      String collectionName) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
           .collection("courses")
@@ -142,8 +131,7 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
       List<Course> courses = querySnapshot.docs
           .map((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            if (data['type'] != null
-                ) {
+            if (data['type'] != null) {
               return Course.fromMap(data);
             } else {
               return null;
@@ -152,33 +140,33 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
           .where((course) => course != null)
           .cast<Course>()
           .toList();
-  Future<List<Course>> fetchFeaturedCollectionData() async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection("featuredCourses")
-          .get();
-      DateTime nowLocal = DateTime.now();
+      Future<List<Course>> fetchFeaturedCollectionData() async {
+        try {
+          QuerySnapshot querySnapshot =
+              await _firestore.collection("featuredCourses").get();
+          DateTime nowLocal = DateTime.now();
 
-      List<Course> courses = querySnapshot.docs
-          .map((DocumentSnapshot doc) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            
-            if (data['startTime'] ) {
-              return Course.fromMap(data);
-            } else {
-              return null;
-            }
-          })
-          .where((course) => course != null)
-          .cast<Course>()
-          .toList();
+          List<Course> courses = querySnapshot.docs
+              .map((DocumentSnapshot doc) {
+                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-      return courses;
-    } catch (e) {
-      logger.i(e);
-      return [];
-    }
-  }
+                if (data['startTime']) {
+                  return Course.fromMap(data);
+                } else {
+                  return null;
+                }
+              })
+              .where((course) => course != null)
+              .cast<Course>()
+              .toList();
+
+          return courses;
+        } catch (e) {
+          logger.i(e);
+          return [];
+        }
+      }
+
       return courses;
     } catch (e) {
       logger.i(e);
@@ -214,6 +202,7 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
           return Course.fromMap(data);
         } else {
           return Course(
+              description: '',
               type: '',
               title: '',
               photo: '',
@@ -269,51 +258,49 @@ Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
   }
 
   Future<List<Course>> fetchCollectionCourseData() async {
-  try {
-    final List<QuerySnapshot> snapshots = await Future.wait([
-      _firestore
-          .collection("courses")
-          .doc( "kGrTotd8SFOUzsUH9Hpz ")
-          .collection("classBased")
-          .get(),
-      _firestore
-          .collection("courses")
-          .doc( "kGrTotd8SFOUzsUH9Hpz ")
-          .collection("skillBased")
-          .get(),
-      _firestore
-          .collection("courses")
-          .doc( "kGrTotd8SFOUzsUH9Hpz ")
-          .collection("humanRights")
-          .get(),
-    ]);
+    try {
+      final List<QuerySnapshot> snapshots = await Future.wait([
+        _firestore
+            .collection("courses")
+            .doc("kGrTotd8SFOUzsUH9Hpz ")
+            .collection("classBased")
+            .get(),
+        _firestore
+            .collection("courses")
+            .doc("kGrTotd8SFOUzsUH9Hpz ")
+            .collection("skillBased")
+            .get(),
+        _firestore
+            .collection("courses")
+            .doc("kGrTotd8SFOUzsUH9Hpz ")
+            .collection("humanRights")
+            .get(),
+      ]);
 
-    final List<Course> courses = [];
+      final List<Course> courses = [];
 
-    for (QuerySnapshot querySnapshot in snapshots) {
-      courses.addAll(
-        querySnapshot.docs
-            .map((DocumentSnapshot doc) {
-              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              if (data['type'] != null &&
-                  data['title'] != null &&
-                  data['photo'] != null) {
-                return Course.fromMap(data);
-              } else {
-                return null;
-              }
-            })
-            .where((course) => course != null)
-            .cast<Course>(),
-      );
+      for (QuerySnapshot querySnapshot in snapshots) {
+        courses.addAll(
+          querySnapshot.docs
+              .map((DocumentSnapshot doc) {
+                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                if (data['type'] != null &&
+                    data['title'] != null &&
+                    data['photo'] != null) {
+                  return Course.fromMap(data);
+                } else {
+                  return null;
+                }
+              })
+              .where((course) => course != null)
+              .cast<Course>(),
+        );
+      }
+
+      return courses;
+    } catch (e) {
+      logger.i(e);
+      return [];
     }
-
-    return courses;
-  } catch (e) {
-    logger.i(e);
-    return [];
   }
-}
- 
-
 }

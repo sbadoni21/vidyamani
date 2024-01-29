@@ -111,9 +111,9 @@ extension on User {
       'uid': uid,
       'coins': coins,
       'location': location,
-      'myHistory': myCourses.map((lecture) => lecture.toMap()).toList(),
-      'myCourses': myCourses.map((course) => course.toMap()).toList(),
-      'savedLectures': savedLectures.map((lecture) => lecture.toMap()).toList(),
+      'myHistory': myCourses?.map((lecture) => lecture.toMap()).toList() ?? [],
+      'myCourses': myCourses?.map((course) => course.toMap()).toList() ?? [],
+      'savedLectures': savedLectures?.map((lecture) => lecture.toMap()).toList() ?? [],
     };
   }
 }

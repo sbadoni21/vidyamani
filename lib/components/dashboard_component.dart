@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget buildUpcomingPage() {
-    return UpcomingPage();
+    return HistoryPage();
   }
 
   Widget buildHistoryPage() {

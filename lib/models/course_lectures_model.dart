@@ -3,23 +3,25 @@ class Course {
   final String title;
   final String photo;
   final String? lectures;
-  
+  final String? description;
   final String? price;
   final String? teacher;
   final String? lectureKey;
   final String? courseKey;
   final String? courseCollection;
-
+  final String? startTime;
   Course({
     required this.type,
     required this.title,
     required this.photo,
+    required this.description,
     this.lectures,
     this.courseCollection,
     this.price,
     this.courseKey,
     this.teacher,
     this.lectureKey,
+    this.startTime
   });
 
   factory Course.fromMap(Map<String, dynamic> map) {
@@ -27,12 +29,14 @@ class Course {
       type: map['type'] ?? '',
       title: map['title'] ?? '',
       photo: map['photo'] ?? '',
+      description: map['description'] ?? '',
       lectures: map['lectures'] ?? "",
       price: map['price'] ?? "",
       teacher: map['teacher'] ?? '',
       lectureKey: map['lectureKey'] ?? "",
       courseKey: map['uid'] ?? "",
       courseCollection: map['courseCollection'] ?? "",
+      startTime: map['startTime']?? ""
     );
   }
 }
@@ -76,7 +80,7 @@ class Videos {
   Videos(
       {required this.videoUrl,
       required this.comments,
-     this.title,
+      this.title,
       required this.content,
       required this.lectureKey,
       required this.videoUid});

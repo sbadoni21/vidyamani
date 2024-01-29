@@ -7,7 +7,7 @@ import 'package:vidyamani/services/profile/profile_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
 final userProvider = Provider<User?>((ref) {
-  return ref.read(userStateNotifierProvider);
+  return ref.watch(userStateNotifierProvider);
 });
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -21,9 +21,29 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
   String obscuringCharacter = '*';
 
   @override
-  void initState() {
-    super.initState();
-    user = ref.read(userProvider);
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: fetchData(),
+      builder: (context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          user = snapshot.data;
+          return buildProfilePage(context);
+        }
+      },
+    );
+  }
+
+  Future<User?> fetchData() async {
+    try {
+      return ref.read(userProvider);
+    } catch (e) {
+      print('Error fetching data: $e');
+      return null;
+    }
   }
 
   Future<void> _showChangePasswordDialog(BuildContext context) async {
@@ -133,8 +153,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildProfilePage(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
@@ -161,7 +180,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                             ),
                           ),
                           child: ClipOval(
-                            child: user!.photoURL == "none"
+                            child: user != null && user!.photoURL == "none"
                                 ? Image.asset(
                                     'lib/assets/images/placeholder_image.png',
                                     width: 120,
@@ -234,7 +253,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           Expanded(
             child: ListView(
               children: [
-                Dashboard(),
+                const Dashboard(),
               ],
             ),
           ),

@@ -23,6 +23,7 @@ import 'package:vidyamani/screens/meetingdetail_page.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
 import 'package:vidyamani/screens/search_page.dart';
+import 'package:vidyamani/screens/upcoming_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/livelecture_service.dart';
@@ -312,15 +313,16 @@ class HomePageState extends ConsumerState<HomePage> {
                                   itemBuilder: (context, index) {
                                     Course course = upcomingCourses[index];
                                     return GestureDetector(
-                                      //                 onTap: () {
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: (context) =>
-                                      //           CourseDetailPage(lecture: lecture),
-                                      //     ),
-                                      //   );
-                                      // },
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                UpcomingCourses(
+                                                    courses: course),
+                                          ),
+                                        );
+                                      },
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                             left: 8.0, right: 8),

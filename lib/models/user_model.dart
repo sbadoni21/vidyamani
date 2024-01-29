@@ -11,9 +11,9 @@ class User {
   final String uid;
   final int coins;
   final String? location;
-  final List<MyCourse> myCourses;
+  final List<MyCourse>? myCourses;
   final List<History>? myHistory;
-  final List<SavedLecture> savedLectures;
+  final List<SavedLecture>? savedLectures;
 
   User({
     required this.deviceToken,
@@ -28,8 +28,8 @@ class User {
     required this.coins,
     this.location,
     this.myHistory,
-    required this.myCourses,
-    required this.savedLectures,
+ this.myCourses,
+this.savedLectures,
   });
 
   factory User.fromMap(Map<String, dynamic> map) {

@@ -7,12 +7,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:random_string/random_string.dart';
+import 'package:vidyamani/services/notification/notificationservices.dart';
+
 final authenticationServicesProvider = Provider<AuthenticationServices>((ref) {
   return AuthenticationServices();
 });
+
 class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+
   Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential =
@@ -26,6 +30,7 @@ class AuthenticationServices {
       return null;
     }
   }
+
   Future<bool> sendOTP(String email) async {
     if (EmailValidator.validate(email)) {
       try {
@@ -40,20 +45,24 @@ class AuthenticationServices {
       return false;
     }
   }
-   bool isGoogleUser() {
+
+  bool isGoogleUser() {
     try {
       User? user = firebaseAuth.currentUser;
       if (user != null) {
-        return user.providerData.any((userInfo) => userInfo.providerId == 'google.com');
+        return user.providerData
+            .any((userInfo) => userInfo.providerId == 'google.com');
       }
     } catch (e) {
       print('Error checking if user signed up with Google: $e');
     }
     return false;
   }
+
   Future<bool> validateOTP(String otpEntered, String otpSent) async {
     return otpEntered == otpSent;
   }
+
   Future<bool> resetPassword(String email) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
@@ -63,9 +72,11 @@ class AuthenticationServices {
       return false;
     }
   }
+
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
       if (googleUser != null) {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
@@ -75,18 +86,23 @@ class AuthenticationServices {
         );
         UserCredential userCredential =
             await firebaseAuth.signInWithCredential(credential);
+
         if (userCredential.user != null) {
           final uid = userCredential.user!.uid;
           bool userExists = await _userExists(uid);
+
           if (!userExists) {
             final email = userCredential.user!.providerData[0].email;
             final displayName = userCredential.user!.displayName;
             final status = 'active';
             final photoURL = userCredential.user!.photoURL;
             final coins = 0;
+            final deviceToken = await NotificationService().getDeviceToken();
+            final List myCourses = [];
             final type = "free";
             final referralCode = randomAlphaNumeric(8);
-            _fireStore.collection('users').doc(uid).set({
+
+            await _fireStore.collection('users').doc(uid).set({
               'uid': uid,
               'email': email,
               'displayName': displayName,
@@ -94,22 +110,28 @@ class AuthenticationServices {
               'profilephoto': photoURL,
               'coins': coins,
               'referral': referralCode,
-              'type': type
+              'type': type,
+              'deviceToken': deviceToken,
+              'myCourses': myCourses,
+              'position': ""
             });
           }
-          var sttus = await Permission.location.status;
-          if (!sttus.isGranted) {
+
+          var status = await Permission.location.status;
+          if (!status.isGranted) {
             if (await Permission.location.request().isGranted) {
               Position? position = await Geolocator.getCurrentPosition();
+
               if (position != null) {
                 List<Placemark> placemarks = await placemarkFromCoordinates(
                   position.latitude,
                   position.longitude,
                 );
+
                 if (placemarks.isNotEmpty) {
                   String city = placemarks[0].locality ?? "Unknown City";
-                  // Include city data in Firestore or perform other actions
-                  _fireStore.collection('users').doc(uid).update({
+
+                  await _fireStore.collection('users').doc(uid).update({
                     'location': city,
                   });
                 }
@@ -117,28 +139,33 @@ class AuthenticationServices {
             }
           } else {
             Position? position = await Geolocator.getCurrentPosition();
+
             if (position != null) {
               List<Placemark> placemarks = await placemarkFromCoordinates(
                 position.latitude,
                 position.longitude,
               );
+
               if (placemarks.isNotEmpty) {
                 String city = placemarks[0].locality ?? "Unknown City";
-                // Include city data in Firestore or perform other actions
-                _fireStore.collection('users').doc(uid).update({
+
+                await _fireStore.collection('users').doc(uid).update({
                   'location': city,
                 });
               }
             }
           }
+
           return userCredential.user;
         }
       }
     } catch (e) {
       print('Failed to sign in with Google: $e');
     }
+
     return null;
   }
+
   Future<bool> _userExists(String uid) async {
     try {
       DocumentSnapshot document =
@@ -149,17 +176,21 @@ class AuthenticationServices {
       return false;
     }
   }
+
   Future<String?> getCurrentUserId() async {
     try {
       User? user = firebaseAuth.currentUser;
+
       if (user != null) {
         return user.uid;
       }
     } catch (e) {
       print('Failed to get current user ID: $e');
     }
+
     return null;
   }
+
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await firebaseAuth.signOut();

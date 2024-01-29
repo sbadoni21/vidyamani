@@ -56,7 +56,7 @@ class MeetingDetailPage extends StatelessWidget {
               expandText: "..show more",
               maxLines: 3,
               animation: true,
-              animationDuration: const Duration(seconds: 1),
+              animationDuration: const Duration(milliseconds: 500),
               animationCurve: Curves.easeIn,
               collapseOnTextTap: true,
               linkColor: bgColor,
