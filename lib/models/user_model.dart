@@ -8,6 +8,7 @@ class User {
   final String status;
   final String type;
   final String uid;
+  final bool isGoogleUser;
   final int coins;
   final String location;
   final List<MyCourse> myCourses;
@@ -26,6 +27,7 @@ class User {
     required this.uid,
     required this.coins,
     required this.location,
+    required this.isGoogleUser,
     this.myHistory,
     required this.myCourses,
     this.savedLectures,
@@ -42,6 +44,7 @@ class User {
       status: map['status'] ?? '',
       type: map['type'] ?? '',
       uid: map['uid'] ?? '',
+      isGoogleUser: map['isGoogleUser'] ,
       coins: map['coins'] ?? 0,
       location: map['location'] ?? '',
       myCourses: (map['myCourses'] as List<dynamic>?)

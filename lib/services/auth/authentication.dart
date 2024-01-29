@@ -100,6 +100,7 @@ class AuthenticationServices {
             final deviceToken = await NotificationService().getDeviceToken();
             final List myCourses = [];
             final type = "free";
+            final isGoogleUser = true;
             final referralCode = randomAlphaNumeric(8);
 
             await _fireStore.collection('users').doc(uid).set({
@@ -113,7 +114,8 @@ class AuthenticationServices {
               'type': type,
               'deviceToken': deviceToken,
               'myCourses': myCourses,
-              'position': ""
+              'location': "",
+               'isGoogleUser' :isGoogleUser
             });
           }
 

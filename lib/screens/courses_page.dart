@@ -20,10 +20,13 @@ class CoursesPage extends ConsumerStatefulWidget {
 class _CoursesPageState extends ConsumerState<CoursesPage> {
   late User? user;
 
-  @override
-  void initState() {
-    super.initState();
-    user = ref.read(userProvider);
+  Future<User?> fetchData() async {
+    try {
+      return ref.watch(userProvider);
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
   }
 
   @override
@@ -43,48 +46,62 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
               SizedBox(
                 height: 16,
               ),
-              FutureBuilder<List<Course>>(
-                future: DataService().fetchCoursesViaUser(user!.uid),
+              FutureBuilder<User?>(
+                future: fetchData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Text(
-                        'Error: ${snapshot.error}'); // Display error if any
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text('No courses found.');
+                    return Text('Error: ${snapshot.error}');
                   } else {
-                    List<Course> courses = snapshot.data!;
+                    user = snapshot.data;
 
-                    return SizedBox(
-                      height: 170,
-                      child: courses.isNotEmpty
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: courses.length,
-                              itemBuilder: (context, index) {
-                                Course course = courses[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CourseDetailPage(courses: course),
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8),
-                                    child: Tiles(
-                                      course: course,
-                                    ),
-                                  ),
-                                );
-                              },
-                            )
-                          : const Text("No featured courses available."),
+                    return FutureBuilder<List<Course>>(
+                      future: DataService().fetchCoursesViaUser(user!.uid),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Text('No courses found.');
+                        } else {
+                          List<Course> courses = snapshot.data!;
+
+                          return SizedBox(
+                            height: 170,
+                            child: courses.isNotEmpty
+                                ? ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: courses.length,
+                                    itemBuilder: (context, index) {
+                                      Course course = courses[index];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CourseDetailPage(
+                                                      courses: course),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8),
+                                          child: Tiles(
+                                            course: course,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : const Text("No featured courses available."),
+                          );
+                        }
+                      },
                     );
                   }
                 },

@@ -16,35 +16,12 @@ class _DashboardState extends State<Dashboard> {
   int selectedQueryIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
 
-  final queries = [
-    {
-      'Query': 'MATH Chapter - 1',
-      'progress': 0.7,
-    },
-    {
-      'Query': 'Science Quiz',
-      'progress': 0.5,
-    },
-    {
-      'Query': 'History Assignment',
-      'progress': 0.9,
-    },
-    {
-      'Query': 'History Assignment',
-      'progress': 0.9,
-    },
-  ];
-
   Widget buildCoursesPage() {
     return CoursesPage();
   }
 
   Widget buildSavedPage() {
     return SavedPage();
-  }
-
-  Widget buildUpcomingPage() {
-    return HistoryPage();
   }
 
   Widget buildHistoryPage() {
@@ -58,9 +35,8 @@ class _DashboardState extends State<Dashboard> {
       case 1:
         return buildSavedPage();
       case 2:
-        return buildUpcomingPage();
-      case 3:
         return buildHistoryPage();
+
       default:
         return Container();
     }
@@ -116,18 +92,18 @@ class _DashboardState extends State<Dashboard> {
           Container(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 buildQueryButton("Courses", 0, Icons.computer_sharp),
                 buildQueryButton("Saved", 1, Icons.bookmark_border_outlined),
-                buildQueryButton("Upcoming", 2, Icons.lightbulb),
-                buildQueryButton("History", 3, Icons.lock_clock),
+                buildQueryButton("History", 2, Icons.lightbulb),
               ],
             ),
           ),
           SizedBox(
             height: 800,
             child: PageView.builder(
-              itemCount: queries.length,
+              itemCount: 3,
               controller: _pageController,
               onPageChanged: (int index) {
                 setState(() {

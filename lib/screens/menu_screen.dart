@@ -1,24 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/sidemenu_assets.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
-import 'package:vidyamani/services/auth/authentication.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+final userProvider = Provider<User?>((ref) {
+  return ref
+      .watch(userStateNotifierProvider as AlwaysAliveProviderListenable<User?>);
+});
 
+class MenuScreen extends ConsumerStatefulWidget {
+  const MenuScreen({Key? key}) : super(key: key);
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  _MenuScreenState createState() => _MenuScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _MenuScreenState extends ConsumerState<MenuScreen> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? displayName;
   String? profilePhoto;
-
   @override
   void initState() {
     fetchDisplayName();
@@ -29,7 +33,6 @@ class _MenuScreenState extends State<MenuScreen> {
     final userDoc = FirebaseFirestore.instance
         .collection('users')
         .doc(_firebaseAuth.currentUser!.uid);
-
     userDoc.get().then((doc) {
       if (doc.exists) {
         final userData = doc.data() as Map<String, dynamic>;
@@ -121,9 +124,9 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                           onPressed: () async {
                             if (asset['text'] == 'Logout') {
-                              AuthenticationServices authService =
-                                  AuthenticationServices();
-                              await authService.signOut();
+                              ref
+                                  .read(userStateNotifierProvider.notifier)
+                                  .signOut();
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -165,15 +168,24 @@ class _MenuScreenState extends State<MenuScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // Add the "Made with Love" text at the bottom
-                  Padding(
+                  const Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Text(
-                      "Made with 🖤  ",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Made with  ",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Icon(
+                          Icons.favorite,
+                          color: Colors.black,
+                          size: 20,
+                        )
+                      ],
                     ),
                   ),
                 ],

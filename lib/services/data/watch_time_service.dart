@@ -27,8 +27,7 @@ class WatchTimeService {
   Future<void> updateWatchTime(
       String userId, String videoId, String lectureKey) async {
     try {
-      final List<Map<String, dynamic>> watchTimes =
-          await getWatchTimes(userId);
+      final List<Map<String, dynamic>> watchTimes = await getWatchTimes(userId);
 
       final existingIndex = watchTimes.indexWhere((entry) =>
           entry['videoId'] == videoId && entry['lectureKey'] == lectureKey);
@@ -50,9 +49,8 @@ class WatchTimeService {
     }
   }
 
-  Future<void> updateWatchTimeLocally(
-      String userId, String videoId, String lectureKey,
-      List<Map<String, dynamic>> watchTimes) async {
+  Future<void> updateWatchTimeLocally(String userId, String videoId,
+      String lectureKey, List<Map<String, dynamic>> watchTimes) async {
     try {
       final existingIndex = watchTimes.indexWhere((entry) =>
           entry['videoId'] == videoId && entry['lectureKey'] == lectureKey);

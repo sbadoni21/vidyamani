@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:random_string/random_string.dart';
 import 'package:vidyamani/services/notification/notificationservices.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,7 +35,8 @@ class signup_service {
             photoURL = await storageReference.getDownloadURL();
           });
         }
-
+        final referralCode = randomAlphaNumeric(8);
+        const coins = 0;
         await _fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': email,
@@ -43,7 +45,10 @@ class signup_service {
           'profilephoto': photoURL ?? "none",
           'deviceToken': deviceToken,
           'type': "free",
-          'location': location
+          'location': location,
+          'isGoogleUser': false,
+          'referralCode': referralCode,
+          'coins': coins
         }, SetOptions(merge: true));
 
         return userCredential.user;

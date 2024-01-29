@@ -253,7 +253,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           Expanded(
             child: ListView(
               children: [
-                const Dashboard(),
+                 Dashboard(),
               ],
             ),
           ),
