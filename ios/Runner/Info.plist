@@ -33,6 +33,10 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+	<key>GIDClientID</key>
+    <string>862420344316-28hpogph0ov5pp6sg6joajbh2nbu5e3a.apps.googleusercontent.com</string>
+	<key>GIDServerClientID</key>
+   <string>862420344316-4p0vmqkom62jt3l1hr9olp00b8fvmfe4.apps.googleusercontent.com</string>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
@@ -45,6 +49,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>com.googleusercontent.apps.862420344316-28hpogph0ov5pp6sg6joajbh2nbu5e3a</string>
+		</array>
+	</dict>
+</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
