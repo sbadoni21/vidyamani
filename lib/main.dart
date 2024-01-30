@@ -7,6 +7,7 @@ import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:flutter/services.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,13 +18,15 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: "AIzaSyBEiWRAVIwyxYZ6cgqoVizmLOMLCAopUh8",
-            authDomain: "vidyamani-94f4a.firebaseapp.com",
-            projectId: "vidyamani-94f4a",
-            storageBucket: "vidyamani-94f4a.appspot.com",
-            messagingSenderId: "862420344316",
-            appId: "1:862420344316:web:3086d929b0f710d2bbe679",
-            measurementId: "G-ZC1VKV8DHC"));
+            apiKey: "AIzaSyBxCBrAlZ6halzhijHTqXZIpdGSqaH8Ngs",
+            authDomain: "vidhyamani-fc424.firebaseapp.com",
+            databaseURL: "https://vidhyamani-fc424-default-rtdb.firebaseio.com",
+            projectId: "vidhyamani-fc424",
+            storageBucket: "vidhyamani-fc424.appspot.com",
+            messagingSenderId: "130812012525",
+            appId: "1:130812012525:web:8ae372f77f6b9a433369e4",
+            measurementId: "G-V2WCRHMKV6")
+            );
     logger.i("Firebase initialized successfully");
     MobileAds.instance.initialize();
     runApp(ProviderScope(child: MyApp()));
@@ -31,6 +34,7 @@ Future<void> main() async {
     logger.e("Firebase initialization error: $e");
   }
 }
+
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
@@ -50,6 +54,7 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
 class ErrorApp extends StatelessWidget {
   final String errorMessage;
   ErrorApp(this.errorMessage);

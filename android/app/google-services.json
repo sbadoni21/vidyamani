@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "862420344316",
-    "firebase_url": "https://vidyamani-94f4a-default-rtdb.firebaseio.com",
-    "project_id": "vidyamani-94f4a",
-    "storage_bucket": "vidyamani-94f4a.appspot.com"
+    "project_number": "130812012525",
+    "project_id": "vidhyamani-fc424",
+    "storage_bucket": "vidhyamani-fc424.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862420344316:android:bb39230b9ce5d405bbe679",
+        "mobilesdk_app_id": "1:130812012525:android:c9d291a479fc35c53369e4",
         "android_client_info": {
-          "package_name": "com.example.vidyamani"
+          "package_name": "com.example.vidhyamani"
         }
       },
       "oauth_client": [
         {
-          "client_id": "862420344316-oafedvj6i71j077oj1j8h6gle8p5t6l7.apps.googleusercontent.com",
+          "client_id": "130812012525-p93boqejug6hmekfa3qcnvdu9lasbrh7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.vidyamani",
-            "certificate_hash": "bbd76b433431e2e67d31826077d3dd2dda803db7"
+            "package_name": "com.example.vidhyamani",
+            "certificate_hash": "270440cc025d0a41569569a091e213fedb9d3983"
           }
         },
         {
-          "client_id": "862420344316-4p0vmqkom62jt3l1hr9olp00b8fvmfe4.apps.googleusercontent.com",
+          "client_id": "130812012525-uta6n5kh7odimnp0ee5dvtd0fikpsieo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA-RU1Ma-YiHxlg_HJwja8mwCcM7CgdcJI"
+          "current_key": "AIzaSyCG_Ulmva0BCHeQM6R6cQIv1j34Zn3xzNI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "862420344316-4p0vmqkom62jt3l1hr9olp00b8fvmfe4.apps.googleusercontent.com",
+              "client_id": "130812012525-uta6n5kh7odimnp0ee5dvtd0fikpsieo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
