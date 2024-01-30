@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>862420344316-28hpogph0ov5pp6sg6joajbh2nbu5e3a.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.862420344316-28hpogph0ov5pp6sg6joajbh2nbu5e3a</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>862420344316-0tp3so141h1ffbh56m35bmcc0shh01gf.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDMNfu9tqfb3F1K8GNbKryMUxCzgnvB2iM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>862420344316</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.vidhyamani</string>
+	<key>PROJECT_ID</key>
+	<string>vidyamani-94f4a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vidyamani-94f4a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:862420344316:ios:29749aba1ff5c13bbbe679</string>
+	<key>DATABASE_URL</key>
+	<string>https://vidyamani-94f4a-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
