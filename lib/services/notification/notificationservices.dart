@@ -40,11 +40,7 @@ class NotificationService {
       print("Device Token");
       print(value);
     });
-
-    // Request permissions if on iOS
     _requestIOSPermissions();
-
-    // Configure FCM listeners
     _configureListeners(context);
   }
 
@@ -59,9 +55,7 @@ class NotificationService {
 
   void _configureListeners(BuildContext context) {
     print("==============ConfigureListeners");
-    // Handle notification messages when the app is in the foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // Handle the notification triggered while the app is in the foreground
       if (kDebugMode) {
         print("==========onMessage");
         print(message.notification!.title.toString());
@@ -69,10 +63,8 @@ class NotificationService {
       }
       initLocalNotifications(context, message);
       showNotification(message);
-      // You can also display a notification dialog or a snackbar, etc.
     });
 
-    // Handle notification messages when the app is in the background or terminated
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (kDebugMode) {
         print("onMessageOpenedApp");
@@ -80,21 +72,15 @@ class NotificationService {
         print(message.notification!.body.toString());
       }
       handleMessage(context, message);
-      // Navigate to a certain screen based on the payload, etc.
     });
-
-    // Handle when the app is opened from a terminated state by tapping the notification
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
         print("getInitialMessage: $message");
         handleMessage(context, message);
-        // Navigate to a certain screen based on the payload, etc.
       }
     });
-
-    // Additional configuration here (e.g., obtaining the FCM token, topic subscription, etc.)
   }
 
   Future<String> getDeviceToken() async {
@@ -128,12 +114,12 @@ class NotificationService {
 
     AndroidNotificationChannel androidNotificationChannel =
         AndroidNotificationChannel(
-            Random.secure().nextInt(100000).toString(), "Boarding Admissions",
+            Random.secure().nextInt(100000).toString(), "Vidhyamani",
             importance: Importance.max);
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(androidNotificationChannel.id.toString(),
             androidNotificationChannel.name.toString(),
-            channelDescription: "Boarding Admission channel description",
+            channelDescription: "Vidhyamani channel",
             importance: Importance.high,
             priority: Priority.high,
             ticker: "ticker");
@@ -152,8 +138,8 @@ class NotificationService {
 
   void handleMessage(BuildContext context, RemoteMessage message) {
 
-    if (message.data['type'] == "Chat") {
-      Navigator.of(context).pushNamed('/ChatApp');
+    if (message!= null) {
+      
     }
   }
 }

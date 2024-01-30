@@ -35,6 +35,15 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<key>GIDClientID</key>
     <string>862420344316-28hpogph0ov5pp6sg6joajbh2nbu5e3a.apps.googleusercontent.com</string>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+
+
+
+
 	<key>GIDServerClientID</key>
    <string>862420344316-4p0vmqkom62jt3l1hr9olp00b8fvmfe4.apps.googleusercontent.com</string>
 	<array>
