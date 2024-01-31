@@ -43,7 +43,15 @@ class _SignUpPageState extends State<SignUpPage> {
           });
         }
       } else {
-        print('Permission denied by the user.');
+        final XFile? pickedFile = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 85,
+        );
+        if (pickedFile != null) {
+          setState(() {
+            _userImage = File(pickedFile.path);
+          });
+        }
       }
     } else {
       final XFile? pickedFile = await _imagePicker.pickImage(
@@ -57,22 +65,22 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
   }
-Future<void> _submitFirstPage() async {
-  if (_firstPageKey.currentState?.validate() ?? false) {
-    if (_userImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-       const SnackBar(
-          content: Text('Please select an image'),
-        ),
-      );
-    } else {
-      setState(() {
-        _currentPage = 2;
-      });
+
+  Future<void> _submitFirstPage() async {
+    if (_firstPageKey.currentState?.validate() ?? false) {
+      if (_userImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select an image'),
+          ),
+        );
+      } else {
+        setState(() {
+          _currentPage = 2;
+        });
+      }
     }
   }
-}
-
 
   Future<void> _submitForm() async {
     if (_secondPageKey.currentState?.validate() ?? false) {
