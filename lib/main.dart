@@ -18,14 +18,14 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: "AIzaSyBxCBrAlZ6halzhijHTqXZIpdGSqaH8Ngs",
-            authDomain: "vidhyamani-fc424.firebaseapp.com",
-            databaseURL: "https://vidhyamani-fc424-default-rtdb.firebaseio.com",
-            projectId: "vidhyamani-fc424",
-            storageBucket: "vidhyamani-fc424.appspot.com",
-            messagingSenderId: "130812012525",
-            appId: "1:130812012525:web:8ae372f77f6b9a433369e4",
-            measurementId: "G-V2WCRHMKV6")
+            apiKey: "AIzaSyBGpnhY55fKCZGAej0IKouAGRkagCcCd-k",
+  authDomain: "vidhyamani-80b68.firebaseapp.com",
+  databaseURL: "https://vidhyamani-80b68-default-rtdb.firebaseio.com",
+  projectId: "vidhyamani-80b68",
+  storageBucket: "vidhyamani-80b68.appspot.com",
+  messagingSenderId: "827496425644",
+  appId: "1:827496425644:web:f467019abd4ef8e9419709",
+  measurementId: "G-RDXVDVZK40")
             );
     logger.i("Firebase initialized successfully");
     MobileAds.instance.initialize();
