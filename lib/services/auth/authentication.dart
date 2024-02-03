@@ -115,7 +115,7 @@ class AuthenticationServices {
               'deviceToken': deviceToken,
               'myCourses': myCourses,
               'location': "",
-               'isGoogleUser' :isGoogleUser
+              'isGoogleUser': isGoogleUser
             });
           }
 

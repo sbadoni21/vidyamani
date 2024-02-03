@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
-import 'package:flutter/services.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -18,15 +18,13 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: "AIzaSyBGpnhY55fKCZGAej0IKouAGRkagCcCd-k",
-  authDomain: "vidhyamani-80b68.firebaseapp.com",
-  databaseURL: "https://vidhyamani-80b68-default-rtdb.firebaseio.com",
-  projectId: "vidhyamani-80b68",
-  storageBucket: "vidhyamani-80b68.appspot.com",
-  messagingSenderId: "827496425644",
-  appId: "1:827496425644:web:f467019abd4ef8e9419709",
-  measurementId: "G-RDXVDVZK40")
-            );
+            apiKey: "AIzaSyBI9nEVr5mynmnYU5_baSWhZJYKIxZzv-M",
+            authDomain: "vidhyamanifinal.firebaseapp.com",
+            projectId: "vidhyamanifinal",
+            storageBucket: "vidhyamanifinal.appspot.com",
+            messagingSenderId: "706411405865",
+            appId: "1:706411405865:web:443bfe93d25a5a14fb3238",
+            measurementId: "G-CTJ8HVF80L"));
     logger.i("Firebase initialized successfully");
     MobileAds.instance.initialize();
     runApp(ProviderScope(child: MyApp()));

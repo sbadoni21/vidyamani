@@ -1,4 +1,4 @@
-package com.example.vidyamani
+package com.example.vidhyamanif
 
 import io.flutter.embedding.android.FlutterActivity
 

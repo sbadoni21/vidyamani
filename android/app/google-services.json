@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "827496425644",
-    "firebase_url": "https://vidhyamani-80b68-default-rtdb.firebaseio.com",
-    "project_id": "vidhyamani-80b68",
-    "storage_bucket": "vidhyamani-80b68.appspot.com"
+    "project_number": "706411405865",
+    "project_id": "vidhyamanifinal",
+    "storage_bucket": "vidhyamanifinal.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:827496425644:android:9c0de002ba5394f2419709",
+        "mobilesdk_app_id": "1:706411405865:android:aa5dca7d3429b0bcfb3238",
         "android_client_info": {
-          "package_name": "com.example.vidhyamani"
+          "package_name": "com.example.vidhyamanif"
         }
       },
       "oauth_client": [
         {
-          "client_id": "827496425644-hrrk3j0kb755bgqq6c110p9q7j81apvt.apps.googleusercontent.com",
+          "client_id": "706411405865-r45i6rb7d4se7c4oh2un4d8523kui2tb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.vidhyamani",
-            "certificate_hash": "1cd2b47175eab3b90a52effead6de7622a4069e2"
+            "package_name": "com.example.vidhyamanif",
+            "certificate_hash": "006d021a7111646392a936f14bc6371fc910dfac"
           }
         },
         {
-          "client_id": "827496425644-puacq72moles6nr7re4rjasa097at2tb.apps.googleusercontent.com",
+          "client_id": "706411405865-glgcckoibdodc0797o65b1a492r0cl2t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXpgcsXFBnqcA2gnGFu09V2PG_wPWZiTk"
+          "current_key": "AIzaSyCerzmdgMIcWeIXRFUhqDj6BYYc5RCdufg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "827496425644-puacq72moles6nr7re4rjasa097at2tb.apps.googleusercontent.com",
+              "client_id": "706411405865-glgcckoibdodc0797o65b1a492r0cl2t.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

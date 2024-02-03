@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:vidyamani/components/allcourse_component.dart';
 import 'package:vidyamani/components/bottomnavbar_component.dart';
 import 'package:vidyamani/components/categories_component.dart';
@@ -18,7 +20,6 @@ import 'package:vidyamani/models/testimonial_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
-import 'package:logger/logger.dart';
 import 'package:vidyamani/screens/meetingdetail_page.dart';
 import 'package:vidyamani/screens/notes_page.dart';
 import 'package:vidyamani/screens/profile_page.dart';
