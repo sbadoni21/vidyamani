@@ -205,7 +205,6 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
               })
             })
         .catchError((error) {
-      // handleError(error)
       return <dynamic>{};
     });
   }
