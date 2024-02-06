@@ -114,6 +114,8 @@ extension on User {
       'status': status,
       'type': type,
       'uid': uid,
+      'subscriptionStart' : subscriptionStart,
+      "subscriptionEnd": subscriptionEnd,
       'coins': coins,
       'location': location,
       'myHistory': myCourses?.map((lecture) => lecture.toMap()).toList() ?? [],

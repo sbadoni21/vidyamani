@@ -37,10 +37,14 @@ class signup_service {
         }
         final referralCode = randomAlphaNumeric(8);
         const coins = 0;
+        final List myCourses = [];
+
         await _fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': email,
+          'role': "user",
           'displayName': name,
+          "myCourses": myCourses,
           'status': 'Online',
           'profilephoto': photoURL ?? "none",
           'deviceToken': deviceToken,
@@ -48,7 +52,9 @@ class signup_service {
           'location': location,
           'isGoogleUser': false,
           'referralCode': referralCode,
-          'coins': coins
+          'coins': coins,
+          'subscriptionStart': '01-01-1901T01:00',
+          'subscriptionEnd': '01-01-2099T01:00',
         }, SetOptions(merge: true));
 
         return userCredential.user;

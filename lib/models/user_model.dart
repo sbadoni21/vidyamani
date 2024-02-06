@@ -8,8 +8,11 @@ class User {
   final String status;
   final String type;
   final String uid;
+  final String role;
   final bool isGoogleUser;
   final int coins;
+  final String subscriptionStart;
+  final String subscriptionEnd;
   final String location;
   final List<MyCourse>? myCourses;
   final List<History>? myHistory;
@@ -18,7 +21,10 @@ class User {
   User({
     required this.deviceToken,
     required this.displayName,
+    required this.role,
     required this.email,
+    required this.subscriptionStart,
+    required this.subscriptionEnd,
     required this.phoneNumber,
     required this.photoURL,
     required this.referralCode,
@@ -29,7 +35,7 @@ class User {
     required this.location,
     required this.isGoogleUser,
     this.myHistory,
-     this.myCourses,
+    this.myCourses,
     this.savedLectures,
   });
 
@@ -37,14 +43,17 @@ class User {
     return User(
       deviceToken: map['deviceToken'] ?? '',
       displayName: map['displayName'] ?? '',
+      role: map['role'] ?? "",
       email: map['email'] ?? '',
+      subscriptionStart: map['subscriptionStart'] ?? "",
+      subscriptionEnd: map['subscriptionEnd'] ?? "",
       phoneNumber: map['phoneNumber'] ?? '',
       photoURL: map['profilephoto'] ?? '',
       referralCode: map['referralCode'] ?? '',
       status: map['status'] ?? '',
       type: map['type'] ?? '',
       uid: map['uid'] ?? '',
-      isGoogleUser: map['isGoogleUser'] ?? false ,
+      isGoogleUser: map['isGoogleUser'] ?? false,
       coins: map['coins'] ?? 0,
       location: map['location'] ?? '',
       myCourses: (map['myCourses'] as List<dynamic>?)

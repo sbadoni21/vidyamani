@@ -48,6 +48,8 @@ dependencies:
   geolocator:
   lottie:
   sign_in_with_apple: ^5.0.0
+  crypto: ^3.0.3
+  phonepe_payment_sdk: 
 
 
 dev_dependencies:

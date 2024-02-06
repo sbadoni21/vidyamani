@@ -105,6 +105,7 @@ class AuthenticationServices {
 
             await _fireStore.collection('users').doc(uid).set({
               'uid': uid,
+              'role' : "user", 
               'email': email,
               'displayName': displayName,
               'status': status,
@@ -115,7 +116,9 @@ class AuthenticationServices {
               'deviceToken': deviceToken,
               'myCourses': myCourses,
               'location': "",
-              'isGoogleUser': isGoogleUser
+              'isGoogleUser': isGoogleUser,
+              'subscriptionStart':'01-01-1901T01:00' ,
+              'subscriptionEnd' :'01-01-2099T01:00', 
             });
           }
 

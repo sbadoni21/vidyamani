@@ -92,7 +92,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
                   ),
                 ),
-                SizedBox(
+           const     SizedBox(
                   height: 10,
                 ),
                 TextButton(
@@ -107,9 +107,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.black87,
                   ),
-                  child: Container(
+                  child: const SizedBox(
                     width: double.infinity,
-                    child: const Text(
+                    child:  Text(
                       'Forgot password',
                       textAlign: TextAlign.right,
                       style: TextStyle(decoration: TextDecoration.underline),
