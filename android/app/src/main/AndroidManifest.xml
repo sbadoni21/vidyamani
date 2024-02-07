@@ -2,8 +2,7 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Vidhyamani"
         android:name="${applicationName}"
@@ -39,6 +38,9 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6569585766930207~5077675042"/>
 
-                  
+        <meta-data android:name="com.phonepe.android.sdk.isUAT" android:value="true"/>
+        <meta-data android:name="com.phonepe.android.sdk.isSimulator" android:value="true"/>
+        <meta-data android:name="com.phonepe.android.sdk.MerchantId" android:value="PGTESTPAYUAT"/>
+
     </application>
 </manifest>

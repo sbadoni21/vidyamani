@@ -28,6 +28,7 @@ import 'package:vidyamani/screens/upcoming_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/livelecture_service.dart';
+import 'package:vidyamani/services/data/subscription_service.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 
 final adProvider = ChangeNotifierProvider<AdProvider>(
@@ -68,6 +69,8 @@ class HomePageState extends ConsumerState<HomePage> {
     fetchImageUrls();
     meetingProvider.getMeetings();
 
+    fetchSubscriptionStatus();
+
     user = ref.read(userProvider);
     Future.delayed(const Duration(seconds: 10), () {
       if (user!.type == 'free') {
@@ -94,6 +97,10 @@ class HomePageState extends ConsumerState<HomePage> {
   Future<void> fetchData() async {
     await fetchImageUrls();
     coursesData = await fetchFeaturedCollectionData();
+  }
+
+  Future<void> fetchSubscriptionStatus() async {
+    await SubscriptionService().fetchSubscriptionStatus(user!.uid);
   }
 
   @override

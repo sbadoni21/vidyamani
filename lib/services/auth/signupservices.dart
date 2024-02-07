@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:random_string/random_string.dart';
 import 'package:vidyamani/services/notification/notificationservices.dart';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class signup_service {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,10 +38,13 @@ class signup_service {
         }
         final referralCode = randomAlphaNumeric(8);
         const coins = 0;
+        final List myCourses = [];
         await _fireStore.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'email': email,
+          'role': "user",
           'displayName': name,
+          "myCourses": myCourses,
           'status': 'Online',
           'profilephoto': photoURL ?? "none",
           'deviceToken': deviceToken,
@@ -48,7 +52,9 @@ class signup_service {
           'location': location,
           'isGoogleUser': false,
           'referralCode': referralCode,
-          'coins': coins
+          'coins': coins,
+          'subscriptionStart': '01-01-1901T01:00',
+          'subscriptionEnd': '01-01-2099T01:00',
         }, SetOptions(merge: true));
 
         return userCredential.user;

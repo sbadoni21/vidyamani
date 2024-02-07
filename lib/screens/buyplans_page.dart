@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
-import 'package:vidyamani/screens/packagepayment_page.dart';
+import 'package:vidyamani/screens/phonepay_payment.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class BuyPlans extends StatelessWidget {
@@ -15,12 +15,11 @@ class BuyPlans extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        PackagePaymentPage(packageName: 'Gold'),
-                  ),
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PhonePayPayment(
+                              packageType: "gold",
+                            )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -87,7 +86,14 @@ class BuyPlans extends StatelessWidget {
               height: 20,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PhonePayPayment(
+                              packageType: "premium",
+                            )));
+              },
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

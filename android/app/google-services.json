@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "706411405865",
+    "firebase_url": "https://vidhyamanifinal-default-rtdb.firebaseio.com",
     "project_id": "vidhyamanifinal",
     "storage_bucket": "vidhyamanifinal.appspot.com"
   },
@@ -14,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "706411405865-r45i6rb7d4se7c4oh2un4d8523kui2tb.apps.googleusercontent.com",
+          "client_id": "706411405865-6ii5kg2pvv5ipu5g8p7ago9djnc1vr59.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.vidhyamanif",
-            "certificate_hash": "006d021a7111646392a936f14bc6371fc910dfac"
+            "certificate_hash": "ae97a88acc9d06c6601ce62950bff3bccf363646"
           }
         },
         {
