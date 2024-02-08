@@ -1,20 +1,21 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
-import 'package:vidyamani/services/auth/authentication.dart';
-import 'package:vidyamani/services/auth/signupservices.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:vidyamani/models/user_model.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -84,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _submitForm() async {
     if (_secondPageKey.currentState?.validate() ?? false) {
-      User? user = await signup_service().registerUser(
+      User? user = await ref.read(userStateNotifierProvider.notifier).signInWithEmail(
         name: fullNameController.text,
         email: emailController.text,
         password: passwordController.text,
@@ -184,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ElevatedButton(
                     onPressed: () async {
                       User? user =
-                          await AuthenticationServices().signInWithGoogle();
+                          await ref.read(userStateNotifierProvider.notifier).signInWithGoogle();
 
                       if (user != null) {
                         Navigator.push(

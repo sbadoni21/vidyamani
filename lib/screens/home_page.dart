@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -175,6 +174,7 @@ class HomePageState extends ConsumerState<HomePage> {
           await fetchImageUrls();
           await fetchTestimonials();
           await fetchData();
+          await fetchSubscriptionStatus();
         },
         child: ListView(
           children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/package_model.dart';
 
 class MiscellaneousService {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
@@ -150,6 +151,39 @@ class MiscellaneousService {
 
     return [];
   }
+
+  Future<Packages> fetchPackagePrices() async {
+    Packages packages;
+
+    try {
+      var document = await FirebaseFirestore.instance
+          .collection('package')
+          .doc('R80Qo1ZHOxvqZdL1aCFy')
+          .get();
+
+      if (document.exists) {
+        Map<String, dynamic>? data = document.data();
+
+        if (data != null) {
+          packages = Packages.fromMap(data);
+          return packages;
+        }
+      }
+      return Packages(
+        goldPackagePrice:  0,
+        premiumPackagePrice: 0,
+      );
+    } catch (e) {
+      print('Error fetching package prices: $e');
+    }
+    return Packages(
+      goldPackagePrice:  0,
+      premiumPackagePrice: 0,
+    );
+  }
+
+
+
 
   void _showSnackbar(BuildContext context, String message) {
     final snackBar = SnackBar(

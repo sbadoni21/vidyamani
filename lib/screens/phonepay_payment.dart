@@ -1,11 +1,10 @@
 import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
-import 'package:vidyamani/components/topappbar_component.dart';
+import 'package:random_string/random_string.dart';
+import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/package_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
@@ -20,83 +19,253 @@ class PhonePayPayment extends ConsumerStatefulWidget {
   const PhonePayPayment({
     Key? key,
     required this.packageType, //gold or premium
+    required this.packages,
   }) : super(key: key);
   final String packageType;
+  final Packages packages;
 
   @override
   _PhonePayPaymentState createState() => _PhonePayPaymentState();
 }
 
 class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
-  String environment = 'SANDBOX';
-  String appId = '';
-  String merchantId = "PGTESTPAYUAT";
+  String environment = 'PRODUCTION';
+  String appId = 'null';
+  String merchantId = "M22FR6VSPR5HC";
   bool enableLogging = true;
   String checksum = '';
   String saltIndex = '1';
-  String saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
-  String callback = "https://webhook.site/3371683a-d392-4c4d-a147-795329f5a3ac";
+  String saltKey = '84e1592e-9627-4411-a0ab-dd8f099863f0';
+  String callback = "https://api.phonepe.com/apis/hermes";
   String body = "";
   Object result = "";
   String apiEndPoint = "/pg/v1/pay";
   Packages? packages;
-
   getCheckSum() {
-    final requestData = {
+    final requestData ={
       "merchantId": merchantId,
-      "merchantTransactionId": "MT7850590068188104",
-      "merchantUserId": "MUID123",
+      'merchantUserId': "Vidhyamani",
+      "merchantTransactionId": randomAlphaNumeric(10),
       "amount": widget.packageType == 'gold'
-          ? packages!.goldPackagePrice
-          : packages!.premiumPackagePrice,
+          ? widget.packages.goldPackagePrice*100
+          : widget.packages.premiumPackagePrice*100,
       "callbackUrl": callback,
       "mobileNumber": "9999999999",
       "paymentInstrument": {"type": "PAY_PAGE"}
-    };
+    }
+    ;
     String base64Body = base64.encode(utf8.encode(json.encode(requestData)));
     checksum =
-        '${sha256.convert(utf8.encode(base64Body + apiEndPoint + saltKey)).toString()}###$saltIndex';
+    '${sha256.convert(utf8.encode(base64Body + apiEndPoint + saltKey)).toString()}###$saltIndex';
     return base64Body;
   }
 
   @override
   void initState() {
     super.initState;
-    fetchPackagePrices().then((_) {
-      print("Fetched Packages");
-      phonepeInit();
-      body = getCheckSum().toString();
-    });
+    phonepeInit();
+    body = getCheckSum().toString();
   }
 
   void addUserToDatabase(userid, contest) async {
     await SubscriptionService().changeUserType(userid, widget.packageType);
   }
 
-  Future<void> fetchPackagePrices() async {
-    try {
-      var document = await FirebaseFirestore.instance
-          .collection('package')
-          .doc('R80Qo1ZHOxvqZdL1aCFy')
-          .get();
-      if (document.exists) {
-        Map<String, dynamic>? data = document.data();
-        if (data != null) {
-          setState(() {
-            packages = Packages.fromMap(data);
-          });
-        }
-      }
-    } catch (e) {
-      print('Error fetching package prices: $e');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(),
-        body: Stack(children: [
+        appBar: const CustomAppBarBckBtn(),
+        body: ListView(children: [
+          widget.packageType == 'gold' ?
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: cardColor,
+                ),
+                width: double.infinity,
+                height: 250,
+                child: Stack(
+                  children: [
+                    Positioned(right: 0, child: Image.asset(logohalf)),
+                    Positioned(
+                      left: 20,
+                      top: 36,
+                      child: Text(
+                        'Vidhyamani Plus',
+                        style: myTextStylefontsize24BGCOLOR,
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 102,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 25,
+                          ),
+                          Text(
+                            'Ad-free Content',
+                            style: myTextStylefontsize16,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 168,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "₹",
+                            style: myTextStylefontsize24BGCOLOR,
+                          ),
+                          Text(
+                            "${widget.packages.goldPackagePrice}",
+                            style: myTextStylefontsize24BGCOLOR,
+                          ),
+                          Text(
+                            "/",
+                            style: myTextStylefontsize24BGCOLOR,
+                          ),
+                          Text(
+                            "month",
+                            style: myTextStylefontsize14,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+            ),
+        )
+        :
+ Padding(
+   padding: const EdgeInsets.all(20.0),
+   child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: bgColor,
+                ),
+                width: double.infinity,
+                height: 250,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: 0,
+                      child: Image.asset(
+                        logohalf,
+                        color: cardColor,
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 36,
+                      child: Text(
+                        'Vidhyamani Premium',
+                        style: myTextStylefontsize24,
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 85,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 25,
+                          ),
+                          Text(
+                            'Ad-free Content',
+                            style: myTextStylefontsize16white,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 110,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 25,
+                          ),
+                          Text(
+                            'Advanced Courses',
+                            style: myTextStylefontsize16white,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 135,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 25,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Premium Content (Competitive exam ',
+                                style: myTextStylefontsize16white,
+                              ),
+                              Text(
+                                'content etc.)',
+                                style: myTextStylefontsize16white,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      top: 194,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "₹",
+                            style: myTextStylefontsize24,
+                          ),
+                          Text(
+                            "${widget.packages.premiumPackagePrice}",
+                            style: myTextStylefontsize24,
+                          ),
+                          Text(
+                            "/",
+                            style: myTextStylefontsize24,
+                          ),
+                          Text(
+                            "month",
+                            style: myTextStylefontsize14White,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+ ),
           Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -135,7 +304,9 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                           style: myTextStylefontsize20BGCOLOR,
                         ),
                         Text(
-                          widget.packageType,
+                          widget.packageType == "gold"
+                              ? 'Gold'
+                              : 'Premium',
                           style: myTextStylefontsize20BGCOLOR,
                         ),
                       ],
@@ -153,10 +324,11 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                           "Total",
                           style: myTextStylefontsize20BGCOLOR,
                         ),
+
                         Text(
                           widget.packageType == "gold"
-                              ? packages!.goldPackagePrice.toString()
-                              : packages!.premiumPackagePrice.toString(),
+                              ? '₹ ${widget.packages.goldPackagePrice.toString()}'
+                              : '₹ ${widget.packages.premiumPackagePrice.toString()}',
                           style: myTextStylefontsize20BGCOLOR,
                         ),
                       ],
@@ -177,7 +349,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                                 startPgTransaction();
                               },
                               child: Text(
-                                  'Pay ${widget.packageType == "gold" ? packages!.goldPackagePrice.toString() : packages!.premiumPackagePrice.toString()}')),
+                                  'Pay ${widget.packageType == "gold" ? widget.packages.goldPackagePrice.toString() : widget.packages.premiumPackagePrice.toString()}')),
                         ),
                       ],
                     )
@@ -199,16 +371,15 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   }
 
   void startPgTransaction() async {
-    PhonePePaymentSdk.startTransaction(body, callback, checksum, "")
+    PhonePePaymentSdk.startTransaction(body, callback, checksum, "com.example.vidhyamanif")
         .then((response) => {
               setState(() {
                 if (response != null) {
+                  final User? user = ref.read(userProvider);
                   String status = response['status'].toString();
                   String error = response['error'].toString();
                   if (status == 'SUCCESS') {
                     result = "Flow Completed - status: $status";
-                    final User? user = ref.read(userProvider);
-
                     if (user?.uid != null) {
                       if (widget.packageType == "gold") {
                         addUserToDatabase(user!.uid, "gold");
@@ -228,7 +399,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
               })
             })
         .catchError((error) {
-      // handleError(error)
+       handleError(error);
       return <dynamic>{};
     });
   }

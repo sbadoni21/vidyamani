@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,6 +67,37 @@ class UserStateNotifier extends StateNotifier<User?> {
       }
     } catch (e) {
       state = null; // Handle exceptions
+    }
+  }
+   Future<User?> signInWithEmail({
+    required String name,
+    required String email,
+    required String password,
+    required String location,
+    File? userImage,
+  }) async {
+    try {
+      var firebaseUser = await ref
+          .read(authenticationServicesProvider)
+          .registerUser(
+                 name:name,
+    email:email,
+    password:password,
+    location:location,
+    userImage:userImage,
+             );
+      if (firebaseUser != null) {
+        User? user = await fetchUserData(firebaseUser.uid);
+        print(
+            'helllpppppp sdadsasdasdadsasdadasdadasd    ${firebaseUser.uid}   ');
+        return user;
+      } else {
+        state = null;
+        return null;
+      }
+    } catch (e) {
+      state = null;
+      return null;
     }
   }
 

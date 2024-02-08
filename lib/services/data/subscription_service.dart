@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:vidyamani/models/user_model.dart';
 
 class SubscriptionService {
@@ -54,12 +55,15 @@ class SubscriptionService {
       DocumentReference userReference =
           _firestore.collection('users').doc(userID);
       DocumentSnapshot userSnapshot = await userReference.get();
+      print('calleddd 1111111111');
 
       if (userSnapshot.exists) {
         User user = User.fromMap(userSnapshot.data() as Map<String, dynamic>);
         DateTime? subscriptionEndDate;
         if (user.subscriptionEnd != null) {
-          subscriptionEndDate = DateTime.parse(user.subscriptionEnd);
+          subscriptionEndDate = DateFormat(
+            "dd-MM-yyyyTHH:mm"
+          ).parse(user.subscriptionEnd);
         }
 
         DateTime now = DateTime.now();
@@ -70,6 +74,7 @@ class SubscriptionService {
             'subscriptionStart': "01-01-1901T01:00",
             'subscriptionEnd': "01-01-2099T01:00",
           });
+          print('calleddddddddd 2222222222222');
         } else {
           print('Subscription is still active.');
         }

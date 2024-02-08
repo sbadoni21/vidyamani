@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +19,7 @@ final authenticationServicesProvider = Provider<AuthenticationServices>((ref) {
 class AuthenticationServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<User?> signIn(String email, String password) async {
     try {
@@ -199,5 +203,63 @@ class AuthenticationServices {
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await firebaseAuth.signOut();
+  }
+   Future<User?> registerUser({
+    required String name,
+    required String email,
+    required String password,
+     required String location,
+    File? userImage,
+  }) async {
+    try {
+      UserCredential userCredential =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        final deviceToken = await NotificationService().getDeviceToken();
+        String? photoURL;
+
+        if (userImage != null) {
+          final Reference userStorageReference = _storage.ref().child(
+              'user_images/${userCredential.user!.uid}/${DateTime.now().millisecondsSinceEpoch}_user.png');
+          final UploadTask userUploadTask =
+              userStorageReference.putFile(userImage);
+          await userUploadTask.whenComplete(() async {
+            photoURL = await userStorageReference.getDownloadURL();
+          });
+        }
+        final List myCourses = [];
+        final num coins=0;
+        final referralCode = randomAlphaNumeric(8);
+
+        await _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+          'email': email,
+          'role': "user",
+          'displayName': name,
+          "myCourses": myCourses,
+          'status': 'Online',
+          'profilephoto': photoURL ?? "none",
+          'deviceToken': deviceToken,
+          'type': "free",
+          'location': location,
+          'isGoogleUser': false,
+          'referralCode': referralCode,
+          'coins': coins,
+          'subscriptionStart': '01-01-1901T01:00',
+          'subscriptionEnd': '01-01-2099T01:00',
+        }, SetOptions(merge: true));
+
+        return userCredential.user;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
+    }
+
+    return null;
   }
 }
