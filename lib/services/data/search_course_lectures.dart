@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
-import 'package:vidyamani/services/data/allcoursedata_services.dart';
+import 'package:vidyamani/models/user_model.dart';
 
 class SearchDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -42,7 +42,7 @@ class SearchDataService {
     }
   }
 
-  Future<List<Videos>> searchVideo(String searchQuery) async {
+  Future<List<Videos>> searchVideo(String searchQuery, User user) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await _firestore.collection('lectures').get();
@@ -51,6 +51,10 @@ class SearchDataService {
 
       for (DocumentSnapshot<Map<String, dynamic>> document
           in querySnapshot.docs) {
+        if (document.data()?['type'] == 'premium' && user.type == 'free') {
+          continue;
+        }
+
         List<Map<String, dynamic>>? videosList =
             (document.data()?['video'] as List<dynamic>?)
                 ?.cast<Map<String, dynamic>>();

@@ -90,7 +90,6 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
         print(user!.coins);
         print(user!.displayName);
         print(user!.email);
-        print(user!.coins);
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: SizedBox(

@@ -26,6 +26,7 @@ import 'package:vidyamani/screens/search_page.dart';
 import 'package:vidyamani/screens/upcoming_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
+import 'package:vidyamani/services/data/crousaldata_service.dart';
 import 'package:vidyamani/services/data/livelecture_service.dart';
 import 'package:vidyamani/services/data/subscription_service.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
@@ -65,7 +66,6 @@ class HomePageState extends ConsumerState<HomePage> {
     super.initState();
     fetchData();
     setupRefreshTimer();
-    fetchImageUrls();
     meetingProvider.getMeetings();
 
     Future.delayed(const Duration(seconds: 5), () {
@@ -95,7 +95,6 @@ class HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> fetchData() async {
-    await fetchImageUrls();
     coursesData = await fetchFeaturedCollectionData();
   }
 
@@ -107,20 +106,6 @@ class HomePageState extends ConsumerState<HomePage> {
   void dispose() {
     _timer.cancel();
     super.dispose();
-  }
-
-  Future<void> fetchImageUrls() async {
-    Reference reference =
-        FirebaseStorage.instance.ref().child('carouselImages');
-    ListResult result = await reference.listAll();
-
-    List<String> urls = await Future.wait(
-      result.items.map((Reference ref) => ref.getDownloadURL()),
-    );
-
-    setState(() {
-      imageUrls = urls;
-    });
   }
 
   Future<List<Course>> fetchFeaturedCollectionData() async {
@@ -168,44 +153,74 @@ class HomePageState extends ConsumerState<HomePage> {
   Widget _buildHomePage(
       BuildContext context, WidgetRef ref, AdProvider adProvider) {
     final meetingService = ref.read(meetingServiceProvider);
+    final carousalAsyncValue = ref.watch(carousalProvider);
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          await fetchImageUrls();
           await fetchTestimonials();
           await fetchData();
           await fetchSubscriptionStatus();
         },
         child: ListView(
           children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                scrollPhysics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.normal,
-                ),
-                height: 229.0,
-                viewportFraction: 1,
-                aspectRatio: 16 / 9,
-                enableInfiniteScroll: true,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: true,
-                enlargeFactor: 0.3,
-                scrollDirection: Axis.horizontal,
-              ),
-              items: imageUrls.map((url) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Image.network(
-                      url,
-                      fit: BoxFit.fill,
+            Consumer(
+              builder: (context, watch, child) {
+                return carousalAsyncValue.when(
+                  data: (carousalList) {
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        scrollPhysics: const BouncingScrollPhysics(
+                          decelerationRate: ScrollDecelerationRate.normal,
+                        ),
+                        height: 229.0,
+                        viewportFraction: 1,
+                        aspectRatio: 16 / 9,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                        scrollDirection: Axis.horizontal,
+                      ),
+                      items: carousalList.map((carousal) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return GestureDetector(
+                              onTap: () async {
+                                Course? course = await DataService()
+                                    .fetchCarousalCourse(carousal);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CourseDetailPage(
+                                            courses: course!)));
+                              },
+                              child: Image.network(
+                                carousal.photo,
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    );
+                  },
+                  loading: () {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    return Center(
+                      child: Text('Error: $error'),
                     );
                   },
                 );
-              }).toList(),
+              },
             ),
             const SizedBox(height: 16),
             Padding(

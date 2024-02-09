@@ -7,7 +7,6 @@ const token =
 const bgColor = Color.fromRGBO(21, 59, 121, 1);
 const cardColor = Color.fromRGBO(240, 243, 248, 1);
 
-//text styles
 TextStyle myTextStylefontsize10 = TextStyle(
   fontFamily: 'Urbanist',
   fontSize: 10.0,

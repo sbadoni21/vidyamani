@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
@@ -46,7 +47,8 @@ class _CustomAppBarBckBtnState extends ConsumerState<CustomAppBarBckBtn> {
               icon: Icon(Icons.wallet_outlined)),
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MenuScreen()));
             },
             icon: Icon(Icons.menu),
           ),

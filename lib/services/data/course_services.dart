@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
+import 'package:vidyamani/models/crousal_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 
 class DataService {
@@ -90,6 +91,37 @@ class DataService {
       return [];
     }
   }
+
+
+
+Future<Course?> fetchCarousalCourse(Carousal carosual) async {
+  try {
+    DocumentSnapshot<Object?> documentSnapshot = await _firestore
+        .collection("courses")
+        .doc('kGrTotd8SFOUzsUH9Hpz')
+        .collection(carosual.courseCollection)
+        .doc(carosual.courseKey)
+        .get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic>? data = documentSnapshot.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        Course course = Course.fromMap(data);
+        return course;
+      } else {
+        return null; // Handle the case where data is null
+      }
+    } else {
+      return null; // Handle the case where the document doesn't exist
+    }
+  } catch (e) {
+    logger.i(e);
+    return null; // Handle the error accordingly
+  }
+}
+
+
 
   DateTime parseCustomDate(String dateString) {
     try {

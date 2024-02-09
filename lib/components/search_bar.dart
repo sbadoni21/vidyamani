@@ -9,7 +9,6 @@ class SearchBarsection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double barWidth = 290;
 
     return Row(
@@ -17,19 +16,6 @@ class SearchBarsection extends StatelessWidget {
         Expanded(
           child: SearchBar(barWidth: barWidth, onChanged: onSearch),
         ),
-        SizedBox(
-          width: 25,
-        ),
-        Container(
-          width: 44,
-          height: 44,
-          color: Color.fromRGBO(240, 243, 248, 1),
-          child: Icon(
-            Icons.filter_alt_outlined,
-            size: 32,
-            color: bgColor,
-          ),
-        )
       ],
     );
   }

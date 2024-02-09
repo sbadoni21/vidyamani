@@ -105,7 +105,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   late Future<List<Comments>> _commentsFuture;
   bool _isLoading = true;
   late User? user;
-  late Timer? _timer;
+  Timer? _timer;
   bool _isTimerStarted = false;
   final Duration refreshInterval = const Duration(minutes: 10);
   final WatchTimeService watchTimeService = WatchTimeService();
