@@ -19,6 +19,7 @@ dependencies:
   page_transition: 
   google_sign_in: 
   cloud_firestore: 
+  
   random_string: 
   email_validator: 
   flutter_local_notifications: 
