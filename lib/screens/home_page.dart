@@ -68,8 +68,9 @@ class HomePageState extends ConsumerState<HomePage> {
     fetchImageUrls();
     meetingProvider.getMeetings();
 
-    fetchSubscriptionStatus();
-
+    Future.delayed(const Duration(seconds: 5), () {
+      fetchSubscriptionStatus();
+    });
     user = ref.read(userProvider);
     Future.delayed(const Duration(seconds: 10), () {
       if (user!.type == 'free') {
@@ -178,36 +179,33 @@ class HomePageState extends ConsumerState<HomePage> {
         },
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 19),
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  scrollPhysics: const BouncingScrollPhysics(
-                    decelerationRate: ScrollDecelerationRate.normal,
-                  ),
-                  height: 229.0,
-                  viewportFraction: 1,
-                  aspectRatio: 16 / 9,
-                  enableInfiniteScroll: true,
-                  autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  enlargeFactor: 0.3,
-                  scrollDirection: Axis.horizontal,
+            CarouselSlider(
+              options: CarouselOptions(
+                scrollPhysics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.normal,
                 ),
-                items: imageUrls.map((url) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Image.network(
-                        url,
-                        fit: BoxFit.fill,
-                      );
-                    },
-                  );
-                }).toList(),
+                height: 229.0,
+                viewportFraction: 1,
+                aspectRatio: 16 / 9,
+                enableInfiniteScroll: true,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.3,
+                scrollDirection: Axis.horizontal,
               ),
+              items: imageUrls.map((url) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Image.network(
+                      url,
+                      fit: BoxFit.fill,
+                    );
+                  },
+                );
+              }).toList(),
             ),
             const SizedBox(height: 16),
             Padding(

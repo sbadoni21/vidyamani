@@ -130,31 +130,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
         widget.courses.lectureKey!, avgRating);
   }
 
-  void _showPaymentGatewayDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Payment Gateway"),
-          content: const Text("Implement your payment gateway UI here."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Proceed"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Cancel"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+ 
 
   void _showSaveDialog(BuildContext context) {
     showDialog(
@@ -310,19 +286,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                         ),
                       ],
                     ),
-                    // Text(
-                    //   (widget.courses.type == "free")
-                    //       ? ' '
-                    //       : user?.type != 'premium'
-                    //           ? '₹ ${widget.courses.price.toString() ?? ""}'
-                    //           : "",
-                    //   style: TextStyle(
-                    //     fontSize: 26,
-                    //     fontStyle: FontStyle.normal,
-                    //     fontWeight: FontWeight.w600,
-                    //     color: Colors.white,
-                    //   ),
-                    // )
+                 
                   ],
                 ),
               ],

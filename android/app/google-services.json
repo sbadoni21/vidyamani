@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "706411405865-annirjim4v248mdo8ror44udf26hojv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vidhyamanif",
+            "certificate_hash": "270440cc025d0a41569569a091e213fedb9d3983"
+          }
+        },
+        {
           "client_id": "706411405865-glgcckoibdodc0797o65b1a492r0cl2t.apps.googleusercontent.com",
           "client_type": 3
         }

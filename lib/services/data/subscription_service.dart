@@ -4,6 +4,7 @@ import 'package:vidyamani/models/user_model.dart';
 
 class SubscriptionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<void> changeUserType(String userID, String packageType) async {
     try {
       DocumentReference userReference =
@@ -13,10 +14,16 @@ class SubscriptionService {
         DateTime subscriptionStartDate = DateTime.now();
         DateTime subscriptionEndDate =
             subscriptionStartDate.add(Duration(days: 30));
+
+        String formattedStartDate =
+            DateFormat('dd-MM-yyyyTHH:mm').format(subscriptionStartDate);
+        String formattedEndDate =
+            DateFormat('dd-MM-yyyyTHH:mm').format(subscriptionEndDate);
+
         await userReference.update({
           'type': packageType,
-          'subscriptionStart': subscriptionStartDate,
-          'subscriptionEnd': subscriptionEndDate,
+          'subscriptionStart': formattedStartDate,
+          'subscriptionEnd': formattedEndDate,
         });
         print('User type and subscription updated successfully.');
       } else {
@@ -61,14 +68,15 @@ class SubscriptionService {
         User user = User.fromMap(userSnapshot.data() as Map<String, dynamic>);
         DateTime? subscriptionEndDate;
         if (user.subscriptionEnd != null) {
-          subscriptionEndDate = DateFormat(
-            "dd-MM-yyyyTHH:mm"
-          ).parse(user.subscriptionEnd);
+          subscriptionEndDate =
+              DateFormat("dd-MM-yyyyTHH:mm").parse(user.subscriptionEnd);
         }
 
         DateTime now = DateTime.now();
 
-        if (subscriptionEndDate != null && subscriptionEndDate.isBefore(now)) {
+        if (subscriptionEndDate != null &&
+            subscriptionEndDate.isBefore(now) &&
+            user.type != 'free') {
           await userReference.update({
             'type': 'free',
             'subscriptionStart': "01-01-1901T01:00",
