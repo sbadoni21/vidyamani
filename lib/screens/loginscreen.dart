@@ -15,6 +15,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,11 +127,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     String password = passwordController.text.trim();
 
                     if (email.isNotEmpty && password.isNotEmpty) {
+                      isLoading = true;
                       User? user = await ref
                           .read(userStateNotifierProvider.notifier)
                           .signIn(email, password);
 
                       if (user != null) {
+                        isLoading = false;
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -153,15 +157,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  child: Text('Login'),
+                  child: isLoading == true
+                      ? CircularProgressIndicator()
+                      : Text('Login'),
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
+                    isLoading = true;
+
                     User? user = await ref
                         .read(userStateNotifierProvider.notifier)
                         .signInWithGoogle();
+
                     if (user != null) {
+                      isLoading = false;
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
@@ -178,11 +188,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      "lib/assets/images/google.png",
-                      width: 32.0,
-                      height: 32.0,
-                    ),
+                    child: isLoading == true
+                        ? CircularProgressIndicator()
+                        : Image.asset(
+                            "lib/assets/images/google.png",
+                            width: 32.0,
+                            height: 32.0,
+                          ),
                   ),
                 ),
                 SizedBox(
