@@ -3,6 +3,7 @@ import 'package:vidyamani/models/testimonial_model.dart';
 
 class TestimonialService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<List<Review>> fetchCollectionData() async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -34,6 +35,11 @@ class TestimonialService {
     try {
       DocumentReference<Map<String, dynamic>> docRef =
           _firestore.collection('testimonials').doc('testimonials');
+
+      // Check if the collection exists, and create it if not
+      if (!(await docRef.get()).exists) {
+        await docRef.set({'reviews': []});
+      }
 
       await _firestore.runTransaction((transaction) async {
         DocumentSnapshot<Map<String, dynamic>> snapshot =
