@@ -11,10 +11,9 @@ dependencies:
     sdk: flutter
   circular_countdown_timer: 
   firebase_core: 
-  firebase_auth: 
+  firebase_auth:
   firebase_messaging:
   firebase_storage:
-  firebase_analytics: 
   logger: 
   animated_splash_screen: 
   page_transition: 
@@ -26,7 +25,6 @@ dependencies:
   shared_preferences: 
   get: 
   carousel_slider: 
-  firebase_analytics_web: 
   video_player: 
   google_mobile_ads: 
   intl: 
@@ -47,7 +45,6 @@ dependencies:
   geocoding: 
   geolocator:
   lottie:
-  sign_in_with_apple: 
   crypto: 
   phonepe_payment_sdk:
   
