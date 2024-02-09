@@ -22,7 +22,7 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
 
   Future<User?> fetchData() async {
     try {
-      return ref.read(userProvider);
+      return ref.watch(userProvider);
     } catch (e) {
       print('Error fetching user data: $e');
       return null;
@@ -39,11 +39,11 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-          const     HeadingTitle(title: "My Courses"),
-            const  SizedBox(
+              const HeadingTitle(title: "My Courses"),
+              const SizedBox(
                 height: 16,
               ),
               FutureBuilder<User?>(
@@ -52,7 +52,7 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    return const Center(child: CircularProgressIndicator());
                   } else {
                     user = snapshot.data;
 
@@ -61,7 +61,8 @@ class _CoursesPageState extends ConsumerState<CoursesPage> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return  const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else if (!snapshot.hasData ||

@@ -127,14 +127,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     String password = passwordController.text.trim();
 
                     if (email.isNotEmpty && password.isNotEmpty) {
-                      isLoading = true;
+                      setState(() {
+                        isLoading = true;
+                      });
                       User? user = await ref
                           .read(userStateNotifierProvider.notifier)
                           .signIn(email, password);
 
                       if (user != null) {
-                        isLoading = false;
-
+                        setState(() {
+                          isLoading = false;
+                        });
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -164,14 +167,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
-                    isLoading = true;
-
+                    setState(() {
+                      isLoading = true;
+                    });
                     User? user = await ref
                         .read(userStateNotifierProvider.notifier)
                         .signInWithGoogle();
 
                     if (user != null) {
-                      isLoading = false;
+                      setState(() {
+                        isLoading = false;
+                      });
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
