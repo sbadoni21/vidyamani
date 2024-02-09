@@ -223,28 +223,33 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                       ],
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          onPressed: () => _showChangePasswordDialog(context),
-                          icon: const Icon(Icons.published_with_changes,
-                              color: Colors.white),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          "Change",
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                        ),
-                        const Text(
-                          "Password",
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                        )
-                      ],
-                    ),
+                    user!.isGoogleUser != true
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                onPressed: () =>
+                                    _showChangePasswordDialog(context),
+                                icon: const Icon(Icons.published_with_changes,
+                                    color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              const Text(
+                                "Change",
+                                style: TextStyle(
+                                    fontSize: 10, color: Colors.white),
+                              ),
+                              const Text(
+                                "Password",
+                                style: TextStyle(
+                                    fontSize: 10, color: Colors.white),
+                              )
+                            ],
+                          )
+                        : SizedBox.shrink(),
                   ],
                 )
               ],
@@ -253,7 +258,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           Expanded(
             child: ListView(
               children: [
-                 Dashboard(),
+                Dashboard(),
               ],
             ),
           ),
