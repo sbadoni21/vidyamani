@@ -39,7 +39,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
 
   Future<User?> fetchData() async {
     try {
-      return ref.watch(userProvider);
+      return ref.read(userProvider);
     } catch (e) {
       print('Error fetching data: $e');
       return null;
@@ -223,7 +223,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                       ],
                     ),
-                    user!.isGoogleUser != true
+                    user!.isGoogleUser != null || true
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
