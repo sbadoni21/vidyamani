@@ -40,7 +40,7 @@
         <meta-data android:name="com.phonepe.android.sdk.isUAT" android:value="false"/>
         <meta-data android:name="com.phonepe.android.sdk.isSimulator" android:value="false"/>
         <meta-data android:name="com.phonepe.android.sdk.MerchantId" android:value="M22FR6VSPR5HC"/>
-<!--         <meta-data android:name="com.phonepe.android.sdk.AppId" android:value="1:706411405865:android:aa5dca7d3429b0bcfb3238"/>-->
+        <meta-data android:name="com.phonepe.android.sdk.AppId" android:value="null"/>
 
     </application>
 </manifest>
