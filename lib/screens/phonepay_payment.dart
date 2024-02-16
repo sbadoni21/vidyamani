@@ -42,23 +42,21 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   String body = "";
   Object result = "";
   String apiEndPoint = "/pg/v1/pay";
-  Packages? packages;
   getCheckSum() {
-     final requestData ={
+    final requestData = {
       "merchantId": merchantId,
       'merchantUserId': "Vidhyamani",
       "merchantTransactionId": randomAlphaNumeric(10),
       "amount": widget.packageType == 'gold'
-          ? widget.packages.goldPackagePrice*100
-          : widget.packages.premiumPackagePrice*100,
+          ? widget.packages.goldPackagePrice * 100
+          : widget.packages.premiumPackagePrice * 100,
       "callbackUrl": callback,
       "mobileNumber": "9999999999",
       "paymentInstrument": {"type": "PAY_PAGE"}
-    }
-    ;
+    };
     String base64Body = base64.encode(utf8.encode(json.encode(requestData)));
     checksum =
-    '${sha256.convert(utf8.encode(base64Body + apiEndPoint + saltKey)).toString()}###$saltIndex';
+        '${sha256.convert(utf8.encode(base64Body + apiEndPoint + saltKey)).toString()}###$saltIndex';
     return base64Body;
   }
 
@@ -73,201 +71,196 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
     await SubscriptionService().changeUserType(userid, widget.packageType);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: const CustomAppBarBckBtn(),
         body: ListView(children: [
-          widget.packageType == 'gold' ?
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: cardColor,
-                ),
-                width: double.infinity,
-                height: 250,
-                child: Stack(
-                  children: [
-                    Positioned(right: 0, child: Image.asset(logohalf)),
-                    Positioned(
-                      left: 20,
-                      top: 36,
-                      child: Text(
-                        'Vidhyamani Plus',
-                        style: myTextStylefontsize24BGCOLOR,
-                      ),
+          widget.packageType == 'gold'
+              ? Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: cardColor,
                     ),
-                    Positioned(
-                      left: 20,
-                      top: 102,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 25,
-                          ),
-                          Text(
-                            'Ad-free Content',
-                            style: myTextStylefontsize16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 20,
-                      top: 168,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "₹",
+                    width: double.infinity,
+                    height: 250,
+                    child: Stack(
+                      children: [
+                        Positioned(right: 0, child: Image.asset(logohalf)),
+                        Positioned(
+                          left: 20,
+                          top: 36,
+                          child: Text(
+                            'Vidhyamani Plus',
                             style: myTextStylefontsize24BGCOLOR,
                           ),
-                          Text(
-                            "${widget.packages.goldPackagePrice}",
-                            style: myTextStylefontsize24BGCOLOR,
-                          ),
-                          Text(
-                            "/",
-                            style: myTextStylefontsize24BGCOLOR,
-                          ),
-                          Text(
-                            "month",
-                            style: myTextStylefontsize14,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-            ),
-        )
-        :
- Padding(
-   padding: const EdgeInsets.all(20.0),
-   child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: bgColor,
-                ),
-                width: double.infinity,
-                height: 250,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      right: 0,
-                      child: Image.asset(
-                        logohalf,
-                        color: cardColor,
-                      ),
-                    ),
-                    Positioned(
-                      left: 20,
-                      top: 36,
-                      child: Text(
-                        'Vidhyamani Premium',
-                        style: myTextStylefontsize24,
-                      ),
-                    ),
-                    Positioned(
-                      left: 20,
-                      top: 85,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 25,
-                          ),
-                          Text(
-                            'Ad-free Content',
-                            style: myTextStylefontsize16white,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 20,
-                      top: 110,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 25,
-                          ),
-                          Text(
-                            'Advanced Courses',
-                            style: myTextStylefontsize16white,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      left: 20,
-                      top: 135,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 25,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 102,
+                          child: Row(
                             children: [
-                              Text(
-                                'Premium Content (Competitive exam ',
-                                style: myTextStylefontsize16white,
+                              const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 25,
                               ),
                               Text(
-                                'content etc.)',
+                                'Ad-free Content',
+                                style: myTextStylefontsize16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 168,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "₹",
+                                style: myTextStylefontsize24BGCOLOR,
+                              ),
+                              Text(
+                                "${widget.packages.goldPackagePrice}",
+                                style: myTextStylefontsize24BGCOLOR,
+                              ),
+                              Text(
+                                "/",
+                                style: myTextStylefontsize24BGCOLOR,
+                              ),
+                              Text(
+                                "month",
+                                style: myTextStylefontsize14,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: bgColor,
+                    ),
+                    width: double.infinity,
+                    height: 250,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          child: Image.asset(
+                            logohalf,
+                            color: cardColor,
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 36,
+                          child: Text(
+                            'Vidhyamani Premium',
+                            style: myTextStylefontsize24,
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 85,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 25,
+                              ),
+                              Text(
+                                'Ad-free Content',
                                 style: myTextStylefontsize16white,
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 110,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 25,
+                              ),
+                              Text(
+                                'Advanced Courses',
+                                style: myTextStylefontsize16white,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 135,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                                size: 25,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Premium Content (Competitive exam ',
+                                    style: myTextStylefontsize16white,
+                                  ),
+                                  Text(
+                                    'content etc.)',
+                                    style: myTextStylefontsize16white,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: 20,
+                          top: 194,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "₹",
+                                style: myTextStylefontsize24,
+                              ),
+                              Text(
+                                "${widget.packages.premiumPackagePrice}",
+                                style: myTextStylefontsize24,
+                              ),
+                              Text(
+                                "/",
+                                style: myTextStylefontsize24,
+                              ),
+                              Text(
+                                "month",
+                                style: myTextStylefontsize14White,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      left: 20,
-                      top: 194,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "₹",
-                            style: myTextStylefontsize24,
-                          ),
-                          Text(
-                            "${widget.packages.premiumPackagePrice}",
-                            style: myTextStylefontsize24,
-                          ),
-                          Text(
-                            "/",
-                            style: myTextStylefontsize24,
-                          ),
-                          Text(
-                            "month",
-                            style: myTextStylefontsize14White,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                  ],
+                  ),
                 ),
-              ),
- ),
           Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -306,9 +299,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                           style: myTextStylefontsize20BGCOLOR,
                         ),
                         Text(
-                          widget.packageType == "gold"
-                              ? 'Gold'
-                              : 'Premium',
+                          widget.packageType == "gold" ? 'Gold' : 'Premium',
                           style: myTextStylefontsize20BGCOLOR,
                         ),
                       ],
@@ -323,11 +314,9 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-
                           "Total",
                           style: myTextStylefontsize20BGCOLOR,
                         ),
-
                         Text(
                           widget.packageType == "gold"
                               ? '₹ ${widget.packages.goldPackagePrice.toString()}'
@@ -356,126 +345,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                         ),
                       ],
                     )
-                  ]
-                  )
-                  ),
-                   Container(
-              margin: const EdgeInsets.all(7),
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Merchant Id',
-                    ),
-                    onChanged: (text) {
-                      merchantId = text;
-                    },
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'App Id',
-                    ),
-                    onChanged: (text) {
-                      appId = text;
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      const Text('Select the environment'),
-                     
-                    ],
-                  ),
-                  Visibility(
-                      maintainSize: false,
-                      maintainAnimation: false,
-                      maintainState: false,
-                      visible: Platform.isAndroid,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const SizedBox(height: 10),
-                            Text("Package Name: "),
-                          ])),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: <Widget>[
-                      
-                      const Text("Enable Logs")
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Warning: Init SDK is Mandatory to use all the functionalities*',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                 
-                  const SizedBox(width: 5.0),
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'body',
-                    ),
-                    onChanged: (text) {
-                      body = text;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'checksum',
-                    ),
-                    onChanged: (text) {
-                      checksum = text;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                      onPressed: startPgTransaction,
-                      child: const Text('Start Transaction')),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                            child: ElevatedButton(
-                                onPressed: isPhonePeInstalled,
-                                child: const Text('PhonePe App'))),
-                        const SizedBox(width: 5.0),
-                        Expanded(
-                            child: ElevatedButton(
-                                onPressed: isGpayInstalled,
-                                child: const Text('Gpay App'))),
-                        const SizedBox(width: 5.0),
-                        Expanded(
-                            child: ElevatedButton(
-                                onPressed: isPaytmInstalled,
-                                child: const Text('Paytm App'))),
-                      ]),
-                  ElevatedButton(
-                      onPressed: getInstalledApps,
-                      child: const Text('Get UPI Apps')),
-                  const SizedBox(width: 5.0),
-                  Visibility(
-                      maintainSize: false,
-                      maintainAnimation: false,
-                      maintainState: false,
-                      visible: Platform.isAndroid,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                                child: ElevatedButton(
-                                    onPressed: getPackageSignatureForAndroid,
-                                    child:
-                                        const Text('Get Package Signature'))),
-                            const SizedBox(width: 5.0)
-                          ])),
-                  Text("Result: \n $result")
-                ],
-              ),)
+                  ])),
         ]));
   }
 
@@ -491,127 +361,10 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
       return <dynamic>{};
     });
   }
-void isPhonePeInstalled() {
-    PhonePePaymentSdk.isPhonePeInstalled()
-        .then((isPhonePeInstalled) => {
-              setState(() {
-                result = 'PhonePe Installed - $isPhonePeInstalled';
-              })
-            })
-        .catchError((error) {
-      handleError(error);
-      return <dynamic>{};
-    });
-  }
-
-  void isGpayInstalled() {
-    PhonePePaymentSdk.isGPayAppInstalled()
-        .then((isGpayInstalled) => {
-              setState(() {
-                result = 'GPay Installed - $isGpayInstalled';
-              })
-            })
-        .catchError((error) {
-      handleError(error);
-      return <dynamic>{};
-    });
-  }
-
-  void isPaytmInstalled() {
-    PhonePePaymentSdk.isPaytmAppInstalled()
-        .then((isPaytmInstalled) => {
-              setState(() {
-                result = 'Paytm Installed - $isPaytmInstalled';
-              })
-            })
-        .catchError((error) {
-      handleError(error);
-      return <dynamic>{};
-    });
-  }
-
-  void getPackageSignatureForAndroid() {
-    if (Platform.isAndroid) {
-      PhonePePaymentSdk.getPackageSignatureForAndroid()
-          .then((packageSignature) => {
-                setState(() {
-                  result = 'getPackageSignatureForAndroid - $packageSignature';
-                })
-              })
-          .catchError((error) {
-        handleError(error);
-        return <dynamic>{};
-      });
-    }
-  }
-
-  void getInstalledUpiAppsForiOS() {
-    if (Platform.isIOS) {
-      PhonePePaymentSdk.getInstalledUpiAppsForiOS()
-          .then((apps) => {
-                setState(() {
-                  result = 'getUPIAppsInstalledForIOS - $apps';
-
-                  // For Usage
-                  List<String> stringList = apps
-                          ?.whereType<
-                              String>() // Filters out null and non-String elements
-                          .toList() ??
-                      [];
-
-                  // Check if the string value 'Orange' exists in the filtered list
-                  String searchString = 'PHONEPE';
-                  bool isStringExist = stringList.contains(searchString);
-
-                  if (isStringExist) {
-                    print('$searchString app exist in the device.');
-                  } else {
-                    print('$searchString app does not exist in the list.');
-                  }
-                })
-              })
-          .catchError((error) {
-        handleError(error);
-        return <dynamic>{};
-      });
-    }
-  }
-
-  void getInstalledApps() {
-    if (Platform.isAndroid) {
-      getInstalledUpiAppsForAndroid();
-    } else {
-      getInstalledUpiAppsForiOS();
-    }
-  }
-
-  void getInstalledUpiAppsForAndroid() {
-    PhonePePaymentSdk.getInstalledUpiAppsForAndroid()
-        .then((apps) => {
-              setState(() {
-                if (apps != null) {
-                  Iterable l = json.decode(apps);
-                  List<UPIApp> upiApps = List<UPIApp>.from(
-                      l.map((model) => UPIApp.fromJson(model)));
-                  String appString = '';
-                  for (var element in upiApps) {
-                    appString +=
-                        "${element.applicationName} ${element.version} ${element.packageName}";
-                  }
-                  result = 'Installed Upi Apps - $appString';
-                } else {
-                  result = 'Installed Upi Apps - 0';
-                }
-              })
-            })
-        .catchError((error) {
-      handleError(error);
-      return <dynamic>{};
-    });
-  }
 
   void startPgTransaction() async {
-    PhonePePaymentSdk.startTransaction(body, callback, checksum, "com.phonepe.app")
+    PhonePePaymentSdk.startTransaction(
+            body, callback, checksum, 'net.one97.paytm')
         .then((response) => {
               setState(() {
                 if (response != null) {
@@ -632,6 +385,7 @@ void isPhonePeInstalled() {
                   } else {
                     result =
                         "Flow Completed - Status: $status and Error: $error";
+                    print('Responseeeeeeeeeeeeee $response');
                   }
                 } else {
                   result = "Flow Incomplete";
@@ -639,7 +393,7 @@ void isPhonePeInstalled() {
               })
             })
         .catchError((error) {
-       handleError(error);
+      handleError(error);
       return <dynamic>{};
     });
   }
