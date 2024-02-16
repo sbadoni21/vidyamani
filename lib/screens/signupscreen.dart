@@ -27,7 +27,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final GlobalKey<FormState> _firstPageKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _secondPageKey = GlobalKey<FormState>();
   int _currentPage = 1;
-
+  bool isLoading = false;
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<void> _selectImage() async {
@@ -84,16 +84,23 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   }
 
   Future<void> _submitForm() async {
+    setState(() {
+      isLoading = true;
+    });
     if (_secondPageKey.currentState?.validate() ?? false) {
-      User? user = await ref.read(userStateNotifierProvider.notifier).signInWithEmail(
-        name: fullNameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        location: locationController.text,
-        userImage: _userImage,
-      );
+      User? user =
+          await ref.read(userStateNotifierProvider.notifier).signInWithEmail(
+                name: fullNameController.text,
+                email: emailController.text,
+                password: passwordController.text,
+                location: locationController.text,
+                userImage: _userImage,
+              );
 
       if (user != null) {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -167,9 +174,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   ElevatedButton(
                     onPressed:
                         _currentPage == 1 ? _submitFirstPage : _submitForm,
-                    child: Text(
-                      _currentPage == 1 ? "Next" : "Submit",
-                    ),
+                    child: isLoading == true
+                        ? CircularProgressIndicator()
+                        : Text(
+                            _currentPage == 1 ? "Next" : "Submit",
+                          ),
                     style: ElevatedButton.styleFrom(
                       elevation: 5.0,
                       backgroundColor: bgColor, // Background color
@@ -184,10 +193,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                   SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      User? user =
-                          await ref.read(userStateNotifierProvider.notifier).signInWithGoogle();
+                      setState(() {
+                        isLoading = true;
+                      });
+                      User? user = await ref
+                          .read(userStateNotifierProvider.notifier)
+                          .signInWithGoogle();
 
                       if (user != null) {
+                                    setState(() {
+                        isLoading = false;
+                      });
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),
