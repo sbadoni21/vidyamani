@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
+import 'package:vidyamani/screens/upi.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
@@ -48,7 +49,7 @@ class MyApp extends ConsumerWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       navigatorKey: navigatorKey,
-      home: userState == null ? SplashScreen() : HomePage(),
+      home: userState == null ? SplashScreen() : UpiPaymentScreen(),
     );
   }
 }

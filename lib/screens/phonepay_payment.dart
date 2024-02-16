@@ -364,7 +364,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
 
   void startPgTransaction() async {
     PhonePePaymentSdk.startTransaction(
-            body, callback, checksum, 'net.one97.paytm')
+            body, callback, checksum, 'com.phonepe.app')
         .then((response) => {
               setState(() {
                 if (response != null) {
@@ -385,7 +385,6 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                   } else {
                     result =
                         "Flow Completed - Status: $status and Error: $error";
-                    print('Responseeeeeeeeeeeeee $response');
                   }
                 } else {
                   result = "Flow Incomplete";
@@ -397,6 +396,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
       return <dynamic>{};
     });
   }
+  
 
   void handleError(error) {
     setState(() {

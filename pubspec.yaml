@@ -15,11 +15,11 @@ dependencies:
   firebase_messaging:
   firebase_storage:
   logger: 
+  upi_india: 
   animated_splash_screen: 
   page_transition: 
   google_sign_in: 
   cloud_firestore: 
-  
   random_string: 
   email_validator: 
   flutter_local_notifications: 
