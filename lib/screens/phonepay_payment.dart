@@ -51,8 +51,12 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
           ? widget.packages.goldPackagePrice * 100
           : widget.packages.premiumPackagePrice * 100,
       "callbackUrl": callback,
+      "redirectMode": "REDIRECT",
       "mobileNumber": "9999999999",
-      "paymentInstrument": {"type": "PAY_PAGE"}
+      "deviceContext": {"deviceOS": "ANDROID"},
+      "paymentInstrument": {
+        "type": "UPI_INTENT",
+      }
     };
     String base64Body = base64.encode(utf8.encode(json.encode(requestData)));
     checksum =
@@ -64,6 +68,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   void initState() {
     super.initState;
     phonepeInit();
+    getInstalledApps();
     body = getCheckSum().toString();
   }
 
@@ -346,6 +351,13 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       ],
                     )
                   ])),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              'Installed UPI Apps: $result',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
         ]));
   }
 
@@ -362,9 +374,126 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
     });
   }
 
+  void isPhonePeInstalled() {
+    PhonePePaymentSdk.isPhonePeInstalled()
+        .then((isPhonePeInstalled) => {
+              setState(() {
+                result = 'PhonePe Installed - $isPhonePeInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void isGpayInstalled() {
+    PhonePePaymentSdk.isGPayAppInstalled()
+        .then((isGpayInstalled) => {
+              setState(() {
+                result = 'GPay Installed - $isGpayInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void isPaytmInstalled() {
+    PhonePePaymentSdk.isPaytmAppInstalled()
+        .then((isPaytmInstalled) => {
+              setState(() {
+                result = 'Paytm Installed - $isPaytmInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void getPackageSignatureForAndroid() {
+    if (Platform.isAndroid) {
+      PhonePePaymentSdk.getPackageSignatureForAndroid()
+          .then((packageSignature) => {
+                setState(() {
+                  result = 'getPackageSignatureForAndroid - $packageSignature';
+                })
+              })
+          .catchError((error) {
+        handleError(error);
+        return <dynamic>{};
+      });
+    }
+  }
+
+  void getInstalledUpiAppsForiOS() {
+    if (Platform.isIOS) {
+      PhonePePaymentSdk.getInstalledUpiAppsForiOS()
+          .then((apps) => {
+                setState(() {
+                  result = 'getUPIAppsInstalledForIOS - $apps';
+                  List<String> stringList = apps
+                          ?.whereType<
+                              String>() // Filters out null and non-String elements
+                          .toList() ??
+                      [];
+
+                  // Check if the string value 'Orange' exists in the filtered list
+                  String searchString = 'PHONEPE';
+                  bool isStringExist = stringList.contains(searchString);
+
+                  if (isStringExist) {
+                    print('$searchString app exist in the device.');
+                  } else {
+                    print('$searchString app does not exist in the list.');
+                  }
+                })
+              })
+          .catchError((error) {
+        handleError(error);
+        return <dynamic>{};
+      });
+    }
+  }
+
+  void getInstalledApps() {
+    if (Platform.isAndroid) {
+      getInstalledUpiAppsForAndroid();
+    } else {
+      getInstalledUpiAppsForiOS();
+    }
+  }
+
+  void getInstalledUpiAppsForAndroid() {
+    PhonePePaymentSdk.getInstalledUpiAppsForAndroid()
+        .then((apps) => {
+              setState(() {
+                if (apps != null) {
+                  Iterable l = json.decode(apps);
+                  List<UPIApp> upiApps = List<UPIApp>.from(
+                      l.map((model) => UPIApp.fromJson(model)));
+                  String appString = '';
+                  for (var element in upiApps) {
+                    appString +=
+                        "${element.applicationName} ${element.version} ${element.packageName}";
+                  }
+                  result = 'Installed Upi Apps - $appString';
+                } else {
+                  result = 'Installed Upi Apps - 0';
+                }
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
   void startPgTransaction() async {
     PhonePePaymentSdk.startTransaction(
-            body, callback, checksum, 'com.phonepe.app')
+            body, callback, checksum, 'net.one27.paytm')
         .then((response) => {
               setState(() {
                 if (response != null) {
@@ -396,7 +525,6 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
       return <dynamic>{};
     });
   }
-  
 
   void handleError(error) {
     setState(() {
