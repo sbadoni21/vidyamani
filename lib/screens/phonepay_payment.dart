@@ -323,7 +323,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          
+
                           "Total",
                           style: myTextStylefontsize20BGCOLOR,
                         ),
@@ -356,7 +356,126 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                         ),
                       ],
                     )
-                  ]))
+                  ]
+                  )
+                  ),
+                   Container(
+              margin: const EdgeInsets.all(7),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Merchant Id',
+                    ),
+                    onChanged: (text) {
+                      merchantId = text;
+                    },
+                  ),
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'App Id',
+                    ),
+                    onChanged: (text) {
+                      appId = text;
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      const Text('Select the environment'),
+                     
+                    ],
+                  ),
+                  Visibility(
+                      maintainSize: false,
+                      maintainAnimation: false,
+                      maintainState: false,
+                      visible: Platform.isAndroid,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const SizedBox(height: 10),
+                            Text("Package Name: "),
+                          ])),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      
+                      const Text("Enable Logs")
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Warning: Init SDK is Mandatory to use all the functionalities*',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                 
+                  const SizedBox(width: 5.0),
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'body',
+                    ),
+                    onChanged: (text) {
+                      body = text;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'checksum',
+                    ),
+                    onChanged: (text) {
+                      checksum = text;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      onPressed: startPgTransaction,
+                      child: const Text('Start Transaction')),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: isPhonePeInstalled,
+                                child: const Text('PhonePe App'))),
+                        const SizedBox(width: 5.0),
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: isGpayInstalled,
+                                child: const Text('Gpay App'))),
+                        const SizedBox(width: 5.0),
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: isPaytmInstalled,
+                                child: const Text('Paytm App'))),
+                      ]),
+                  ElevatedButton(
+                      onPressed: getInstalledApps,
+                      child: const Text('Get UPI Apps')),
+                  const SizedBox(width: 5.0),
+                  Visibility(
+                      maintainSize: false,
+                      maintainAnimation: false,
+                      maintainState: false,
+                      visible: Platform.isAndroid,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                                child: ElevatedButton(
+                                    onPressed: getPackageSignatureForAndroid,
+                                    child:
+                                        const Text('Get Package Signature'))),
+                            const SizedBox(width: 5.0)
+                          ])),
+                  Text("Result: \n $result")
+                ],
+              ),)
         ]));
   }
 
