@@ -37,10 +37,7 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6569585766930207~5077675042"/>
-        <meta-data android:name="com.phonepe.android.sdk.isUAT" android:value="false"/>
-        <meta-data android:name="com.phonepe.android.sdk.isSimulator" android:value="false"/>
-        <meta-data android:name="com.phonepe.android.sdk.MerchantId" android:value="M22FR6VSPR5HC"/>
-        <meta-data android:name="com.phonepe.android.sdk.AppId" android:value="null"/>
+
 
     </application>
 </manifest>

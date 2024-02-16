@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
 import 'package:random_string/random_string.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/package_model.dart';
+import 'package:vidyamani/models/upi_apps_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/services/data/subscription_service.dart';
@@ -42,7 +44,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   String apiEndPoint = "/pg/v1/pay";
   Packages? packages;
   getCheckSum() {
-    final requestData ={
+     final requestData ={
       "merchantId": merchantId,
       'merchantUserId': "Vidhyamani",
       "merchantTransactionId": randomAlphaNumeric(10),
@@ -321,6 +323,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          
                           "Total",
                           style: myTextStylefontsize20BGCOLOR,
                         ),
@@ -369,9 +372,127 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
       return <dynamic>{};
     });
   }
+void isPhonePeInstalled() {
+    PhonePePaymentSdk.isPhonePeInstalled()
+        .then((isPhonePeInstalled) => {
+              setState(() {
+                result = 'PhonePe Installed - $isPhonePeInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void isGpayInstalled() {
+    PhonePePaymentSdk.isGPayAppInstalled()
+        .then((isGpayInstalled) => {
+              setState(() {
+                result = 'GPay Installed - $isGpayInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void isPaytmInstalled() {
+    PhonePePaymentSdk.isPaytmAppInstalled()
+        .then((isPaytmInstalled) => {
+              setState(() {
+                result = 'Paytm Installed - $isPaytmInstalled';
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
+
+  void getPackageSignatureForAndroid() {
+    if (Platform.isAndroid) {
+      PhonePePaymentSdk.getPackageSignatureForAndroid()
+          .then((packageSignature) => {
+                setState(() {
+                  result = 'getPackageSignatureForAndroid - $packageSignature';
+                })
+              })
+          .catchError((error) {
+        handleError(error);
+        return <dynamic>{};
+      });
+    }
+  }
+
+  void getInstalledUpiAppsForiOS() {
+    if (Platform.isIOS) {
+      PhonePePaymentSdk.getInstalledUpiAppsForiOS()
+          .then((apps) => {
+                setState(() {
+                  result = 'getUPIAppsInstalledForIOS - $apps';
+
+                  // For Usage
+                  List<String> stringList = apps
+                          ?.whereType<
+                              String>() // Filters out null and non-String elements
+                          .toList() ??
+                      [];
+
+                  // Check if the string value 'Orange' exists in the filtered list
+                  String searchString = 'PHONEPE';
+                  bool isStringExist = stringList.contains(searchString);
+
+                  if (isStringExist) {
+                    print('$searchString app exist in the device.');
+                  } else {
+                    print('$searchString app does not exist in the list.');
+                  }
+                })
+              })
+          .catchError((error) {
+        handleError(error);
+        return <dynamic>{};
+      });
+    }
+  }
+
+  void getInstalledApps() {
+    if (Platform.isAndroid) {
+      getInstalledUpiAppsForAndroid();
+    } else {
+      getInstalledUpiAppsForiOS();
+    }
+  }
+
+  void getInstalledUpiAppsForAndroid() {
+    PhonePePaymentSdk.getInstalledUpiAppsForAndroid()
+        .then((apps) => {
+              setState(() {
+                if (apps != null) {
+                  Iterable l = json.decode(apps);
+                  List<UPIApp> upiApps = List<UPIApp>.from(
+                      l.map((model) => UPIApp.fromJson(model)));
+                  String appString = '';
+                  for (var element in upiApps) {
+                    appString +=
+                        "${element.applicationName} ${element.version} ${element.packageName}";
+                  }
+                  result = 'Installed Upi Apps - $appString';
+                } else {
+                  result = 'Installed Upi Apps - 0';
+                }
+              })
+            })
+        .catchError((error) {
+      handleError(error);
+      return <dynamic>{};
+    });
+  }
 
   void startPgTransaction() async {
-    PhonePePaymentSdk.startTransaction(body, callback, checksum, "com.example.vidhyamanif")
+    PhonePePaymentSdk.startTransaction(body, callback, checksum, "com.phonepe.app")
         .then((response) => {
               setState(() {
                 if (response != null) {
