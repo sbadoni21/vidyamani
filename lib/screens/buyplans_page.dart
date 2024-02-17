@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/package_model.dart';
+import 'package:vidyamani/screens/otherup.dart';
 import 'package:vidyamani/screens/phonepay_payment.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/utils/static.dart';
@@ -56,11 +57,12 @@ class _BuyPlansState extends State<BuyPlans> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PhonePayPayment(
-                            packageType: "gold",
-                            packages: fetchedPackages,
-                          ),
-                        ),
+                            builder: (context) =>
+                                // PhonePayPayment(
+                                //   packageType: "gold",
+                                //   packages: fetchedPackages,
+                                // ),
+                                MyAppforpay()),
                       );
                     },
                     child: Container(
@@ -135,7 +137,7 @@ class _BuyPlansState extends State<BuyPlans> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>  PhonePayPayment(
+                          builder: (context) => PhonePayPayment(
                             packageType: "premium",
                             packages: fetchedPackages,
                           ),
@@ -254,7 +256,6 @@ class _BuyPlansState extends State<BuyPlans> {
                               ],
                             ),
                           ),
-
                         ],
                       ),
                     ),

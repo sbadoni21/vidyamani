@@ -42,6 +42,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   String body = "";
   Object result = "";
   String apiEndPoint = "/pg/v1/pay";
+  
   getCheckSum() {
     final requestData = {
       "merchantId": merchantId,
@@ -55,7 +56,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
       "mobileNumber": "9999999999",
       "deviceContext": {"deviceOS": "ANDROID"},
       "paymentInstrument": {
-        "type": "UPI_INTENT",
+        "type": "PAY_PAGE",
       }
     };
     String base64Body = base64.encode(utf8.encode(json.encode(requestData)));

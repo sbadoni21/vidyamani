@@ -3,6 +3,14 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <queries>
+    <package android:name="com.phonepe.app" />								// PhonePe Prod
+    <package android:name="com.phonepe.app.preprod" />						// PhonePe UAT
+    <package android:name="com.google.android.apps.nbu.paisa.user" />		// GPay
+  	<package android:name="net.one97.paytm" />								// Paytm
+  	<package android:name="in.org.npci.upiapp" />							// BHIM
+		<package android:name="in.amazon.mShop.android.shopping" />			// AmazonPay
+</queries>
     <application
         android:label="Vidhyamani"
         android:name="${applicationName}"

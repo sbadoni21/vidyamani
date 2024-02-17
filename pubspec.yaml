@@ -46,6 +46,7 @@ dependencies:
   geolocator:
   lottie:
   crypto: 
+  phone_pe_pg: ^0.0.1
   phonepe_payment_sdk:
   
 
