@@ -10,7 +10,7 @@
   	<package android:name="net.one97.paytm" />								// Paytm
   	<package android:name="in.org.npci.upiapp" />							// BHIM
 		<package android:name="in.amazon.mShop.android.shopping" />			// AmazonPay
-</queries>
+    </queries>
     <application
         android:label="Vidhyamani"
         android:name="${applicationName}"

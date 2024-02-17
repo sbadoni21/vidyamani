@@ -57,12 +57,11 @@ class _BuyPlansState extends State<BuyPlans> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                // PhonePayPayment(
-                                //   packageType: "gold",
-                                //   packages: fetchedPackages,
-                                // ),
-                                MyAppforpay()),
+                          builder: (context) => PhonePayPayment(
+                            packageType: "gold",
+                            packages: fetchedPackages,
+                          ),
+                        ),
                       );
                     },
                     child: Container(

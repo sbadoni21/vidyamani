@@ -42,11 +42,11 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   String body = "";
   Object result = "";
   String apiEndPoint = "/pg/v1/pay";
-  
+
   getCheckSum() {
     final requestData = {
       "merchantId": merchantId,
-      'merchantUserId': "Vidhyamani",
+      'merchantUserId': randomAlpha(10),
       "merchantTransactionId": randomAlphaNumeric(10),
       "amount": widget.packageType == 'gold'
           ? widget.packages.goldPackagePrice * 100

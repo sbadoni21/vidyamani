@@ -25,10 +25,10 @@ class _MyAppState extends State<MyAppforpay> {
   }
 
   PhonePePg pePg = PhonePePg(
-    isUAT: false,
-    saltKey: "84e1592e-9627-4411-a0ab-dd8f099863f0",
-    saltIndex: '1',
-  );
+      isUAT: false,
+      saltKey: "84e1592e-9627-4411-a0ab-dd8f099863f0",
+      saltIndex: '1',
+      prodUrl: null);
 
   PaymentRequest _paymentRequest({String? merchantCallBackScheme}) {
     String generateRandomString(int len) {
