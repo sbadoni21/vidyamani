@@ -132,12 +132,16 @@ class HomePageState extends ConsumerState<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: const CustomAppBar(),
-        body: IndexedStack(index: currentIndex, children: [
-          _buildHomePage(context, ref, adProvider),
-          const SearchBarButton(),
-          const MyNotes(),
-          const ProfilePage(),
-        ]),
+        body: PopScope(
+          canPop: true,
+        
+          child: IndexedStack(index: currentIndex, children: [
+            _buildHomePage(context, ref, adProvider),
+            const SearchBarButton(),
+            const MyNotes(),
+            const ProfilePage(),
+          ]),
+        ),
         bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) {
