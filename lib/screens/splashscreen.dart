@@ -6,6 +6,7 @@ import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:vidyamani/utils/static.dart';
+
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
   @override
@@ -15,8 +16,8 @@ class SplashScreen extends ConsumerWidget {
     );
     return SafeArea(
         child: AnimatedSplashScreen(
-      animationDuration: const Duration(seconds: 2),
-      duration: 3000,
+      animationDuration: const Duration(seconds: 1),
+      duration: 1000,
       splash: ListView(
         children: [
           Image.asset(

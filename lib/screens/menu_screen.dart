@@ -174,7 +174,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Made with  ",
+                          "E-Learning Point Pvt. Ltd",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey,

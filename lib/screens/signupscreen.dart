@@ -201,9 +201,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           .signInWithGoogle();
 
                       if (user != null) {
-                                    setState(() {
-                        isLoading = false;
-                      });
+                        setState(() {
+                          isLoading = false;
+                        });
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),
@@ -277,12 +277,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           icon: Icons.person,
         ),
         const SizedBox(height: 16),
-        _buildTextField(
-          controller: locationController,
-          labelText: 'Location',
-          hintText: 'Enter your location',
-          icon: Icons.location_city,
-        ),
+        _buildLocationDropdown(),
         const SizedBox(height: 16),
         GestureDetector(
           onTap: _selectImage,
@@ -367,6 +362,80 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     );
   }
 
+  Widget _buildLocationDropdown() {
+    return DropdownButtonFormField<String>(
+      alignment: Alignment.centerLeft,
+      style: myTextStylefontsize14,
+      borderRadius: BorderRadius.circular(25),
+      value: locationController.text.isNotEmpty
+          ? locationController.text
+          : 'Uttarakhand',
+      onChanged: (String? newValue) {
+        setState(() {
+          locationController.text = newValue ?? 'Uttarakhand';
+        });
+      },
+      items: [
+        'Andhra Pradesh',
+        'Arunachal Pradesh',
+        'Assam',
+        'Bihar',
+        'Chhattisgarh',
+        'Goa',
+        'Gujarat',
+        'Haryana',
+        'Himachal Pradesh',
+        'Jharkhand',
+        'Karnataka',
+        'Kerala',
+        'Madhya Pradesh',
+        'Maharashtra',
+        'Manipur',
+        'Meghalaya',
+        'Mizoram',
+        'Nagaland',
+        'Odisha',
+        'Punjab',
+        'Rajasthan',
+        'Sikkim',
+        'Tamil Nadu',
+        'Telangana',
+        'Tripura',
+        'Uttar Pradesh',
+        'Uttarakhand',
+        'West Bengal',
+        'Andaman and Nicobar',
+        'Chandigarh',
+        'Dadra and Nagar Haveli',
+        'Daman and Diu'
+            'Lakshadweep',
+        'Delhi',
+        'Puducherry',
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        labelText: 'Location',
+        fillColor: Colors.white,
+        prefixIcon: Icon(Icons.people, color: Colors.grey),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select Location';
+        }
+        return null;
+      },
+    );
+  }
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String labelText,
@@ -378,6 +447,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
+        hintStyle: myTextStylefontsize14,
+        labelStyle: myTextStylefontsize14,
         labelText: labelText,
         hintText: hintText,
         prefixIcon: Icon(icon, color: Colors.grey),

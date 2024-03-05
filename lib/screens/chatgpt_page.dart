@@ -42,7 +42,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
           {'role': 'user', 'content': prompt}
         ],
         'model': 'gpt-3.5-turbo',
-        'max_tokens': 150,
+        'max_tokens': 1000,
       }),
     );
 
