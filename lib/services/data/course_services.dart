@@ -110,14 +110,14 @@ Future<Course?> fetchCarousalCourse(Carousal carosual) async {
         Course course = Course.fromMap(data);
         return course;
       } else {
-        return null; // Handle the case where data is null
+        return null;
       }
     } else {
-      return null; // Handle the case where the document doesn't exist
+      return null; 
     }
   } catch (e) {
     logger.i(e);
-    return null; // Handle the error accordingly
+    return null; 
   }
 }
 

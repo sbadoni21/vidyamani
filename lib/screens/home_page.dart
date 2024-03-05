@@ -168,48 +168,52 @@ class HomePageState extends ConsumerState<HomePage> {
           children: [
             Consumer(
               builder: (context, watch, child) {
+                print(carousalAsyncValue.asData);
                 return carousalAsyncValue.when(
                   data: (carousalList) {
-                    return CarouselSlider(
-                      options: CarouselOptions(
-                        scrollPhysics: const BouncingScrollPhysics(
-                          decelerationRate: ScrollDecelerationRate.normal,
-                        ),
-                        height: 229.0,
-                        viewportFraction: 1,
-                        aspectRatio: 16 / 9,
-                        enableInfiniteScroll: true,
-                        autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        autoPlayAnimationDuration:
-                            const Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: true,
-                        enlargeFactor: 0.3,
-                        scrollDirection: Axis.horizontal,
-                      ),
-                      items: carousalList.map((carousal) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return GestureDetector(
-                              onTap: () async {
-                                Course? course = await DataService()
-                                    .fetchCarousalCourse(carousal);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CourseDetailPage(
-                                            courses: course!)));
-                              },
-                              child: Image.network(
-                                carousal.photo,
-                                fit: BoxFit.fill,
+                    return carousalAsyncValue.hasValue == null
+                        ? const SizedBox()
+                        : CarouselSlider(
+                            options: CarouselOptions(
+                              scrollPhysics: const BouncingScrollPhysics(
+                                decelerationRate: ScrollDecelerationRate.normal,
                               ),
-                            );
-                          },
-                        );
-                      }).toList(),
-                    );
+                              height: 229.0,
+                              viewportFraction: 1,
+                              aspectRatio: 16 / 9,
+                              enableInfiniteScroll: true,
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 3),
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: true,
+                              enlargeFactor: 0.3,
+                              scrollDirection: Axis.horizontal,
+                            ),
+                            items: carousalList.map((carousal) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      Course? course = await DataService()
+                                          .fetchCarousalCourse(carousal);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CourseDetailPage(
+                                                      courses: course!)));
+                                    },
+                                    child: Image.network(
+                                      carousal.photo,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          );
                   },
                   loading: () {
                     return const Center(

@@ -106,6 +106,11 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset(
+                    'lib/assets/images/logowhite.png',
+                    height: 100,
+                    width: 100,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -129,16 +134,6 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.blue,
-                      backgroundColor: Colors.white,
-                    ),
-                    child: const Text('Add Money'),
-                  ),
                 ],
               ),
             ),

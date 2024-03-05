@@ -180,11 +180,6 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.black,
-                          size: 20,
-                        )
                       ],
                     ),
                   ),
