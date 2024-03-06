@@ -45,30 +45,6 @@ class AboutAppPage extends StatelessWidget {
           children: [
             Image.asset('lib/assets/images/logo.png'),
             Text('About Vidhyamani app', style: myTextStylefontsize16),
-            SizedBox(height: 20),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Email',
-                  style: myTextStylefontsize16,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    await launchUrl(websiteUrl);
-                  },
-                  child: Text(
-                    websiteUrl,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
             SizedBox(
               height: 20,
             ),
