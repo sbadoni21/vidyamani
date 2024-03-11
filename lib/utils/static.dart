@@ -86,7 +86,7 @@ TextStyle myTextStylefontsize12BGCOLOR = TextStyle(
   fontWeight: FontWeight.w600,
   color: bgColor,
 );
-const ChatGPT = "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";
+const chatGPT = "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";
 const imageStatic = "lib/assets/images/classBasedCourse.png";
 const coinsLottie = 'lib/assets/lottie/coin_animation.json';
 const logo = 'lib/assets/images/logo.png';

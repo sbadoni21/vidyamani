@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/package_model.dart';
-import 'package:vidyamani/screens/otherup.dart';
 import 'package:vidyamani/screens/phonepay_payment.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/utils/static.dart';

@@ -5,7 +5,6 @@ import 'package:logger/logger.dart';
 import 'package:vidyamani/components/addnotes_component.dart';
 import 'package:vidyamani/components/notes_Card_component.dart';
 import 'package:vidyamani/components/notes_edit_component.dart';
-import 'package:vidyamani/components/search_bar.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
@@ -256,7 +255,6 @@ class NoteSearchDelegate extends SearchDelegate {
                 ),
               ),
               onTap: () {
-                // Handle the navigation to the specific note here
                 Navigator.push(
                   context,
                   MaterialPageRoute(

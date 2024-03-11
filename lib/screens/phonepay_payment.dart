@@ -38,7 +38,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   String checksum = '';
   String saltIndex = '1';
   String saltKey = '84e1592e-9627-4411-a0ab-dd8f099863f0';
-  String callback = "https://api.phonepe.com/apis/hermes";
+  String callback = "https://api.phonepe.com/apis/hermes/";
   String body = "";
   Object result = "";
   String apiEndPoint = "/pg/v1/pay";
@@ -62,6 +62,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
     String base64Body = base64.encode(utf8.encode(json.encode(requestData)));
     checksum =
         '${sha256.convert(utf8.encode(base64Body + apiEndPoint + saltKey)).toString()}###$saltIndex';
+    print(checksum);
     return base64Body;
   }
 
@@ -352,13 +353,6 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       ],
                     )
                   ])),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              'Installed UPI Apps: $result',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
         ]));
   }
 
@@ -493,8 +487,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
   }
 
   void startPgTransaction() async {
-    PhonePePaymentSdk.startTransaction(
-            body, callback, checksum, 'net.one27.paytm')
+    PhonePePaymentSdk.startTransaction(body, callback, checksum, '')
         .then((response) => {
               setState(() {
                 if (response != null) {
@@ -511,13 +504,16 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
                       }
                     } else {
                       result = "User ID is null";
+                      print(result);
                     }
                   } else {
                     result =
                         "Flow Completed - Status: $status and Error: $error";
+                    print(result);
                   }
                 } else {
                   result = "Flow Incomplete";
+                  print(result);
                 }
               })
             })

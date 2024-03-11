@@ -1,20 +1,23 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
+import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/utils/static.dart';
 
-class ChatGPTPage extends StatefulWidget {
+class ChatGPTPage extends ConsumerStatefulWidget {
   const ChatGPTPage({Key? key}) : super(key: key);
 
   @override
   _ChatGPTPageState createState() => _ChatGPTPageState();
 }
 
-class _ChatGPTPageState extends State<ChatGPTPage> {
+class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
   TextEditingController _messageController = TextEditingController();
   List<ChatMessage> _chatMessages = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,7 +38,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $ChatGPT',
+        'Authorization': 'Bearer $chatGPT',
       },
       body: jsonEncode({
         'messages': [
@@ -50,8 +53,6 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
       final data = json.decode(response.body);
       return data['choices'][0]['message']['content'];
     } else {
-      print('API Error: ${response.statusCode}');
-      print('Error Body: ${response.body}');
       throw Exception('Failed to load data');
     }
   }
@@ -60,14 +61,23 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
     String userMessage = _messageController.text;
     if (userMessage.isNotEmpty) {
       try {
+        setState(() {
+          _isLoading = true; // Set loading state to true
+        });
+
         String chatGPTResponse = await getResponse(userMessage);
 
         setState(() {
-          _chatMessages.add(ChatMessage(user: userMessage, chatGPT: chatGPTResponse));
+          _chatMessages
+              .add(ChatMessage(user: userMessage, chatGPT: chatGPTResponse));
+          _isLoading = false; // Set loading state to false
         });
 
         _messageController.clear();
       } catch (e) {
+        setState(() {
+          _isLoading = false; // Set loading state to false in case of an error
+        });
         print('Error: $e');
       }
     }
@@ -75,17 +85,31 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = ref.watch(userProvider);
     return Scaffold(
-      appBar: CustomAppBarBckBtn(),
+      appBar: const CustomAppBarBckBtn(),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               itemCount: _chatMessages.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('User: ${_chatMessages[index].user}'),
-                  subtitle: Text('ChatGPT: ${_chatMessages[index].chatGPT}'),
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: ListTile(
+                      tileColor: bgColor,
+                      textColor: Colors.white,
+                      title: Text(
+                          '${user!.displayName}: ${_chatMessages[index].user}'),
+                      subtitle:
+                          Text('ChatGPT: ${_chatMessages[index].chatGPT}'),
+                    ),
+                  ),
                 );
               },
             ),
@@ -97,7 +121,7 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Ask a question...',
                     ),
                   ),
@@ -105,8 +129,12 @@ class _ChatGPTPageState extends State<ChatGPTPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: _sendMessage,
-                    child: Text('Send'),
+                    onPressed: _isLoading ? null : _sendMessage,
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            color: bgColor,
+                          )
+                        : const Text('Send'),
                   ),
                 ),
               ],

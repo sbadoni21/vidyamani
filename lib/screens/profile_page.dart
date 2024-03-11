@@ -223,7 +223,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                       ],
                     ),
-                    user!.isGoogleUser != null || true
+                    user!.isGoogleUser != true
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,

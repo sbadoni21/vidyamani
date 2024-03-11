@@ -41,7 +41,6 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async {
-              // Save the edited note to Firestore
               await saveEditedNote();
               Navigator.pop(context);
             },
@@ -71,7 +70,6 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   }
 
   Future<void> saveEditedNote() async {
-    // Update the note in Firestore
     await FirebaseFirestore.instance
         .collection('users')
         .doc(_firebaseAuth.currentUser!.uid)

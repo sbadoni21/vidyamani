@@ -229,16 +229,19 @@ class HomePageState extends ConsumerState<HomePage> {
               },
             ),
             const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const HeadingTitle(title: "Categories"),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  SizedBox(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: HeadingTitle(title: "Categories"),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: SizedBox(
                     height: 130.0,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -266,199 +269,238 @@ class HomePageState extends ConsumerState<HomePage> {
                       },
                     ),
                   ),
-                  const HeadingTitle(title: "Featured Courses"),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  FutureBuilder(
-                    future: fetchFeaturedCollectionData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        List<Course> featuredCourses =
-                            snapshot.data as List<Course>;
+                ),
+                FutureBuilder(
+                  future: fetchFeaturedCollectionData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Course> featuredCourses =
+                          snapshot.data as List<Course>;
 
-                        return SizedBox(
-                          height: 170,
-                          child: featuredCourses.isNotEmpty
-                              ? ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: featuredCourses.length,
-                                  itemBuilder: (context, index) {
-                                    Course course = featuredCourses[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CourseDetailPage(
-                                                    courses: course),
+                      return featuredCourses.isNotEmpty
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const HeadingTitle(title: "Featured Courses"),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  SizedBox(
+                                    height: 170,
+                                    child: featuredCourses.isNotEmpty
+                                        ? ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: featuredCourses.length,
+                                            itemBuilder: (context, index) {
+                                              Course course =
+                                                  featuredCourses[index];
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CourseDetailPage(
+                                                              courses: course),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0, right: 8),
+                                                  child: Tiles(course: course),
+                                                ),
+                                              );
+                                            },
+                                          )
+                                        : const Text(
+                                            "No featured courses available."),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox();
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                FutureBuilder(
+                  future: fetchUpcomingCollectionData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Course> upcomingCourses =
+                          snapshot.data as List<Course>;
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            const HeadingTitle(title: "Upcoming Courses"),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            SizedBox(
+                              height: 170,
+                              child: upcomingCourses.isNotEmpty
+                                  ? ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: upcomingCourses.length,
+                                      itemBuilder: (context, index) {
+                                        Course course = upcomingCourses[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UpcomingCourses(
+                                                        courses: course),
+                                              ),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, right: 8),
+                                            child: Tiles(
+                                              course: course,
+                                            ),
                                           ),
                                         );
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8),
-                                        child: Tiles(course: course),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Text("No featured courses available."),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const HeadingTitle(title: "Upcoming Courses"),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  FutureBuilder(
-                    future: fetchUpcomingCollectionData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        List<Course> upcomingCourses =
-                            snapshot.data as List<Course>;
+                                    )
+                                  : const Text("No Courses available."),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                FutureBuilder<List<Meeting>>(
+                  future: meetingService.getMeetings(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Meeting> meetings = snapshot.data ?? [];
 
-                        return SizedBox(
-                          height: 170,
-                          child: upcomingCourses.isNotEmpty
-                              ? ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: upcomingCourses.length,
-                                  itemBuilder: (context, index) {
-                                    Course course = upcomingCourses[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UpcomingCourses(
-                                                    courses: course),
-                                          ),
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8),
-                                        child: Tiles(
-                                          course: course,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : const Text("No lectures available."),
-                        );
-                      }
-                    },
-                  ),
-                  const Row(
-                    children: [
-                      SizedBox(
-                        width: 3,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const HeadingTitle(title: "Live Lectures"),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  FutureBuilder<List<Meeting>>(
-                    future: meetingService.getMeetings(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        List<Meeting> meetings = snapshot.data ?? [];
-
-                        return SizedBox(
-                          height: 200,
-                          child: meetings.isNotEmpty
-                              ? ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: meetings.length,
-                                  itemBuilder: (context, index) {
-                                    Meeting meeting = meetings[index];
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MeetingDetailPage(
-                                                    meeting: meeting),
-                                          ),
-                                        );
-                                      },
-                                      child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8),
-                                          child: CiruclarTiles(
-                                            meeting: meeting,
-                                          )),
-                                    );
-                                  },
-                                )
-                              : const Text("No meetings available."),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const HeadingTitle(title: "Testimonials"),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  FutureBuilder<List<Review>>(
-                    future: fetchTestimonials(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        List<Review> testimonials = snapshot.data ?? [];
-                        return SizedBox(
-                            height: 180,
-                            child: testimonials.isNotEmpty
-                                ? ListView.builder(
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: testimonials.length,
-                                    itemBuilder: (context, index) {
-                                      Review testimonial = testimonials[index];
-                                      return TestimonialCard(
-                                          testimonial: testimonial);
-                                    },
-                                  )
-                                : const Center(
-                                    child: Text("No testimonials available.")));
-                      }
-                    },
-                  )
-                ],
-              ),
+                      return meetings.isNotEmpty
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                children: [
+                                  const HeadingTitle(title: "Live Lectures"),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  SizedBox(
+                                    height: 200,
+                                    child: meetings.isNotEmpty
+                                        ? ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: meetings.length,
+                                            itemBuilder: (context, index) {
+                                              Meeting meeting = meetings[index];
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MeetingDetailPage(
+                                                              meeting: meeting),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0,
+                                                            right: 8),
+                                                    child: CiruclarTiles(
+                                                      meeting: meeting,
+                                                    )),
+                                              );
+                                            },
+                                          )
+                                        : const Text("No meetings available."),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                FutureBuilder<List<Review>>(
+                  future: fetchTestimonials(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Review> testimonials = snapshot.data ?? [];
+                      return testimonials.isNotEmpty
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const HeadingTitle(title: "Testimonials"),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  SizedBox(
+                                      height: 180,
+                                      child: testimonials.isNotEmpty
+                                          ? ListView.builder(
+                                              physics:
+                                                  const AlwaysScrollableScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: testimonials.length,
+                                              itemBuilder: (context, index) {
+                                                Review testimonial =
+                                                    testimonials[index];
+                                                return TestimonialCard(
+                                                    testimonial: testimonial);
+                                              },
+                                            )
+                                          : const Center(
+                                              child: Text(
+                                                  "No testimonials available."))),
+                                ],
+                              ),
+                            )
+                          : SizedBox();
+                    }
+                  },
+                )
+              ],
             ),
           ],
         ),
