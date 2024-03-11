@@ -67,7 +67,7 @@ class HomePageState extends ConsumerState<HomePage> {
     setupRefreshTimer();
     meetingProvider.getMeetings();
 
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(hours: 2), () {
       fetchSubscriptionStatus();
     });
     user = ref.read(userProvider);
