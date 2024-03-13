@@ -168,7 +168,6 @@ class HomePageState extends ConsumerState<HomePage> {
           children: [
             Consumer(
               builder: (context, watch, child) {
-                print(carousalAsyncValue.asData);
                 return carousalAsyncValue.when(
                   data: (carousalList) {
                     return carousalAsyncValue.hasValue == null
@@ -194,21 +193,9 @@ class HomePageState extends ConsumerState<HomePage> {
                             items: carousalList.map((carousal) {
                               return Builder(
                                 builder: (BuildContext context) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      Course? course = await DataService()
-                                          .fetchCarousalCourse(carousal);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CourseDetailPage(
-                                                      courses: course!)));
-                                    },
-                                    child: Image.network(
-                                      carousal.photo,
-                                      fit: BoxFit.fill,
-                                    ),
+                                  return Image.network(
+                                    carousal.photo,
+                                    fit: BoxFit.fill,
                                   );
                                 },
                               );
@@ -408,6 +395,7 @@ class HomePageState extends ConsumerState<HomePage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const HeadingTitle(title: "Live Lectures"),
                                   const SizedBox(

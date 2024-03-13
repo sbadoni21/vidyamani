@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidyamani/models/crousal_model.dart';
 import 'package:riverpod/riverpod.dart';
 
-
 final carousalProvider = FutureProvider<List<Carousal>>((ref) {
-  return  CarousalDataService().getCarousalData();
+  return CarousalDataService().getCarousalData();
 });
 
 class CarousalDataService {
@@ -12,26 +11,17 @@ class CarousalDataService {
 
   Future<List<Carousal>> getCarousalData() async {
     try {
-      DocumentSnapshot documentSnapshot = await _firestore
-          .collection("carouselImages")
-          .doc("gn2wh3DadblTv4pZr90T")
-          .get();
+      QuerySnapshot querySnapshot =
+          await _firestore.collection("carouselImages").get();
 
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
+      List<Carousal> carousals = querySnapshot.docs
+          .map((doc) => Carousal.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
 
-        if (data != null) {
-          return [Carousal.fromMap(data)];
-        } else {
-          return [];
-        }
-      } else {
-        return [];
-      }
+      return carousals;
     } catch (e) {
+      print("Error getting carousel data: $e");
       return [];
     }
   }
 }
-
