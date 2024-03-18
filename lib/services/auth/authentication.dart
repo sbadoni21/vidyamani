@@ -186,6 +186,16 @@ class AuthenticationServices {
     }
   }
 
+  Future<User?> deleteUser(String userId) async {
+    try {
+      await _fireStore.collection('users').doc(userId).delete();
+       return null;
+    } catch (error) {
+      print('Error deleting user: $error');
+      throw Exception('Failed to delete user.');
+    }
+  }
+
   Future<String?> getCurrentUserId() async {
     try {
       User? user = firebaseAuth.currentUser;
@@ -204,11 +214,12 @@ class AuthenticationServices {
     await GoogleSignIn().signOut();
     await firebaseAuth.signOut();
   }
-   Future<User?> registerUser({
+
+  Future<User?> registerUser({
     required String name,
     required String email,
     required String password,
-     required String location,
+    required String location,
     File? userImage,
   }) async {
     try {
@@ -232,11 +243,11 @@ class AuthenticationServices {
           });
         }
         final List myCourses = [];
-        final num coins=0;
+        final num coins = 0;
         final referralCode = randomAlphaNumeric(8);
 
         await _fireStore.collection('users').doc(userCredential.user!.uid).set({
-        'uid': userCredential.user!.uid,
+          'uid': userCredential.user!.uid,
           'email': email,
           'role': "user",
           'displayName': name,

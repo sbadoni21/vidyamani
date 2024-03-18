@@ -7,14 +7,13 @@ import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/screens/buyplans_page.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
+
 
 class CourseDetailPage extends ConsumerStatefulWidget {
   final Course courses;

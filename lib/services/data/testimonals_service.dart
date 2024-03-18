@@ -36,7 +36,6 @@ class TestimonialService {
       DocumentReference<Map<String, dynamic>> docRef =
           _firestore.collection('testimonials').doc('testimonials');
 
-      // Check if the collection exists, and create it if not
       if (!(await docRef.get()).exists) {
         await docRef.set({'reviews': []});
       }

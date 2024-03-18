@@ -9,7 +9,6 @@ import 'package:vidyamani/services/data/allcoursedata_services.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 
 class AllCoursesPage extends StatelessWidget {
-  final AllCoursesDataService _allCoursesDataService = AllCoursesDataService();
   final Category selectedCategory;
 
   AllCoursesPage({required this.selectedCategory});
@@ -19,7 +18,7 @@ class AllCoursesPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBarBckBtn(),
       body: FutureBuilder<List<Course>>(
-        future: getSelectedCategoryCourses(),
+        future: getSelectedCategoryCourses(selectedCategory.collectionName),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -53,17 +52,9 @@ class AllCoursesPage extends StatelessWidget {
     );
   }
 
-  Future<List<Course>> getSelectedCategoryCourses() async {
-    switch (selectedCategory.name) {
-      case 'Skill Based Courses':
-        return await DataService().fetchCollectionDatawithName("skillBased");
-      case 'Human Rights':
-        return await DataService().fetchCollectionDatawithName("humanRights");
-      case 'Class Based Course':
-        return await DataService().fetchCollectionDatawithName("classBased");
-      default:
-        ;
-        return [];
-    }
-  }
+  Future<List<Course>> getSelectedCategoryCourses(String collectionName) async {
+   
+        return await DataService().fetchCollectionDatawithName(collectionName);
+    
+     }
 }

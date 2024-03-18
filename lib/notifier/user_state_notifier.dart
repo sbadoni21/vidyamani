@@ -69,7 +69,21 @@ class UserStateNotifier extends StateNotifier<User?> {
       state = null; // Handle exceptions
     }
   }
-   Future<User?> signInWithEmail({
+
+  Future<void> deleteUser({required String userId}) async {
+    try {
+      // Assuming ref is a ProviderReference object
+      var firebaseUser =
+          await ref.read(authenticationServicesProvider).deleteUser(userId);
+      if (firebaseUser == null) {
+        state = null;
+      }
+    } catch (e) {
+      print('Error deleting user: $e');
+    }
+  }
+
+  Future<User?> signInWithEmail({
     required String name,
     required String email,
     required String password,
@@ -77,15 +91,14 @@ class UserStateNotifier extends StateNotifier<User?> {
     File? userImage,
   }) async {
     try {
-      var firebaseUser = await ref
-          .read(authenticationServicesProvider)
-          .registerUser(
-                 name:name,
-    email:email,
-    password:password,
-    location:location,
-    userImage:userImage,
-             );
+      var firebaseUser =
+          await ref.read(authenticationServicesProvider).registerUser(
+                name: name,
+                email: email,
+                password: password,
+                location: location,
+                userImage: userImage,
+              );
       if (firebaseUser != null) {
         User? user = await fetchUserData(firebaseUser.uid);
         print(

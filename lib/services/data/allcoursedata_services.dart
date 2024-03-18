@@ -1,20 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 
 class AllCoursesDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<Course>> fetchHumanRightsCourses() async {
-    return await fetchCoursesFromCollection('humanRights');
-  }
-
-  Future<List<Course>> fetchSkillBasedCourses() async {
-    return await fetchCoursesFromCollection('skillBased');
-  }
-
-  Future<List<Course>> fetchClassBasedCourses() async {
-    return await fetchCoursesFromCollection('classBased');
-  }
 
   Future<List<Course>> fetchCoursesFromCollection(String collectionName,
       {String? filterType}) async {
@@ -33,7 +23,7 @@ class AllCoursesDataService {
       });
       return courses;
     } catch (error) {
-      print('Error fetching courses: $error');
+      SnackBar(content: Text("Error getting Collection Data"));
       throw error;
     }
   }

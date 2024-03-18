@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
+import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/developedby_page.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/policy_page.dart';
+import 'package:vidyamani/screens/splashscreen.dart';
 import 'package:vidyamani/utils/static.dart';
 
 Future<void> launchUrl(String url) async {
@@ -22,19 +27,19 @@ Future<void> _launchEmail(String emailAddress) async {
   }
 }
 
-class InfoSection {
-  final String title;
-  final String content;
-  final String dropdownContent;
+class AboutAppPage extends ConsumerStatefulWidget {
+  const AboutAppPage({Key? key}) : super(key: key);
 
-  InfoSection(this.title, this.content, this.dropdownContent);
+  @override
+  ConsumerState<AboutAppPage> createState() => _AboutAppPageState();
 }
 
-class AboutAppPage extends StatelessWidget {
+class _AboutAppPageState extends ConsumerState<AboutAppPage> {
   final String websiteUrl = "https://www.vidhyamani.com";
 
   @override
   Widget build(BuildContext context) {
+    User? user = ref.read(userProvider);
     return Scaffold(
       appBar: CustomAppBarBckBtn(),
       body: Padding(
@@ -72,48 +77,112 @@ class AboutAppPage extends StatelessWidget {
             ),
             TextButton(
               style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(
-                    Colors.blue,
-                  ),
-                  elevation: MaterialStatePropertyAll(10),
-                  enableFeedback: true,
-                  animationDuration: Durations.medium3),
+                foregroundColor: MaterialStateProperty.all(
+                  Colors.blue,
+                ),
+                elevation: MaterialStateProperty.all(10),
+                enableFeedback: true,
+                animationDuration: Durations.medium3,
+              ),
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PolicyPage(route: 'Privacy')));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PolicyPage(route: 'Privacy'),
+                  ),
+                );
               },
               child: Text("Privacy Policy"),
             ),
             TextButton(
-                style: ButtonStyle(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(
+                  Colors.blue,
+                ),
+                elevation: MaterialStateProperty.all(10),
+                enableFeedback: true,
+                animationDuration: Durations.medium3,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PolicyPage(route: 'TandC'),
+                  ),
+                );
+              },
+              child: Text("Terms and Conditions"),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(
+                  Colors.blue,
+                ),
+                elevation: MaterialStateProperty.all(10),
+                enableFeedback: true,
+                animationDuration: Durations.medium3,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Digital360Page(),
+                  ),
+                );
+              },
+              child: Text("Developed by"),
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                return TextButton(
+                  style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(
                       Colors.blue,
                     ),
-                    elevation: MaterialStatePropertyAll(10),
+                    elevation: MaterialStateProperty.all(10),
                     enableFeedback: true,
-                    animationDuration: Durations.medium3),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PolicyPage(route: 'TandC')));
-                },
-                child: Text("Terms and Conditions")),
-            TextButton(
-              style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(
-                    Colors.blue,
+                    animationDuration: Durations.medium3,
                   ),
-                  elevation: MaterialStatePropertyAll(10),
-                  enableFeedback: true,
-                  animationDuration: Durations.medium3),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Digital360Page()));
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Are you sure ?'),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                Text('This will delete your account.'),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () async {
+                                await ref
+                                    .read(userStateNotifierProvider.notifier)
+                                    .deleteUser(userId: user!.uid);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SplashScreen()));
+                              },
+                              child: Text('Approve'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog
+                              },
+                              child: Text('Cancel'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text("Delete your account"),
+                );
               },
-              child: Text("Developed by"),
             ),
           ],
         ),

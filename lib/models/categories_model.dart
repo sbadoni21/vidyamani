@@ -1,23 +1,17 @@
-// category_model.dart
-
 class Category {
   final String image;
-  final String name;
+  final String collectionName;
+  final String headingName;
 
-  Category({
-    required this.image,
-    required this.name,
-  });
+  Category(
+      {required this.image,
+      required this.collectionName,
+      required this.headingName});
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
+      image: map['iconphoto'] ?? "",
+      collectionName: map['collectionName'] ?? "",
+      headingName: map['headingName'] ?? '',
+    );
+  }
 }
-
-List<Category> categoriesData = [
-  Category(
-      image: 'lib/assets/images/skillBasedCourse.png',
-      name: 'Skill Based Courses'),
-  Category(image: 'lib/assets/images/audioBooks.png', name: 'Audiobooks'),
-  Category(
-      image: 'lib/assets/images/classBasedCourse.png',
-      name: 'Class Based Course'),
-  Category(image: 'lib/assets/images/humanRights.png', name: 'Human Rights'),
-  Category(image: 'lib/assets/images/shorts.png', name: 'Shorts'),
-];

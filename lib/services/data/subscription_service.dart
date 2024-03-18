@@ -14,7 +14,6 @@ class SubscriptionService {
         DateTime subscriptionStartDate = DateTime.now();
         DateTime subscriptionEndDate =
             subscriptionStartDate.add(Duration(days: 30));
-
         String formattedStartDate =
             DateFormat('dd-MM-yyyyTHH:mm').format(subscriptionStartDate);
         String formattedEndDate =
@@ -62,7 +61,6 @@ class SubscriptionService {
       DocumentReference userReference =
           _firestore.collection('users').doc(userID);
       DocumentSnapshot userSnapshot = await userReference.get();
-      print('calleddd 1111111111');
 
       if (userSnapshot.exists) {
         User user = User.fromMap(userSnapshot.data() as Map<String, dynamic>);
@@ -82,7 +80,6 @@ class SubscriptionService {
             'subscriptionStart': "01-01-1901T01:00",
             'subscriptionEnd': "01-01-2099T01:00",
           });
-          print('calleddddddddd 2222222222222');
         } else {
           print('Subscription is still active.');
         }

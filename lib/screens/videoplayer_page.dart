@@ -9,15 +9,13 @@ import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/services/data/watch_time_service.dart';
 import 'package:vidyamani/services/profile/history_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
 final adProvider = ChangeNotifierProvider<AdProvider>(
   (ref) => AdProvider(),
 );

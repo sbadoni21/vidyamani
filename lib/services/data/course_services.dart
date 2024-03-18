@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/crousal_model.dart';
@@ -10,33 +11,7 @@ class DataService {
     printer: PrettyPrinter(),
   );
 
-  Future<List<Course>> fetchCollectionData() async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection("courses")
-          .doc("kGrTotd8SFOUzsUH9Hpz")
-          .collection("humanRights")
-          .get();
-      List<Course> courses = querySnapshot.docs
-          .map((DocumentSnapshot doc) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            if (data['type'] != null &&
-                data['title'] != null &&
-                data['photo'] != null) {
-              return Course.fromMap(data);
-            } else {
-              return null;
-            }
-          })
-          .where((course) => course != null)
-          .cast<Course>()
-          .toList();
-      return courses;
-    } catch (e) {
-      logger.i(e);
-      return [];
-    }
-  }
+  
 
   Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
     try {
@@ -62,7 +37,7 @@ class DataService {
           .toList();
       return courses;
     } catch (e) {
-      logger.i(e);
+      SnackBar(content: Text("Error getting Upcoming Data"));
       return [];
     }
   }
@@ -254,50 +229,50 @@ class DataService {
     }
   }
 
-  Future<List<Course>> fetchCollectionCourseData() async {
-    try {
-      final List<QuerySnapshot> snapshots = await Future.wait([
-        _firestore
-            .collection("courses")
-            .doc("kGrTotd8SFOUzsUH9Hpz ")
-            .collection("classBased")
-            .get(),
-        _firestore
-            .collection("courses")
-            .doc("kGrTotd8SFOUzsUH9Hpz ")
-            .collection("skillBased")
-            .get(),
-        _firestore
-            .collection("courses")
-            .doc("kGrTotd8SFOUzsUH9Hpz ")
-            .collection("humanRights")
-            .get(),
-      ]);
+  // Future<List<Course>> fetchCollectionCourseData() async {
+  //   try {
+  //     final List<QuerySnapshot> snapshots = await Future.wait([
+  //       _firestore
+  //           .collection("courses")
+  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
+  //           .collection("classBased")
+  //           .get(),
+  //       _firestore
+  //           .collection("courses")
+  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
+  //           .collection("skillBased")
+  //           .get(),
+  //       _firestore
+  //           .collection("courses")
+  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
+  //           .collection("humanRights")
+  //           .get(),
+  //     ]);
 
-      final List<Course> courses = [];
+  //     final List<Course> courses = [];
 
-      for (QuerySnapshot querySnapshot in snapshots) {
-        courses.addAll(
-          querySnapshot.docs
-              .map((DocumentSnapshot doc) {
-                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-                if (data['type'] != null &&
-                    data['title'] != null &&
-                    data['photo'] != null) {
-                  return Course.fromMap(data);
-                } else {
-                  return null;
-                }
-              })
-              .where((course) => course != null)
-              .cast<Course>(),
-        );
-      }
+  //     for (QuerySnapshot querySnapshot in snapshots) {
+  //       courses.addAll(
+  //         querySnapshot.docs
+  //             .map((DocumentSnapshot doc) {
+  //               Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  //               if (data['type'] != null &&
+  //                   data['title'] != null &&
+  //                   data['photo'] != null) {
+  //                 return Course.fromMap(data);
+  //               } else {
+  //                 return null;
+  //               }
+  //             })
+  //             .where((course) => course != null)
+  //             .cast<Course>(),
+  //       );
+  //     }
 
-      return courses;
-    } catch (e) {
-      logger.i(e);
-      return [];
-    }
-  }
+  //     return courses;
+  //   } catch (e) {
+  //     logger.i(e);
+  //     return [];
+  //   }
+  // }
 }

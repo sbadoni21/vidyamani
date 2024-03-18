@@ -27,6 +27,7 @@ import 'package:vidyamani/services/admanager/ad_service.dart';
 import 'package:vidyamani/services/data/course_services.dart';
 import 'package:vidyamani/services/data/crousaldata_service.dart';
 import 'package:vidyamani/services/data/livelecture_service.dart';
+import 'package:vidyamani/services/data/search_course_lectures.dart';
 import 'package:vidyamani/services/data/subscription_service.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 
@@ -226,36 +227,51 @@ class HomePageState extends ConsumerState<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: SizedBox(
-                    height: 130.0,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categoriesData.length,
-                      itemBuilder: (context, index) {
-                        Category category = categoriesData[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    AllCoursesPage(selectedCategory: category),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: CategoryItem(
-                              imgUrl: category.image,
-                              text: category.name,
-                            ),
+                FutureBuilder<List<Category>>(
+                  future: SearchDataService().getAllCategories(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No categories found.'));
+                    } else {
+                      List<Category> categoriesData = snapshot.data!;
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: SizedBox(
+                          height: 130.0,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categoriesData.length,
+                            itemBuilder: (context, index) {
+                              Category category = categoriesData[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AllCoursesPage(
+                                          selectedCategory: category),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8),
+                                  child: CategoryItem(
+                                    imgUrl: category.image,
+                                    text: category.headingName,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ),
+                      );
+                    }
+                  },
                 ),
                 FutureBuilder(
                   future: fetchFeaturedCollectionData(),
@@ -267,7 +283,6 @@ class HomePageState extends ConsumerState<HomePage> {
                     } else {
                       List<Course> featuredCourses =
                           snapshot.data as List<Course>;
-
                       return featuredCourses.isNotEmpty
                           ? Padding(
                               padding:

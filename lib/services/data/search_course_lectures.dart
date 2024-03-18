@@ -1,36 +1,48 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vidyamani/models/categories_model.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 
 class SearchDataService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<List<Category>> getAllCategories() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection("courseCollectionName")
+        .get();
+
+    List<Category> categories = querySnapshot.docs.map((doc) {
+      return Category.fromMap(doc.data());
+    }).toList();
+
+    return categories;
+  }
 
   Future<List<Course>> fetchAllCourses(
       {String? filterType, String? searchQuery}) async {
     try {
       List<Course> courses = [];
+      List<Category> categories = await getAllCategories();
 
-      for (String collectionName in [
-        'humanRights',
-        'skillBased',
-        'classBased'
-      ]) {
-        QuerySnapshot querySnapshot = await _firestore
-            .collection('courses')
-            .doc('kGrTotd8SFOUzsUH9Hpz')
-            .collection(collectionName)
-            .get();
+      for (Category category in categories) {
+        QuerySnapshot<Map<String, dynamic>> querySnapshot =
+            await FirebaseFirestore.instance
+                .collection('courses')
+                .doc('kGrTotd8SFOUzsUH9Hpz')
+                .collection(category.collectionName)
+                .get();
 
-        querySnapshot.docs.forEach((DocumentSnapshot document) {
-          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        querySnapshot.docs
+            .forEach((DocumentSnapshot<Map<String, dynamic>> document) {
+          Map<String, dynamic>? data = document.data();
 
           if ((searchQuery == null ||
-                  data['title']
+                  data!['title']
                       .toString()
                       .toLowerCase()
                       .contains(searchQuery.toLowerCase())) &&
               (filterType == null)) {
-            courses.add(Course.fromMap(data));
+            courses.add(Course.fromMap(data!));
           }
         });
       }

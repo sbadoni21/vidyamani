@@ -4,13 +4,10 @@ import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/coins_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/data/coins_service.dart';
 import 'package:vidyamani/services/data/subscription_service.dart';
 import 'package:vidyamani/utils/static.dart';
-
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
 
 class PackagePaymentPage extends ConsumerStatefulWidget {
   final String packageName;

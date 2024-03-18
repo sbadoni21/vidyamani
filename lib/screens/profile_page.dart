@@ -3,12 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vidyamani/components/dashboard_component.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/profile/profile_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

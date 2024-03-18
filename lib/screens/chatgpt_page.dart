@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class ChatGPTPage extends ConsumerStatefulWidget {

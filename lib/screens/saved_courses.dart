@@ -4,11 +4,9 @@ import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/components/customlongtile.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/data/lectures_services.dart';
 
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
 
 class SavedPage extends ConsumerStatefulWidget {
   @override

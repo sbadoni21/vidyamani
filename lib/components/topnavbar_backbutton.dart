@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:vidyamani/utils/static.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vidyamani/notifier/user_state_notifier.dart';
-
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
 
 class CustomAppBarBckBtn extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
