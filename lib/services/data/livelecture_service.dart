@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:vidyamani/models/meeting_model.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -29,6 +30,9 @@ class MeetingService {
 
       return filteredMeetings;
     } catch (e) {
+      const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
       throw Exception("Error fetching meetings: $e");
     }
   }
@@ -57,11 +61,15 @@ class MeetingService {
 
         return localDateTime;
       } else {
+        const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
         throw FormatException("Invalid date format");
       }
     } catch (e) {
-      print("Error in parseCustomDate: $e, Date String: $dateString");
-      throw Exception("Error parsing date: $e");
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      throw Exception("Error parsing date: $e");
     }
   }
 }

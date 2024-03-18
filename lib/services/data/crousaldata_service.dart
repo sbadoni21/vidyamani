@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:vidyamani/models/crousal_model.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -20,8 +21,9 @@ class CarousalDataService {
 
       return carousals;
     } catch (e) {
-      print("Error getting carousel data: $e");
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 }

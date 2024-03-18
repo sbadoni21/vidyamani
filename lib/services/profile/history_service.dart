@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 
@@ -31,7 +32,11 @@ class HistoryService {
 
       } else {
       }
+    // ignore: empty_catches
     } catch (e) {
+      const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
     }
   }
 
@@ -74,6 +79,9 @@ class HistoryService {
 
       return myVideos;
     } catch (e) {
+            const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
       return [];
     }
   }

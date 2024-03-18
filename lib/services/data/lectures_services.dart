@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
@@ -21,14 +22,21 @@ class LectureDataService {
         if (data != null) {
           return [Lectures.fromMap(data)];
         } else {
+          const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
           return [];
         }
       } else {
+        const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
         return [];
       }
     } catch (e) {
-      logger.i(e);
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
@@ -49,8 +57,9 @@ class LectureDataService {
         }
       }
     } catch (e) {
-      logger.i(e);
-    }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );    }
 
     return null;
   }
@@ -94,8 +103,9 @@ class LectureDataService {
 
       return savedVideos;
     } catch (e) {
-      print(e);
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
@@ -117,8 +127,9 @@ class LectureDataService {
           .cast<Lectures>()
           .toList();
     } catch (e) {
-      logger.i(e);
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
@@ -157,8 +168,9 @@ class LectureDataService {
 
       return 0;
     } catch (e) {
-      print('Error calculating average rating: $e');
-      return 0;
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return 0;
     }
   }
 
@@ -188,11 +200,13 @@ class LectureDataService {
           }, SetOptions(merge: true));
         }
       } else {
-        print('Document with ID $courseKey does not exist.');
-      }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      }
     } catch (e) {
-      print('Error updating overall rating: $e');
-    }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );    }
   }
 
   Future<bool> isCourseSaved(String userId, String courseId) async {
@@ -206,8 +220,9 @@ class LectureDataService {
 
       return isSaved;
     } catch (e) {
-      print('Error checking if course is saved: $e');
-      return false;
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return false;
     }
   }
 
@@ -230,11 +245,13 @@ class LectureDataService {
           ]),
         });
       } else {
-        print("sorry");
-      }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      }
     } catch (e) {
-      print('Failed to add lecture to saved: $e');
-    }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );    }
   }
 
   Future<void> unsaveCourse(String userId, Course course) async {
@@ -248,7 +265,8 @@ class LectureDataService {
         ])
       });
     } catch (e) {
-      print('Failed to unsave course: $e');
-    }
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );    }
   }
 }

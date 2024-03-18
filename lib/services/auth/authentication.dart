@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,7 +31,6 @@ class AuthenticationServices {
       );
       return userCredential.user;
     } catch (e) {
-      print("Error during sign-in: $e");
       return null;
     }
   }
@@ -45,8 +45,9 @@ class AuthenticationServices {
         return false;
       }
     } else {
-      print('Invalid email address');
-      return false;
+ SnackBar(
+        content: Text("Invalid email address"),
+      );      return false;
     }
   }
 
@@ -72,8 +73,9 @@ class AuthenticationServices {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return true;
     } catch (e) {
-      print('Failed to reset password: $e');
-      return false;
+ SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return false;
     }
   }
 
@@ -169,7 +171,9 @@ class AuthenticationServices {
         }
       }
     } catch (e) {
-      print('Failed to sign in with Google: $e');
+      SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
     }
 
     return null;
@@ -181,7 +185,6 @@ class AuthenticationServices {
           await _fireStore.collection('users').doc(uid).get();
       return document.exists;
     } catch (e) {
-      print('Error checking if user exists: $e');
       return false;
     }
   }
@@ -189,9 +192,11 @@ class AuthenticationServices {
   Future<User?> deleteUser(String userId) async {
     try {
       await _fireStore.collection('users').doc(userId).delete();
-       return null;
+      return null;
     } catch (error) {
-      print('Error deleting user: $error');
+     const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );
       throw Exception('Failed to delete user.');
     }
   }
@@ -204,8 +209,9 @@ class AuthenticationServices {
         return user.uid;
       }
     } catch (e) {
-      print('Failed to get current user ID: $e');
-    }
+ const SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );    }
 
     return null;
   }
@@ -267,8 +273,9 @@ class AuthenticationServices {
         return userCredential.user;
       }
     } catch (e) {
-      print("Error: $e");
-      return null;
+ const SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return null;
     }
 
     return null;

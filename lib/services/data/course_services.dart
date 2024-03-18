@@ -37,7 +37,7 @@ class DataService {
           .toList();
       return courses;
     } catch (e) {
-      SnackBar(content: Text("Error getting Upcoming Data"));
+     const  SnackBar(content: Text("Error getting Upcoming Data"));
       return [];
     }
   }
@@ -62,8 +62,9 @@ class DataService {
           .toList();
       return courses;
     } catch (e) {
-      logger.i(e);
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
@@ -89,8 +90,9 @@ class DataService {
         throw FormatException("Invalid date format");
       }
     } catch (e) {
-      print("Error in parseCustomDate: $e, Date String: $dateString");
-      throw Exception("Error parsing date: $e");
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      throw Exception("Error parsing date: $e");
     }
   }
 
@@ -138,15 +140,17 @@ class DataService {
 
           return courses;
         } catch (e) {
-          logger.i(e);
-          return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );          return [];
         }
       }
 
       return courses;
     } catch (e) {
-      logger.i(e);
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
@@ -183,15 +187,16 @@ class DataService {
           }
         }
 
-        // If the course doesn't exist or has no data, return null
         return null;
       }));
 
-      print("Courses fetched successfully: $courses");
-      return courses;
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return courses;
     } catch (e) {
-      print("Error fetching courses: $e");
-      // Log or handle the error as needed
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      // Log or handle the error as needed
       return [];
     }
   }
@@ -216,63 +221,20 @@ class DataService {
 
           return videos;
         } else {
-          logger.i("No video data found");
-          return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );          return [];
         }
       } else {
-        logger.i("Document does not exist for lecture key: $lectureKey");
-        return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );        return [];
       }
     } catch (e) {
-      logger.i("Error fetching videos: $e");
-      return [];
+const  SnackBar(
+        content: Text("Error encountered, please try again later"),
+      );      return [];
     }
   }
 
-  // Future<List<Course>> fetchCollectionCourseData() async {
-  //   try {
-  //     final List<QuerySnapshot> snapshots = await Future.wait([
-  //       _firestore
-  //           .collection("courses")
-  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
-  //           .collection("classBased")
-  //           .get(),
-  //       _firestore
-  //           .collection("courses")
-  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
-  //           .collection("skillBased")
-  //           .get(),
-  //       _firestore
-  //           .collection("courses")
-  //           .doc("kGrTotd8SFOUzsUH9Hpz ")
-  //           .collection("humanRights")
-  //           .get(),
-  //     ]);
-
-  //     final List<Course> courses = [];
-
-  //     for (QuerySnapshot querySnapshot in snapshots) {
-  //       courses.addAll(
-  //         querySnapshot.docs
-  //             .map((DocumentSnapshot doc) {
-  //               Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-  //               if (data['type'] != null &&
-  //                   data['title'] != null &&
-  //                   data['photo'] != null) {
-  //                 return Course.fromMap(data);
-  //               } else {
-  //                 return null;
-  //               }
-  //             })
-  //             .where((course) => course != null)
-  //             .cast<Course>(),
-  //       );
-  //     }
-
-  //     return courses;
-  //   } catch (e) {
-  //     logger.i(e);
-  //     return [];
-  //   }
-  // }
 }

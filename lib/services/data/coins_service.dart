@@ -21,7 +21,7 @@ class CoinsService {
             coinsToRupee: 0, coinsForGold: 0, rupeesForGold: 0, id: '');
       }
     } catch (e) {
-      SnackBar(content: Text("Error getting Coin Data"));
+     const SnackBar(content: Text("Error getting Coin Data"));
       rethrow;
     }
   }

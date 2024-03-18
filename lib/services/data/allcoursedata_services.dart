@@ -23,31 +23,9 @@ class AllCoursesDataService {
       });
       return courses;
     } catch (error) {
-      SnackBar(content: Text("Error getting Collection Data"));
+     const SnackBar(content: Text("Error getting Collection Data"));
       throw error;
     }
   }
 }
 
-// class AllCourseData {
-//   final String id;
-//   final String title;
-//   final String type;
-//   final String photo;
-
-//   AllCourseData({
-//     required this.id,
-//     required this.title,
-//     required this.type,
-//     required this.photo,
-//   });
-
-//   factory AllCourseData.fromMap(Map<String, dynamic> map) {
-//     return AllCourseData(
-//       id: map['uid'] ?? '',
-//       title: map['title'] ?? '',
-//       type: map['type'] ?? '',
-//       photo: map['photo'] ?? '',
-//     );
-//   }
-// }

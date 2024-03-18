@@ -90,7 +90,6 @@ class AdProvider extends ChangeNotifier {
 
   void showRewardedAd(User user) async {
     if (rewardedAd == null) {
-      print('Warning: attempt to show rewarded before loaded.');
       return;
     }
     rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(

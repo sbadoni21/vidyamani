@@ -5,6 +5,7 @@ import 'package:vidyamani/components/topappbar_component.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/screens/detailed_aboutuspage.dart';
 import 'package:vidyamani/screens/developedby_page.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/policy_page.dart';
@@ -44,12 +45,29 @@ class _AboutAppPageState extends ConsumerState<AboutAppPage> {
       appBar: CustomAppBarBckBtn(),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 60, 20, 60),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: ListView(
           children: [
             Image.asset('lib/assets/images/logo.png'),
-            Text('About Vidhyamani app', style: myTextStylefontsize16),
+            Center(
+              child: Text(
+                  '"Your personalised E-learning platform igniting curosity and cultivating potential" ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.yellowAccent[700],
+                  )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailedAboutUsPage()));
+                },
+                child:
+                    Text('About Vidhyamani app', style: myTextStylefontsize16)),
             SizedBox(
               height: 20,
             ),
@@ -75,66 +93,10 @@ class _AboutAppPageState extends ConsumerState<AboutAppPage> {
                 ),
               ],
             ),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(
-                  Colors.blue,
-                ),
-                elevation: MaterialStateProperty.all(10),
-                enableFeedback: true,
-                animationDuration: Durations.medium3,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PolicyPage(route: 'Privacy'),
-                  ),
-                );
-              },
-              child: Text("Privacy Policy"),
-            ),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(
-                  Colors.blue,
-                ),
-                elevation: MaterialStateProperty.all(10),
-                enableFeedback: true,
-                animationDuration: Durations.medium3,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PolicyPage(route: 'TandC'),
-                  ),
-                );
-              },
-              child: Text("Terms and Conditions"),
-            ),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(
-                  Colors.blue,
-                ),
-                elevation: MaterialStateProperty.all(10),
-                enableFeedback: true,
-                animationDuration: Durations.medium3,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Digital360Page(),
-                  ),
-                );
-              },
-              child: Text("Developed by"),
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                return TextButton(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton(
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(
                       Colors.blue,
@@ -144,46 +106,110 @@ class _AboutAppPageState extends ConsumerState<AboutAppPage> {
                     animationDuration: Durations.medium3,
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Are you sure ?'),
-                          content: SingleChildScrollView(
-                            child: ListBody(
-                              children: <Widget>[
-                                Text('This will delete your account.'),
-                              ],
-                            ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () async {
-                                await ref
-                                    .read(userStateNotifierProvider.notifier)
-                                    .deleteUser(userId: user!.uid);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SplashScreen()));
-                              },
-                              child: Text('Approve'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog
-                              },
-                              child: Text('Cancel'),
-                            ),
-                          ],
-                        );
-                      },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PolicyPage(route: 'Privacy'),
+                      ),
                     );
                   },
-                  child: Text("Delete your account"),
-                );
-              },
-            ),
+                  child: Text("Privacy Policy"),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(
+                      Colors.blue,
+                    ),
+                    elevation: MaterialStateProperty.all(10),
+                    enableFeedback: true,
+                    animationDuration: Durations.medium3,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PolicyPage(route: 'TandC'),
+                      ),
+                    );
+                  },
+                  child: Text("Terms and Conditions"),
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(
+                      Colors.blue,
+                    ),
+                    elevation: MaterialStateProperty.all(10),
+                    enableFeedback: true,
+                    animationDuration: Durations.medium3,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Digital360Page(),
+                      ),
+                    );
+                  },
+                  child: Text("Developed by"),
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return TextButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                          Colors.blue,
+                        ),
+                        elevation: MaterialStateProperty.all(10),
+                        enableFeedback: true,
+                        animationDuration: Durations.medium3,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Are you sure ?'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text('This will delete your account.'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () async {
+                                    await ref
+                                        .read(
+                                            userStateNotifierProvider.notifier)
+                                        .deleteUser(userId: user!.uid);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SplashScreen()));
+                                  },
+                                  child: Text('Approve'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Text("Delete your account"),
+                    );
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
