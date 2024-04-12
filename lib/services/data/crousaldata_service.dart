@@ -12,8 +12,10 @@ class CarousalDataService {
 
   Future<List<Carousal>> getCarousalData() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection("carouselImages").get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection("carouselImages")
+          .orderBy('order', descending: false)
+          .get();
 
       List<Carousal> carousals = querySnapshot.docs
           .map((doc) => Carousal.fromMap(doc.data() as Map<String, dynamic>))
@@ -21,9 +23,10 @@ class CarousalDataService {
 
       return carousals;
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      return [];
+      );
+      return [];
     }
   }
 }

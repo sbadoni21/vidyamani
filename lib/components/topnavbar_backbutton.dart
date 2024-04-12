@@ -22,69 +22,69 @@ class CustomAppBarBckBtn extends ConsumerStatefulWidget
   _CustomAppBarBckBtnState createState() => _CustomAppBarBckBtnState();
 
   @override
-  Size get preferredSize => Size.fromHeight(62);
+  Size get preferredSize => Size.fromHeight(68);
 }
 
 class _CustomAppBarBckBtnState extends ConsumerState<CustomAppBarBckBtn> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: () {
-                _showWalletBottomSheet(context);
-              },
-              icon: Icon(Icons.wallet_outlined)),
+      automaticallyImplyLeading: false,
+      actions: [
+        IconButton(
+            onPressed: () {
+              _showWalletBottomSheet(context);
+            },
+            icon: Icon(Icons.wallet_outlined)),
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MenuScreen()));
+          },
+          icon: Icon(Icons.menu),
+        ),
+      ],
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MenuScreen()));
+              print("Back button pressed!");
+              if (widget.onBackPressed != null) {
+                widget.onBackPressed!();
+              } else {
+                print("Navigator.pop(context) called");
+                Navigator.pop(context);
+              }
             },
-            icon: Icon(Icons.menu),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 18,
+            ),
           ),
+          Container(
+            height: 30,
+            width: 34,
+            child: Image.asset(
+              "lib/assets/images/logowhite.png",
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          Text(
+            "Vidhyamani",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          )
         ],
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              onPressed: () {
-                print("Back button pressed!");
-                if (widget.onBackPressed != null) {
-                  widget.onBackPressed!();
-                } else {
-                  print("Navigator.pop(context) called");
-                  Navigator.pop(context);
-                }
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                size: 18,
-              ),
-            ),
-            Container(
-              height: 30,
-              width: 34,
-              child: Image.asset(
-                "lib/assets/images/logowhite.png",
-              ),
-            ),
-            SizedBox(
-              width: 8,
-            ),
-            Text(
-              "Vidhyamani",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            )
-          ],
-        ),
-        backgroundColor: bgColor,
-        foregroundColor: Colors.white,
+      ),
+      backgroundColor: bgColor,
+      foregroundColor: Colors.white,
     );
   }
 

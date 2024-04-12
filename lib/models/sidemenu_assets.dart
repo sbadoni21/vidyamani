@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vidyamani/screens/aboutus_page.dart';
-import 'package:vidyamani/screens/chatgpt_page.dart';
 import 'package:vidyamani/screens/contact_page.dart';
 import 'package:vidyamani/screens/home_page.dart';
 
@@ -11,12 +10,12 @@ List<Map<String, dynamic>> sideMenuItems = [
     "key": "home",
     'route': const HomePage()
   },
-  {
-    "icon": Icons.person,
-    "text": "Ask AI",
-    "key": "user",
-    'route': const ChatGPTPage()
-  },
+  // {
+  //   "icon": Icons.person,
+  //   "text": "Ask AI",
+  //   "key": "user",
+  //   'route':  ChatGPTPage(trigger: 1,)
+  // },
   {
     "icon": Icons.contact_mail,
     "text": "Contact Us",

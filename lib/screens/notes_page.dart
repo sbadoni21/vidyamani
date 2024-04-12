@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vidyamani/components/addnotes_component.dart';
 import 'package:vidyamani/components/notes_Card_component.dart';
 import 'package:vidyamani/components/notes_edit_component.dart';
@@ -81,7 +82,23 @@ class _MyNotesState extends State<MyNotes> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
-
+          if (snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Column(
+                children: [
+                  Lottie.asset(
+                    'lib/assets/lottie/notespage.json',
+                    width: 300,
+                    height: 300,
+                  ),
+                  Text(
+                    "Write Notes here...",
+                    style: myTextStylefontsize16,
+                  )
+                ],
+              ),
+            );
+          }
           return ListView(
             children: [
               for (var document in snapshot.data!.docs)

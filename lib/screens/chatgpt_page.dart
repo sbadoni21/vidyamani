@@ -1,15 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
 class ChatGPTPage extends ConsumerStatefulWidget {
-  const ChatGPTPage({Key? key}) : super(key: key);
+  num trigger;
+  ChatGPTPage({Key? key, required this.trigger});
 
   @override
   _ChatGPTPageState createState() => _ChatGPTPageState();
@@ -28,6 +31,15 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
 
   Future<void> initializeChatGPT() async {
     print("ChatGPT initialized");
+  }
+
+  void _copyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied to clipboard'),
+      ),
+    );
   }
 
   Future<String> getResponse(String prompt) async {
@@ -71,13 +83,13 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
         setState(() {
           _chatMessages
               .add(ChatMessage(user: userMessage, chatGPT: chatGPTResponse));
-          _isLoading = false; // Set loading state to false
+          _isLoading = false;
         });
 
         _messageController.clear();
       } catch (e) {
         setState(() {
-          _isLoading = false; // Set loading state to false in case of an error
+          _isLoading = false;
         });
         print('Error: $e');
       }
@@ -88,54 +100,106 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
   Widget build(BuildContext context) {
     User? user = ref.watch(userProvider);
     return Scaffold(
-      appBar: const CustomAppBarBckBtn(),
+      appBar: widget.trigger == 1 ? const CustomAppBarBckBtn() : null,
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: _chatMessages.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(30.0),
+            child: _chatMessages.isEmpty
+                ? Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset(
+                          'lib/assets/lottie/chatgptpage.json',
+                          width: 400,
+                          height: 400,
+                        ),
+                        Text(
+                          "Ask Me Anything...",
+                          style: myTextStylefontsize16,
+                        )
+                      ],
                     ),
-                    child: ListTile(
-                      tileColor: bgColor,
-                      textColor: Colors.white,
-                      title: Text(
-                          '${user!.displayName}: ${_chatMessages[index].user}'),
-                      subtitle:
-                          Text('ChatGPT: ${_chatMessages[index].chatGPT}'),
-                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _chatMessages.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: bgColor,
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: ListTile(
+                                tileColor: bgColor,
+                                textColor: Colors.white,
+                                title: GestureDetector(
+                                  onLongPress: () {
+                                    _copyToClipboard(_chatMessages[index].user);
+                                  },
+                                  child: Text(
+                                    '${user!.displayName}: ${_chatMessages[index].user}',
+                                    style: myTextStylefontsize14White,
+                                  ),
+                                ),
+                                subtitle: GestureDetector(
+                                  onLongPress: () {
+                                    _copyToClipboard(
+                                        _chatMessages[index].chatGPT);
+                                  },
+                                  child: Text(
+                                    'ChatGPT: ${_chatMessages[index].chatGPT}',
+                                    style: myTextStylefontsize14White,
+                                  ),
+                                ),
+                              )));
+                    },
                   ),
-                );
-              },
-            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: const InputDecoration(
-                      hintText: 'Ask a question...',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        color: bgColor,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: TextField(
+                        controller: _messageController,
+                        decoration: const InputDecoration(
+                          hintText: 'Ask a question...',
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _sendMessage,
-                    child: _isLoading
-                        ? const CircularProgressIndicator(
-                            color: bgColor,
-                          )
-                        : const Text('Send'),
+                const SizedBox(width: 8.0),
+                Material(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: InkWell(
+                    onTap: _isLoading ? null : _sendMessage,
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
+                    ),
                   ),
                 ),
               ],

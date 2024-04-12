@@ -69,6 +69,21 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               backgroundColor: bgColor,
             ),
             icon: Icon(
+              Icons.chat_bubble_outline,
+            ),
+          ),
+          label: "Ask AI",
+        ),
+        BottomNavigationBarItem(
+          icon: IconButton(
+            onPressed: () {
+              widget.onTap(3);
+            },
+            style: IconButton.styleFrom(
+              elevation: 0,
+              backgroundColor: bgColor,
+            ),
+            icon: Icon(
               Icons.library_books,
             ),
           ),
@@ -77,7 +92,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         BottomNavigationBarItem(
           icon: IconButton(
             onPressed: () {
-              widget.onTap(3);
+              widget.onTap(4);
             },
             style: IconButton.styleFrom(
               elevation: 0,

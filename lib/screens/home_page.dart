@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:vidyamani/components/allcourse_component.dart';
@@ -17,6 +18,7 @@ import 'package:vidyamani/models/meeting_model.dart';
 import 'package:vidyamani/models/testimonial_model.dart';
 import 'package:vidyamani/models/user_model.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
+import 'package:vidyamani/screens/chatgpt_page.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/meetingdetail_page.dart';
 import 'package:vidyamani/screens/notes_page.dart';
@@ -56,10 +58,12 @@ class HomePageState extends ConsumerState<HomePage> {
   final logger = Logger(
     printer: PrettyPrinter(),
   );
+  late PageController _pageController;
+  int _selectedIndex = 0;
   late Timer _timer;
   final Duration refreshInterval = const Duration(minutes: 10);
   final Duration displayAdsInterval = const Duration(minutes: 10);
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   User? user;
   @override
   void initState() {
@@ -67,7 +71,7 @@ class HomePageState extends ConsumerState<HomePage> {
     fetchData();
     setupRefreshTimer();
     meetingProvider.getMeetings();
-
+    _pageController = PageController();
     Future.delayed(const Duration(hours: 2), () {
       fetchSubscriptionStatus();
     });
@@ -79,6 +83,17 @@ class HomePageState extends ConsumerState<HomePage> {
         adProvider.createRewardedInterstitialAd();
         displayAds();
       }
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
     });
   }
 
@@ -129,24 +144,40 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: const CustomAppBar(),
-          body: IndexedStack(index: currentIndex, children: [
-            _buildHomePage(context, ref, adProvider),
-            const SearchBarButton(),
-            const MyNotes(),
-            const ProfilePage(),
-          ]),
-          bottomNavigationBar: CustomBottomNavigationBar(
-            currentIndex: currentIndex,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
+    return WillPopScope(
+      onWillPop: () async {
+        if (_pageController.page == 0) {
+          SystemNavigator.pop();
+          return false;
+        } else {
+          _pageController.previousPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+          return false;
+        }
+      },
+      child: GestureDetector(
+        child: SafeArea(
+          child: Scaffold(
+            key: _scaffoldKey,
+            appBar: const CustomAppBar(),
+            body: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                children: [
+                  _buildHomePage(context, ref, adProvider),
+                  const SearchBarButton(),
+                  ChatGPTPage(trigger: 0),
+                  const MyNotes(),
+                  const ProfilePage(),
+                ]),
+            bottomNavigationBar: CustomBottomNavigationBar(
+                currentIndex: _selectedIndex, onTap: _onItemTapped),
           ),
         ),
       ),
@@ -178,7 +209,7 @@ class HomePageState extends ConsumerState<HomePage> {
                               scrollPhysics: const BouncingScrollPhysics(
                                 decelerationRate: ScrollDecelerationRate.normal,
                               ),
-                              height: 229.0,
+                              height: 252.0,
                               viewportFraction: 1,
                               aspectRatio: 16 / 9,
                               enableInfiniteScroll: true,
@@ -196,7 +227,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                 builder: (BuildContext context) {
                                   return Image.network(
                                     carousal.photo,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                   );
                                 },
                               );
