@@ -101,8 +101,6 @@ class UserStateNotifier extends StateNotifier<User?> {
               );
       if (firebaseUser != null) {
         User? user = await fetchUserData(firebaseUser.uid);
-        print(
-            'helllpppppp sdadsasdasdadsasdadasdadasd    ${firebaseUser.uid}   ');
         return user;
       } else {
         state = null;
@@ -129,8 +127,6 @@ class UserStateNotifier extends StateNotifier<User?> {
           await ref.read(authenticationServicesProvider).signInWithGoogle();
       if (firebaseUser != null) {
         User? user = await fetchUserData(firebaseUser.uid);
-        print(
-            'helllpppppp sdadsasdasdadsasdadasdadasd    ${firebaseUser.uid}   ');
         return user;
       } else {
         state = null;

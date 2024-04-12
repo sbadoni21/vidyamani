@@ -22,18 +22,13 @@ class CustomAppBarBckBtn extends ConsumerStatefulWidget
   _CustomAppBarBckBtnState createState() => _CustomAppBarBckBtnState();
 
   @override
-  Size get preferredSize => Size.fromHeight(82);
+  Size get preferredSize => Size.fromHeight(62);
 }
 
 class _CustomAppBarBckBtnState extends ConsumerState<CustomAppBarBckBtn> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 92,
-      color: bgColor,
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 10),
-      child: AppBar(
+    return AppBar(
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -90,7 +85,6 @@ class _CustomAppBarBckBtnState extends ConsumerState<CustomAppBarBckBtn> {
         ),
         backgroundColor: bgColor,
         foregroundColor: Colors.white,
-      ),
     );
   }
 

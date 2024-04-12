@@ -315,14 +315,19 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                           } else {
                             List<Videos> videos = snapshot.data ?? [];
 
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: videos.length,
-                              itemBuilder: (context, index) {
-                                return VideoTile(
-                                  video: videos[index],
-                                );
-                              },
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: videos.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return VideoTile(
+                                    video: videos[index],
+                                  );
+                                },
+                              )],
                             );
                           }
                         },

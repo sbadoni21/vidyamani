@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/splashscreen.dart';
-
+import 'dart:io';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,7 @@ Future<void> main() async {
     printer: PrettyPrinter(),
   );
   try {
+    Platform.isAndroid ?
     await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyBI9nEVr5mynmnYU5_baSWhZJYKIxZzv-M",
@@ -24,7 +25,9 @@ Future<void> main() async {
             storageBucket: "vidhyamanifinal.appspot.com",
             messagingSenderId: "706411405865",
             appId: "1:706411405865:web:443bfe93d25a5a14fb3238",
-            measurementId: "G-CTJ8HVF80L"));
+            measurementId: "G-CTJ8HVF80L")
+    ) :
+        await Firebase.initializeApp();
     logger.i("Firebase initialized successfully");
     MobileAds.instance.initialize();
     runApp(ProviderScope(child: MyApp()));

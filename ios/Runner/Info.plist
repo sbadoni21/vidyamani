@@ -46,6 +46,7 @@
             <string>UIInterfaceOrientationLandscapeLeft</string>
             <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
+
         <key>UISupportedInterfaceOrientations~ipad</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
@@ -69,7 +70,7 @@
         <key>UIApplicationSupportsIndirectInputEvents</key>
         <true/>
         <key>GIDClientID</key>
-        <string>706411405865-glgcckoibdodc0797o65b1a492r0cl2t.apps.googleusercontent.com</string>
+        <string>706411405865-unig422vvhlm3biu8m8u9im8a3kvgara.apps.googleusercontent.com</string>
         <key>NSAppTransportSecurity</key>
         <dict>
             <key>NSAllowsArbitraryLoads</key>
@@ -77,5 +78,7 @@
         </dict>
         <key>GIDServerClientID</key>
         <string>862420344316-4p0vmqkom62jt3l1hr9olp00b8fvmfe4.apps.googleusercontent.com</string>
+        <key>GADApplicationIdentifier</key>
+        <string>ca-app-pub-6569585766930207~5077675042</string>
     </dict>
 </plist>

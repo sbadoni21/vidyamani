@@ -20,7 +20,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.fromLTRB(16, 150, 16, 16),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: ListView(
           children: [
             Container(
