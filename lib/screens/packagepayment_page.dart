@@ -28,7 +28,7 @@ class PackagePaymentPageState extends ConsumerState<PackagePaymentPage> {
   @override
   void initState() {
     super.initState();
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
     getcoins();
   }
 

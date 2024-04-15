@@ -40,7 +40,7 @@ class _AboutAppPageState extends ConsumerState<AboutAppPage> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = ref.read(userProvider);
+        User? user = ref.watch(userStateNotifierProvider);
     return Scaffold(
       appBar: CustomAppBarBckBtn(),
       body: Padding(

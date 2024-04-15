@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/screens/menu_screen.dart';
 import 'package:vidyamani/utils/static.dart';
@@ -83,7 +84,7 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        User? user = ref.read(userProvider);
+        User? user = ref.watch(userStateNotifierProvider);
 
         return Padding(
           padding: const EdgeInsets.all(16.0),

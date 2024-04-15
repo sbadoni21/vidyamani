@@ -8,8 +8,6 @@ import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/loginscreen.dart';
 import 'package:vidyamani/utils/static.dart';
 
-
-
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
   @override

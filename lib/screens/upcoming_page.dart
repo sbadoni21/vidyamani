@@ -14,7 +14,6 @@ import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
-
 class UpcomingCourses extends ConsumerStatefulWidget {
   final Course courses;
 
@@ -99,7 +98,7 @@ class _UpcomingCourseDetailState extends ConsumerState<UpcomingCourses> {
   void initState() {
     super.initState();
     _calculateAverageRating();
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
     checkCourseSaved();
   }
 

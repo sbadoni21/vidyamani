@@ -37,9 +37,7 @@ final adProvider = ChangeNotifierProvider<AdProvider>(
   (ref) => AdProvider(),
 );
 
-final userProvider = Provider<User?>((ref) {
-  return ref.watch(userStateNotifierProvider);
-});
+
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -75,7 +73,7 @@ class HomePageState extends ConsumerState<HomePage> {
     Future.delayed(const Duration(hours: 2), () {
       fetchSubscriptionStatus();
     });
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
     Future.delayed(const Duration(seconds: 10), () {
       if (user!.type == 'free') {
         adProvider.createInterstitialAd();
@@ -209,7 +207,6 @@ class HomePageState extends ConsumerState<HomePage> {
                               scrollPhysics: const BouncingScrollPhysics(
                                 decelerationRate: ScrollDecelerationRate.normal,
                               ),
-                              height: 252.0,
                               viewportFraction: 1,
                               aspectRatio: 16 / 9,
                               enableInfiniteScroll: true,

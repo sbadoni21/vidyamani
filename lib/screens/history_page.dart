@@ -21,7 +21,7 @@ class _SavedPageState extends ConsumerState<HistoryPage> {
   @override
   void initState() {
     super.initState();
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
   }
 
   @override

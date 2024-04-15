@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:vidyamani/components/topnavbar_backbutton.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/utils/static.dart';
 
@@ -98,7 +99,7 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = ref.watch(userProvider);
+        User? user = ref.watch(userStateNotifierProvider);
     return Scaffold(
       appBar: widget.trigger == 1 ? const CustomAppBarBckBtn() : null,
       body: Column(

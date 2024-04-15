@@ -71,62 +71,68 @@ class MeetingDetailPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Text(
-                'Meeting Credentials',
-                style: myTextStylefontsize16,
-              ),
-            ),
+            meeting.type == 'Zoom Meeting'
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      'Meeting Credentials',
+                      style: myTextStylefontsize16,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(height: 14),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Meeting Id",
-                    style: myTextStylefontsize16,
-                  ),
-                  Row(
-                    children: [
-                      Text('${meeting.meetingID}',
-                          style: myTextStylefontsize16),
-                      IconButton(
-                        icon: Icon(Icons.copy),
-                        onPressed: () {
-                          _copyToClipboard(meeting.meetingID, context);
-                        },
-                      ),
-                    ],
+            meeting.type == 'Zoom Meeting'
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Meeting Id",
+                          style: myTextStylefontsize16,
+                        ),
+                        Row(
+                          children: [
+                            Text('${meeting.meetingID}',
+                                style: myTextStylefontsize16),
+                            IconButton(
+                              icon: Icon(Icons.copy),
+                              onPressed: () {
+                                _copyToClipboard(meeting.meetingID, context);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Password",
-                    style: myTextStylefontsize16,
-                  ),
-                  Row(
-                    children: [
-                      Text('${meeting.meetingPasscode}',
-                          style: myTextStylefontsize16),
-                      IconButton(
-                        icon: Icon(Icons.copy),
-                        onPressed: () {
-                          _copyToClipboard(meeting.meetingID, context);
-                        },
-                      ),
-                    ],
+                : const SizedBox.shrink(),
+            meeting.type == "Zoom Meeting"
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Password",
+                          style: myTextStylefontsize16,
+                        ),
+                        Row(
+                          children: [
+                            Text('${meeting.meetingPasscode}',
+                                style: myTextStylefontsize16),
+                            IconButton(
+                              icon: Icon(Icons.copy),
+                              onPressed: () {
+                                _copyToClipboard(meeting.meetingID, context);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-            ),
+                : const SizedBox.shrink(),
             const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

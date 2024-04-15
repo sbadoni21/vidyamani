@@ -27,7 +27,7 @@ class _SearchBarButtonState extends ConsumerState<SearchBarButton> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = ref.read(userProvider);
+    User? user = ref.read(userStateNotifierProvider);
 
     return SafeArea(
       child: Scaffold(

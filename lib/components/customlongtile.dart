@@ -9,7 +9,6 @@ import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/miscellaneous_services.dart';
 import 'package:vidyamani/utils/static.dart';
 
-
 class VideoTile extends ConsumerStatefulWidget {
   final Videos video;
 
@@ -22,12 +21,9 @@ class VideoTile extends ConsumerStatefulWidget {
 }
 
 class _VideoTileState extends ConsumerState<VideoTile> {
-  late User? user;
-
   @override
   void initState() {
     super.initState();
-    user = ref.read(userProvider);
     loadVideoData();
   }
 
@@ -91,18 +87,17 @@ class _VideoTileState extends ConsumerState<VideoTile> {
     );
   }
 
-
   void _saveLecture(
       BuildContext context, MiscellaneousService miscellaneousService) async {
-   
+    User? user = ref.read(userStateNotifierProvider);
+
     if (user != null && widget.video.videoUid != null) {
       await miscellaneousService.addLectureToSaved(
         user!.uid,
         widget.video.lectureKey,
-       widget.video.videoUid,
+        widget.video.videoUid,
         context,
       );
-      
     } else {
       print('User not authenticated.');
     }
@@ -110,6 +105,8 @@ class _VideoTileState extends ConsumerState<VideoTile> {
 
   void _unsaveLecture(
       BuildContext context, MiscellaneousService miscellaneousService) async {
+    User? user = ref.read(userStateNotifierProvider);
+
     if (user != null && widget.video.videoUid != null) {
       await miscellaneousService.removeLectureFromSaved(
         user!.uid,

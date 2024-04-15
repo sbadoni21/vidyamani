@@ -4,6 +4,7 @@ import 'package:vidyamani/components/coursestile_component.dart';
 import 'package:vidyamani/components/heading_component.dart';
 import 'package:vidyamani/models/course_lectures_model.dart';
 import 'package:vidyamani/models/user_model.dart';
+import 'package:vidyamani/notifier/user_state_notifier.dart';
 import 'package:vidyamani/screens/course_detailspage.dart';
 import 'package:vidyamani/screens/home_page.dart';
 import 'package:vidyamani/services/data/course_services.dart';
@@ -16,7 +17,7 @@ class CoursesPage extends ConsumerStatefulWidget {
 class _CoursesPageState extends ConsumerState<CoursesPage> {
   @override
   Widget build(BuildContext context) {
-    User? user = ref.watch(userProvider);
+    User? user = ref.watch(userStateNotifierProvider);
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

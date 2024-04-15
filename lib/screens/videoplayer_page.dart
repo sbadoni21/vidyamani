@@ -112,7 +112,7 @@ class _VideoPlayerScreenState extends ConsumerState<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
 
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,

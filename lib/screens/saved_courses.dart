@@ -18,7 +18,7 @@ class _SavedPageState extends ConsumerState<SavedPage> {
 
   Future<User?> fetchData() async {
     try {
-      return ref.watch(userProvider);
+      return ref.watch(userStateNotifierProvider);
     } catch (e) {
       print('Error fetching user data: $e');
       return null;

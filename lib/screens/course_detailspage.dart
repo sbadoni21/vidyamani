@@ -13,8 +13,6 @@ import 'package:vidyamani/services/data/lectures_services.dart';
 import 'package:vidyamani/services/data/testimonals_service.dart';
 import 'package:vidyamani/utils/static.dart';
 
-
-
 class CourseDetailPage extends ConsumerStatefulWidget {
   final Course courses;
 
@@ -100,7 +98,7 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
   void initState() {
     super.initState();
     _calculateAverageRating();
-    user = ref.read(userProvider);
+    user = ref.read(userStateNotifierProvider);
     checkCourseSaved();
   }
 
@@ -128,8 +126,6 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
     await lectureService.updateOverallRating(
         widget.courses.lectureKey!, avgRating);
   }
-
- 
 
   void _showSaveDialog(BuildContext context) {
     showDialog(
@@ -285,7 +281,6 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                         ),
                       ],
                     ),
-                 
                   ],
                 ),
               ],
@@ -314,20 +309,20 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                                 child: Text('Error: ${snapshot.error}'));
                           } else {
                             List<Videos> videos = snapshot.data ?? [];
-
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                               ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: videos.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return VideoTile(
-                                    video: videos[index],
-                                  );
-                                },
-                              )],
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: videos.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return VideoTile(
+                                      video: videos[index],
+                                    );
+                                  },
+                                )
+                              ],
                             );
                           }
                         },
@@ -335,7 +330,10 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                     ],
                   )
                 : Container(
-                    child: Text("Buy Now to Access Premium Content"),
+                    child: Text(
+                      "Buy Now to Access Premium Content",
+                      style: myTextStylefontsize16,
+                    ),
                   ),
           ),
         ],

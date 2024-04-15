@@ -489,7 +489,7 @@ class _PhonePayPaymentState extends ConsumerState<PhonePayPayment> {
         .then((response) => {
               setState(() {
                 if (response != null) {
-                  final User? user = ref.read(userProvider);
+                  final User? user = ref.read(userStateNotifierProvider);
                   String status = response['status'].toString();
                   String error = response['error'].toString();
                   if (status == 'SUCCESS') {
