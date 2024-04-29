@@ -308,7 +308,10 @@ class _CourseDetailPageState extends ConsumerState<CourseDetailPage> {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           } else {
+                            print(snapshot.data!.length);
                             List<Videos> videos = snapshot.data ?? [];
+
+                            print(videos.length);
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

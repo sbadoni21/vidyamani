@@ -113,7 +113,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 60,
+                              width: 30,
                             ),
                             Container(
                               width: 150,
@@ -192,9 +192,11 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                           }
                         },
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 100,
+                              width: 50,
                               height: 70,
                               child: Icon(
                                 asset['icon'],

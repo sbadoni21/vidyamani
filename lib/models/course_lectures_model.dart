@@ -91,7 +91,7 @@ class Videos {
         lectureKey: map['lectureKey'],
         title: map['title'] ?? "",
         videoUid: map['videoUid'],
-        content: map['content']);
+        content: map['content'] ?? "");
   }
 }
 

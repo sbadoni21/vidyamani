@@ -99,27 +99,31 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
 
   @override
   Widget build(BuildContext context) {
-        User? user = ref.watch(userStateNotifierProvider);
+    User? user = ref.watch(userStateNotifierProvider);
     return Scaffold(
       appBar: widget.trigger == 1 ? const CustomAppBarBckBtn() : null,
       body: Column(
         children: [
           Expanded(
             child: _chatMessages.isEmpty
-                ? Center(
-                    child: Column(
-                      children: [
-                        Lottie.asset(
-                          'lib/assets/lottie/chatgptpage.json',
-                          width: 400,
-                          height: 400,
+                ? ListView(
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Lottie.asset(
+                              'lib/assets/lottie/chatgptpage.json',
+                              width: 400,
+                              height: 400,
+                            ),
+                            Text(
+                              "Ask Me Anything...",
+                              style: myTextStylefontsize16,
+                            )
+                          ],
                         ),
-                        Text(
-                          "Ask Me Anything...",
-                          style: myTextStylefontsize16,
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   )
                 : ListView.builder(
                     itemCount: _chatMessages.length,
@@ -149,7 +153,7 @@ class _ChatGPTPageState extends ConsumerState<ChatGPTPage> {
                                         _chatMessages[index].chatGPT);
                                   },
                                   child: Text(
-                                    'ChatGPT: ${_chatMessages[index].chatGPT}',
+                                    'Vidhyamani: ${_chatMessages[index].chatGPT}',
                                     style: myTextStylefontsize14White,
                                   ),
                                 ),

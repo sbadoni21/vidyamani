@@ -11,8 +11,6 @@ class DataService {
     printer: PrettyPrinter(),
   );
 
-  
-
   Future<List<Course>> fetchUpcomingCoursesCollectionData() async {
     try {
       QuerySnapshot querySnapshot =
@@ -37,7 +35,7 @@ class DataService {
           .toList();
       return courses;
     } catch (e) {
-     const  SnackBar(content: Text("Error getting Upcoming Data"));
+      const SnackBar(content: Text("Error getting Upcoming Data"));
       return [];
     }
   }
@@ -62,9 +60,10 @@ class DataService {
           .toList();
       return courses;
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      return [];
+      );
+      return [];
     }
   }
 
@@ -90,9 +89,10 @@ const  SnackBar(
         throw FormatException("Invalid date format");
       }
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      throw Exception("Error parsing date: $e");
+      );
+      throw Exception("Error parsing date: $e");
     }
   }
 
@@ -140,20 +140,21 @@ const  SnackBar(
 
           return courses;
         } catch (e) {
-const  SnackBar(
-        content: Text("Error encountered, please try again later"),
-      );          return [];
+          const SnackBar(
+            content: Text("Error encountered, please try again later"),
+          );
+          return [];
         }
       }
 
       return courses;
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      return [];
+      );
+      return [];
     }
   }
-
 
   Future<List<Course?>> fetchCoursesViaUser(String userId) async {
     try {
@@ -190,16 +191,18 @@ const  SnackBar(
         return null;
       }));
 
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      return courses;
+      );
+      return courses;
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      // Log or handle the error as needed
+      ); // Log or handle the error as needed
       return [];
     }
   }
+
   Future<List<Videos>> fetchLecturesWithLectureKey(String lectureKey) async {
     try {
       DocumentSnapshot documentSnapshot =
@@ -218,23 +221,21 @@ const  SnackBar(
                   .cast<Videos>()
                   .toList() ??
               [];
-
+          logger.i("Video data2: $data");
           return videos;
         } else {
-const  SnackBar(
-        content: Text("Error encountered, please try again later"),
-      );          return [];
+          print("Error encountered, please try again later");
+          return [];
         }
       } else {
-const  SnackBar(
-        content: Text("Error encountered, please try again later"),
-      );        return [];
+        print("Error encountered, please try again later");
+        return [];
       }
     } catch (e) {
-const  SnackBar(
+      const SnackBar(
         content: Text("Error encountered, please try again later"),
-      );      return [];
+      );
+      return [];
     }
   }
-
 }
