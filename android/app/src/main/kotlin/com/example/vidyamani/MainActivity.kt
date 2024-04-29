@@ -1,4 +1,4 @@
-package com.shivam.vidhyamanif
+package com.example.vidhyamanif
 
 import io.flutter.embedding.android.FlutterActivity
 
