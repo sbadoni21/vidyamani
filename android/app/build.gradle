@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.vidhyamanif"
+    namespace "com.shivam.vidhyamanif"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -41,9 +41,16 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
+ signingConfigs {
+        release {
+            keyAlias 'key'
+            keyPassword 'Uk097188@'
+            storeFile file('key.jks')
+            storePassword 'Uk097188@'
+        }
+    }
     defaultConfig {
-        applicationId "com.example.vidhyamanif"
+        applicationId "com.shivam.vidhyamanif"
         multiDexEnabled true
         targetSdkVersion 33
         minSdkVersion 21   
@@ -56,10 +63,10 @@ android {
             }}
     }
 
-    buildTypes {
+     buildTypes {
         release {
-
-            signingConfig signingConfigs.debug
+           
+            signingConfig signingConfigs.release
         }
     }
 }
