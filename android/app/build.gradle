@@ -15,16 +15,25 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '2.0'
 }
 
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))}
+
+
+
+
 android {
-    namespace "com.example.vidhyamanif"
+    namespace "com.shivam.vidhyamanif"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -43,7 +52,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.vidhyamanif"
+        applicationId "com.shivam.vidhyamanif"
         multiDexEnabled true
         targetSdkVersion 33
         minSdkVersion 21   
@@ -55,11 +64,19 @@ android {
                 arguments "-Wno-error"
             }}
     }
+      signingConfigs {
+    
+   release {
+          keyAlias keystoreProperties['keyAlias']
+         keyPassword keystoreProperties['keyPassword']
+          storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null    
+          storePassword keystoreProperties['storePassword']
+     }
+    }
 
     buildTypes {
         release {
-
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -72,7 +89,6 @@ dependencies {
      implementation platform('com.google.firebase:firebase-bom:32.7.0')
      implementation ('com.android.support:multidex:1.0.3')
      implementation("com.google.firebase:firebase-analytics")
-    //  implementation('com.google.android.gms.providerinstaller.dynamite')
-
+     implementation 'com.google.android.material:material:1.11.0'
 
 }

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:706411405865:android:aa5dca7d3429b0bcfb3238",
         "android_client_info": {
-          "package_name": "com.example.vidhyamanif"
+          "package_name": "com.shivam.vidhyamanif"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "706411405865-6ii5kg2pvv5ipu5g8p7ago9djnc1vr59.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.vidhyamanif",
+            "package_name": "com.shivam.vidhyamanif",
             "certificate_hash": "ae97a88acc9d06c6601ce62950bff3bccf363646"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "706411405865-annirjim4v248mdo8ror44udf26hojv9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.vidhyamanif",
+            "package_name": "com.shivam.vidhyamanif",
             "certificate_hash": "270440cc025d0a41569569a091e213fedb9d3983"
           }
         },
@@ -34,7 +34,7 @@
           "client_id": "706411405865-pfa877jmjkqvrnrc9e15had1q57imq76.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.vidhyamanif",
+            "package_name": "com.shivam.vidhyamanif",
             "certificate_hash": "541db13271ecc6e8f4c1f717e8e9bfc5e7af2fb0"
           }
         },

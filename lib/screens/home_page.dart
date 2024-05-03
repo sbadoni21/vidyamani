@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,8 +37,6 @@ import 'package:vidyamani/services/data/testimonals_service.dart';
 final adProvider = ChangeNotifierProvider<AdProvider>(
   (ref) => AdProvider(),
 );
-
-
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -118,6 +117,7 @@ class HomePageState extends ConsumerState<HomePage> {
   @override
   void dispose() {
     _timer.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -142,18 +142,13 @@ class HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (_pageController.page == 0) {
-          SystemNavigator.pop();
-          return false;
-        } else {
-          _pageController.previousPage(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-          return false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
         }
+        _showBackDialog();
       },
       child: GestureDetector(
         child: SafeArea(
@@ -537,5 +532,30 @@ class HomePageState extends ConsumerState<HomePage> {
         ),
       ),
     );
+  }
+
+  void _showBackDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Are you sure you want to exit?"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  exit(0);
+                },
+              ),
+            ],
+          );
+        });
   }
 }
